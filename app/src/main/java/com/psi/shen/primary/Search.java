@@ -41,13 +41,24 @@ public class Search extends AppCompatActivity {
     //private double ThermalExpan_min,ThermalExpan_max;
     private EditText Density_minET,Density_maxET;
     //private double Density_min,Density_max;
+
+    //New Added:
+    private EditText NamingStandard;
+    private EditText PoissonsRatio_minET, PoissonsRatio_maxET;
+    private EditText DampingIndex_minET, DampingIndex_maxET;
+    private EditText FractureToughness_minET, FractureToughness_maxET;
+
     private double[] doubleArray ;
-    private boolean[] Validation = new boolean[18];//[2+16]
+    private boolean[] Validation = new boolean[25];//[3+22]
     //Name -> boolean[0], hardness_min&max -> boolean[1]&[2], Component -> boolean[3],
     // MeltingPoint_min&max -> boolean[4]&[5], ElasticModu_min&max -> boolean[6]&[7],
     // SpecificHeat_min&max -> boolean[8]&[9], Resistivity_min&max -> boolean[10]&[11],
     // ThermalCon_min&max -> boolean[12]&[13], ThermalExpan_min&max -> boolean[14]&[15],
     // Density_min&max -> boolean[16]&[17]
+    /* New Added:
+       NamingStandard -> boolean[18], PoissonsRatio_min&max -> boolean[19]&[20],
+       DampingIndex_min&max ->boolean[21]&[22], FractureToughness_min&max -> boolean[23]&[24]
+     */
 
 
     @Override
