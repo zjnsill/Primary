@@ -21,7 +21,9 @@
         <activity android:name=".SearchResults" />
         <activity android:name=".detaied_alloy" />
         <activity android:name=".CreateAlloy" />
-        <activity android:name=".StarredList"></activity>
+        <activity android:name=".StarredList" />
+        <activity android:name=".MainInterface" />
+        <activity android:name=".login"></activity>
     </application>
 
 </manifest>
