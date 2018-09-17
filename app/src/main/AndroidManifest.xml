@@ -23,7 +23,8 @@
         <activity android:name=".CreateAlloy" />
         <activity android:name=".StarredList" />
         <activity android:name=".MainInterface" />
-        <activity android:name=".login"></activity>
+        <activity android:name=".login" />
+        <activity android:name=".bottomSheet"></activity>
     </application>
 
 </manifest>

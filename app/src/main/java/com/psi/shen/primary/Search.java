@@ -134,7 +134,9 @@ public class Search extends AppCompatActivity {
         searchTopBar.setLeftAndRightListener(new TopBar.LeftAndRightListener(){
             @Override
             public void rightListener(){
-                clearAll();
+                //clearAll();
+                Intent tempJump  = new Intent(Search.this,bottomSheet.class);
+                startActivity(tempJump);
             }
             @Override
             public void leftListener(){
