@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Search">
 
-    <com.psi.shen.primary.RoundRectBtn
-        android:id="@+id/StarredBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginStart="40dp"
-        app:BtnBackgroundColor="#FFF"
-        app:BtnImg="@drawable/ic_star"
-        app:BtnText="Starred"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -620,7 +608,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         app:RightImg="@drawable/ic_clear_all"
-        app:LeftImg = "@drawable/ic_add_nocircle"
         app:Text="Search"
         app:TextColor="#000"
         app:TextSize="6dp"
