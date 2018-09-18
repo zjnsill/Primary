@@ -1,9 +1,11 @@
 package com.psi.shen.primary;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ public class bottomSheet extends AppCompatActivity {
     private BottomSheetBehavior mBehavior;
     private TextView nameTV,starredItemCountTV,createdcountTV;
     private ImageView accountImg;
+    private CardView createCV,searchCV,starredCV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,30 @@ public class bottomSheet extends AppCompatActivity {
                 if(mBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED){
                     setBottomSheetCollapsed(bottomSheetView);
                 }
+            }
+        });
+        createCV = findViewById(R.id.createCV);
+        starredCV = findViewById(R.id.starredCV);
+        searchCV = findViewById(R.id.searchCV);
+        createCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent jumpToCreate = new Intent(bottomSheet.this,CreateAlloy.class);
+                startActivity(jumpToCreate);
+            }
+        });
+        searchCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent jumpToSearch = new Intent(bottomSheet.this,Search.class);
+                startActivity(jumpToSearch);
+            }
+        });
+        starredCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent jumpToStarred = new Intent(bottomSheet.this, StarredList.class);
+                startActivity(jumpToStarred);
             }
         });
 
