@@ -106,18 +106,28 @@ public class SearchResults extends AppCompatActivity {
                         rs = st.executeQuery(SQLSentence);
                         resultsArray.clear();
                         while (rs.next()) {
-                            String returnDatas[] = new String[11];
-                            returnDatas[0] = rs.getString("Alloy_Name");
-                            returnDatas[1] = rs.getString("Component");
-                            returnDatas[2] = rs.getString("Specific_Gravity");
-                            returnDatas[3] = rs.getString("Thermal_Expansion_Coefficient");
-                            returnDatas[4] = rs.getString("Thermal_conductivity");
-                            returnDatas[5] = rs.getString("Specific_Heat");
-                            returnDatas[6] = rs.getString("Resistivity");
-                            returnDatas[7] = rs.getString("Elastic_Modulus");
-                            returnDatas[8] = rs.getString("Melting_Range_Min");
-                            returnDatas[9] = rs.getString("Melting_Range_Max");
-                            returnDatas[10] = rs.getString("Brinell_Hardness_Max");
+                            String returnDatas[] = new String[21];
+                            returnDatas[0] = rs.getString("Name");
+                            returnDatas[1] = rs.getString("Naming_Standard");
+                            returnDatas[2] = rs.getString("Elements");
+                            returnDatas[3] = rs.getString("Density");
+                            returnDatas[4] = rs.getString("Thermal_Expansion_Coefficient");
+                            returnDatas[5] = rs.getString("Thermal_conductivity");
+                            returnDatas[6] = rs.getString("Specific_Heat");
+                            returnDatas[7] = rs.getString("Resistivity");
+                            returnDatas[8] = rs.getString("Elastic_Modulus");
+                            returnDatas[9] = rs.getString("Poisson's_Ratio");
+                            returnDatas[10] = rs.getString("Melting_Range_Min");
+                            returnDatas[11] = rs.getString("Melting_Range_Max");
+                            returnDatas[12] = rs.getString("Damping_Index");
+                            returnDatas[13] = rs.getString("Brinell_Hardness_Min");
+                            returnDatas[14] = rs.getString("Brinell_Hardness_Max");
+                            returnDatas[15] = rs.getString("Forging");
+                            returnDatas[16] = rs.getString("Weldability");
+                            returnDatas[17] = rs.getString("Machining");
+                            returnDatas[18] = rs.getString("Surface_Treatment");
+                            returnDatas[19] = rs.getString("Corrosion_Resistance");
+                            returnDatas[20] = rs.getString("Fracture_Toughness");
 
                             SingleAlloyItem singleAlloyItem2 = new SingleAlloyItem(returnDatas);
                             Bundle bundle = new Bundle();
@@ -159,48 +169,53 @@ public class SearchResults extends AppCompatActivity {
     public void produceSQLSentence(final Request request) {
         boolean flag = false;
         String name = request.getName();
+        String namingStandard = request.getNamingStandard();
         boolean[] component = request.getComponet();
         double[] doubledatas = request.getDoubleArray();
         boolean[] validation = request.getValidation();
         SQLSentence = "";
-        SQLSentence += "SELECT Alloy_Name, Specific_Gravity, Thermal_Expansion_Coefficient, " +
-                "Thermal_conductivity, Specific_Heat, Resistivity, Elastic_Modulus, " +
-                "Melting_Range_Min, Melting_Range_Max, Brinell_Hardness_Max, Component " +
-                "FROM attributes WHERE ";
+        SQLSentence += "SELECT * FROM attributes JOIN components USING(Name) WHERE ";
         if(validation[0]) {
-            SQLSentence += "Alloy_Name = \"" + name + "\"";
-            flag = true;}
+            SQLSentence += "Name = \"" + name + "\"";
+            flag = true;
+        }
+        if(validation[18]) {
+            if(flag)
+                SQLSentence += " AND ";
+            SQLSentence += "Naming_Standard = \"" + namingStandard + "\"";
+            flag = true;
+        }
         if(validation[3]) {
             if(flag)
                 SQLSentence += " AND ";
             boolean flag2 = false;
             SQLSentence += "FIND_IN_SET(";
             if(component[0]) {
-                SQLSentence += "\"Al\", Component)";
+                SQLSentence += "\"Al\", Elements)";
                 flag2 = true;
             }
             if(component[1]) {
                 if(flag2)
                     SQLSentence += " AND FIND_IN_SET(";
-                SQLSentence += "\"Zn\", Component)";
+                SQLSentence += "\"Zn\", Elements)";
                 flag2 = true;
             }
             if(component[2]) {
                 if(flag2)
                     SQLSentence += " AND FIND_IN_SET(";
-                SQLSentence += "\"Mn\", Component)";
+                SQLSentence += "\"Mn\", Elements)";
                 flag2 = true;
             }
             if(component[3]) {
                 if(flag2)
                     SQLSentence += " AND FIND_IN_SET(";
-                SQLSentence += "\"Zr\", Component)";
+                SQLSentence += "\"Zr\", Elements)";
                 flag2 = true;
             }
             if(component[4]) {
                 if(flag2)
                     SQLSentence += " AND FIND_IN_SET(";
-                SQLSentence += "\"Y\", Component)";
+                SQLSentence += "\"Y\", Elements)";
                 flag2 = true;
             }
             flag = true;
@@ -208,7 +223,7 @@ public class SearchResults extends AppCompatActivity {
         if(validation[1]) {
             if(flag)
                 SQLSentence += " AND ";
-            SQLSentence += "Brinell_Hardness_Max > ";
+            SQLSentence += "Brinell_Hardness_Mix > ";
             SQLSentence += doubledatas[0] + "";
             flag = true;
         }
@@ -306,17 +321,60 @@ public class SearchResults extends AppCompatActivity {
         if(validation[16]) {
             if(flag)
                 SQLSentence += " AND ";
-            SQLSentence += "Specific_Gravity > ";
+            SQLSentence += "Density > ";
             SQLSentence += doubledatas[14] + "";
             flag = true;
         }
         if(validation[17]) {
             if(flag)
                 SQLSentence += " AND ";
-            SQLSentence += "Specific_Gravity < ";
+            SQLSentence += "Density < ";
             SQLSentence += doubledatas[15] + "";
             flag = true;
         }
+        if(validation[19]) {
+            if(flag)
+                SQLSentence += " AND ";
+            SQLSentence += "Poisson\'s_Ratio > ";
+            SQLSentence += doubledatas[16] + "";
+            flag = true;
+        }
+        if(validation[20]) {
+            if(flag)
+                SQLSentence += " AND ";
+            SQLSentence += "Poisson\'s_Ratio < ";
+            SQLSentence += doubledatas[17] + "";
+            flag = true;
+        }
+        if(validation[21]) {
+            if(flag)
+                SQLSentence += " AND ";
+            SQLSentence += "Damping_Index > ";
+            SQLSentence += doubledatas[18] + "";
+            flag = true;
+        }
+        if(validation[22]) {
+            if(flag)
+                SQLSentence += " AND ";
+            SQLSentence += "Damping_Index < ";
+            SQLSentence += doubledatas[19] + "";
+            flag = true;
+        }
+        if(validation[23]) {
+            if(flag)
+                SQLSentence += " AND ";
+            SQLSentence += "Fracture_Toughness > ";
+            SQLSentence += doubledatas[20] + "";
+            flag = true;
+        }
+        if(validation[24]) {
+            if(flag)
+                SQLSentence += " AND ";
+            SQLSentence += "Fracture_Toughness < ";
+            SQLSentence += doubledatas[21] + "";
+            flag = true;
+        }
+        SQLSentence += " ORDER BY Name";
         SQLSentence += ";";
         Log.i("Mainactivity", SQLSentence);
     }
