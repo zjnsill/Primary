@@ -11,19 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Search">
+        <activity android:name=".bottomSheet">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Search"></activity>
         <activity android:name=".SearchResults" />
         <activity android:name=".detaied_alloy" />
         <activity android:name=".CreateAlloy" />
         <activity android:name=".StarredList" />
-        <activity android:name=".MainInterface" />
-        <activity android:name=".login"></activity>
+        <activity android:name=".login" />
+
     </application>
 
 </manifest>

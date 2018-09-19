@@ -18,7 +18,7 @@ public class Search extends AppCompatActivity {
     private ArrayList<StarredListItem> starredListData = new ArrayList<>();
 
     private TopBar searchTopBar;
-    private RoundRectBtn SearchBtn,starredBtn;
+    private RoundRectBtn SearchBtn;
 
     private EditText nameET;
     private String Name;
@@ -138,18 +138,11 @@ public class Search extends AppCompatActivity {
             }
             @Override
             public void leftListener(){
-                Intent jumpToCustomize = new Intent(Search.this,CreateAlloy.class);
-                startActivity(jumpToCustomize);
+                //Intent jumpToCustomize = new Intent(Search.this,CreateAlloy.class);
+                //startActivity(jumpToCustomize);
             }
         });
-        starredBtn=findViewById(R.id.StarredBtn);
-        starredBtn.setBtnOnClickListener(new RoundRectBtn.BtnOnClickListenr() {
-            @Override
-            public void BtnOnClick() {
-                Intent jumpToStarred = new Intent(Search.this,StarredList.class);
-                startActivity(jumpToStarred);
-            }
-        });
+
         SearchBtn.setBtnOnClickListener(new RoundRectBtn.BtnOnClickListenr() {
             @Override
             public void BtnOnClick() {
