@@ -19,7 +19,9 @@ private String AlloyName,NamingStandard,Component;
     private double FractureToughness;
     public boolean[] Validation = new boolean[19];
 ```
+the corrisbonding value for validation array are:
 
+```java
 validation[0]->AlloyName
 validation[1]->NamingStandard
 validation[2]->Component
@@ -39,3 +41,4 @@ validation[15]->Machining
 validation[16]->SurfaceTreatment
 validation[17]->CorrisionResistance
 validation[18]->FractureToughness
+```
