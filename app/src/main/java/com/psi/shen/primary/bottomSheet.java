@@ -39,7 +39,10 @@ public class bottomSheet extends AppCompatActivity {
         cancelTV = findViewById(R.id.cancelTV);
         enterEmail = findViewById(R.id.enterEmail);
         //functions to ask user to sign in;
-
+        //currently return francis as the previously signed user;
+        currentUser = "francis";
+        String email = "francis@126.com";
+        //
         //
         if(currentUser==defaultUser){
             signOutTV.setVisibility(View.INVISIBLE);
@@ -103,14 +106,16 @@ public class bottomSheet extends AppCompatActivity {
         welcome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sheetAction();
+                if(currentUser==defaultUser){
+                    mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+                else{sheetAction();}
             }
         });
         //
 
         //
-        String temp = "125@126.com";
-        enterEmail.setText(temp);
+        enterEmail.setText(email);
         enterEmail.setFocusable(false);
         enterEmail.setFocusableInTouchMode(false);
         editTV.setOnClickListener(new View.OnClickListener() {

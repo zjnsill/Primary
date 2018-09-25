@@ -13,7 +13,8 @@ import java.util.ArrayList;
 
 public class Search extends AppCompatActivity {
 
-    private StarredListDatabaseManager starredDatabase= StarredListDatabaseManager.getInstance(this);
+    private String currentUser;
+    private UserDatabaseManager starredDatabaseManager;
 
     private ArrayList<StarredListItem> starredListData = new ArrayList<>();
 
@@ -66,6 +67,8 @@ public class Search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        Intent fromMainInterface = getIntent();
+        currentUser = fromMainInterface.getStringExtra("userName");
         setupInputComponent();
         SearchBtn.setBtnOnClickListener(new RoundRectBtn.BtnOnClickListenr(){
             @Override
@@ -74,6 +77,7 @@ public class Search extends AppCompatActivity {
                 Bundle input = packagingBundle();
                 Intent jumpToResults = new Intent(Search.this,SearchResults.class);
                 jumpToResults.putExtra("inquiry",input);
+                jumpToResults.putExtra("user",currentUser);
                 startActivity(jumpToResults);
             }
         });
@@ -225,6 +229,7 @@ public class Search extends AppCompatActivity {
         return inquiryBundle;
     }
 
+    /*
     void GetSomeStarredSample(){
         ArrayList<SingleAlloyItem> resultsArray = new ArrayList<>();
         boolean[] validation = new boolean[10];
@@ -235,7 +240,8 @@ public class Search extends AppCompatActivity {
         starredListData.add(new StarredListItem(resultsArray.get(0),true,false,false,false));
         starredListData.add(new StarredListItem(resultsArray.get(1),false,true,false,false));
         starredListData.add(new StarredListItem(resultsArray.get(2),false,true,true,true));
-    }
+    }*/
+    //from old version no longer applicable will be deleted afterwards;
 
 
 
