@@ -32,7 +32,7 @@ public class StarredList extends AppCompatActivity {
         setContentView(R.layout.activity_starred_list);
 
         Intent nameIntent = getIntent();
-        this.currentUser = nameIntent.getStringExtra("user");//need modification in relative java file;
+        this.currentUser = nameIntent.getStringExtra("userName");//need modification in relative java file;
         userDatabaseManager = UserDatabaseManager.getInstance(this,currentUser);
         StarredListTopbar = findViewById(R.id.StarredListTopbar);
         StarredListTopbar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {

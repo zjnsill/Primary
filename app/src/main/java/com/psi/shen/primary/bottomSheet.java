@@ -6,6 +6,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,11 +36,14 @@ public class bottomSheet extends AppCompatActivity {
         signOutTV = bottomSheetView.findViewById(R.id.signOut);
         deleteInfoTV = bottomSheetView.findViewById(R.id.deleteInfo);
         welcome = findViewById(R.id.userName);
-        editTV = findViewById(R.id.editTV);
-        cancelTV = findViewById(R.id.cancelTV);
-        enterEmail = findViewById(R.id.enterEmail);
+        editTV = bottomSheetView.findViewById(R.id.editTV);
+        cancelTV = bottomSheetView.findViewById(R.id.BScancel);
+        enterEmail = bottomSheetView.findViewById(R.id.enterEmail);
+
+
         //functions to ask user to sign in;
         //currently return francis as the previously signed user;
+        //if the user is not signed in, use default user;
         currentUser = "francis";
         String email = "francis@126.com";
         //
@@ -121,24 +125,28 @@ public class bottomSheet extends AppCompatActivity {
         editTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editTV.getText()=="Edit"){
+                if(editTV.getText().equals("Edit")){
+                    Log.i("EditTv", "editText == edit");
                     mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     editTV.setText("Done");
                     cancelTV.setVisibility(View.VISIBLE);
+                    cancelTV.setClickable(true);
                     enterEmail.setFocusable(true);
                     enterEmail.setFocusableInTouchMode(true);
                     enterEmail.requestFocus();
                 }
-                if(editTV.getText()=="Done"){
+                if(editTV.getText().equals("Done")){
                     enterEmail.setFocusableInTouchMode(false);
                     enterEmail.setFocusable(false);
+                    editTV.setText("Edit");
+                    cancelTV.setVisibility(View.INVISIBLE);
+                    cancelTV.setClickable(false);
                 }
             }
         });
 
 
     }
-
 
     public void sheetAction(){
         if(mBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED){
