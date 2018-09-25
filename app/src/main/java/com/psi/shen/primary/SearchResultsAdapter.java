@@ -70,7 +70,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         viewHolder.DensityTV.setText("Density: "+Item.getDensity()+"");
         viewHolder.ElasticModuTV.setText("Elastic modulus: "+Item.getElasticModu()+"");
         viewHolder.MeltingRangeTV.setText("Melting Range: "+Item.getMeltingRange_Min()+"~"+Item.getMeltingRange_Max());
-        viewHolder.HardnessTV.setText("Hardness: "+Item.getHardness()+"");
+        viewHolder.HardnessTV.setText("Hardness: "+Item.getMeltingRangeString()+"");
         final boolean isStarred = proxy.hasItem(Item.getAlloyName());
         if(isStarred){viewHolder.isStarredIV.setImageResource(R.drawable.ic_star);}
         else {viewHolder.isStarredIV.setImageResource(R.drawable.ic_star_empty);}
