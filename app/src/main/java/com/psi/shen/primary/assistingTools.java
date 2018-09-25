@@ -61,7 +61,8 @@ public class assistingTools {
         if(Component[5]){out+="Others ";}
         return out;
     }
-
+    //in newer version of datastructure, data transfer can be done using parcelable instead of bundle;
+/*
     Bundle pacakgingbundle(SingleAlloyItem Item){
         Bundle bundle = new Bundle();
         bundle.putString("name",Item.Validation[0]? Item.getAlloyName():"");
@@ -97,6 +98,6 @@ public class assistingTools {
         return singleAlloyItem;
     }
 
-
+*/
 
 }

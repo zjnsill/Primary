@@ -8,7 +8,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class CreateAlloy extends AppCompatActivity {
-    private StarredListDatabaseManager starredDatabase= new StarredListDatabaseManager(this);
+    Intent intent = getIntent();
+    private String currentUser = intent.getStringExtra("userName");
+    private UserDatabaseManager userDatabaseManager = new UserDatabaseManager(this,currentUser);
 
     private EditText nameET,namingStandardET,hardnessMinET,hardnessMaxET,meltingPoint_minET,meltingPoint_maxET,
             elasticModuET,specificHeatET,resistivityET,thermalConET,thermalExpanET,densityET,possionsET,
@@ -38,7 +40,7 @@ public class CreateAlloy extends AppCompatActivity {
                 if(!toolSet.hasInput(nameET)){Toast.makeText(CreateAlloy.this,"Please enter alloy name!",Toast.LENGTH_SHORT).show();}
                 else {
                     StarredListItem starredListItem = gatherData();
-                    starredDatabase.addStarredListItem(starredListItem);
+                    userDatabaseManager.addStarredItem(starredListItem);
                     Toast ts = Toast.makeText(CreateAlloy.this, "Item successfully saved to starred list!", Toast.LENGTH_SHORT);
                     ts.show();
                     Intent backToSearch = new Intent(CreateAlloy.this, Search.class);
