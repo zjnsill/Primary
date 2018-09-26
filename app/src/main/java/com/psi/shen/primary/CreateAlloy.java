@@ -8,9 +8,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class CreateAlloy extends AppCompatActivity {
-    Intent intent = getIntent();
-    private String currentUser = intent.getStringExtra("userName");
-    private UserDatabaseManager userDatabaseManager = new UserDatabaseManager(this,currentUser);
+    private String currentUser;
+    private UserDatabaseManager userDatabaseManager;
 
     private EditText nameET,namingStandardET,hardnessMinET,hardnessMaxET,meltingPoint_minET,meltingPoint_maxET,
             elasticModuET,specificHeatET,resistivityET,thermalConET,thermalExpanET,densityET,possionsET,
@@ -22,6 +21,9 @@ public class CreateAlloy extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        currentUser = intent.getStringExtra("userName");
+        userDatabaseManager = UserDatabaseManager.getInstance(this,currentUser);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_alloy);
         setupComponent();

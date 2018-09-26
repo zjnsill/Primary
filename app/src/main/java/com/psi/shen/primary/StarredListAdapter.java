@@ -71,7 +71,7 @@ public class StarredListAdapter extends RecyclerView.Adapter<StarredListAdapter.
         viewHolder.density.setText(singleAlloyItem.Validation[2]? "Density: "+singleAlloyItem.getDensity():"No density data");
         viewHolder.elasticModu.setText(singleAlloyItem.Validation[7]? "Elastic modulus: "+singleAlloyItem.getElasticModu():"No elastic modulus data");
         viewHolder.meltingRange.setText(singleAlloyItem.Validation[8]? "Melting Range: "+singleAlloyItem.getMeltingRange_Min()+"~"+singleAlloyItem.getMeltingRange_Max():"No Data");
-        viewHolder.hardness.setText(singleAlloyItem.Validation[9]? "Hardness: "+singleAlloyItem.getHardness():"No hardness data");
+        viewHolder.hardness.setText(singleAlloyItem.Validation[9]? "Hardness: "+singleAlloyItem.getHardness_Min()+"~"+singleAlloyItem.getHardness_Max():"No hardness data");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

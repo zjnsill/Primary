@@ -22,7 +22,8 @@ public class SearchResults extends AppCompatActivity {
     private TopBar topbar;
     public ArrayList<SingleAlloyItem> resultsArray = new ArrayList<>();
     private RecyclerView alloyResultsList;
-    private StarredListDatabaseManager starredListDatabaseManager = StarredListDatabaseManager.getInstance(this);
+    private String currentUser;
+    private UserDatabaseManager starredListDatabaseManager;
 
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static final String URL = "jdbc:mysql://cd-cdb-1dpkpdzc.sql.tencentcdb.com:63711/alloy";
@@ -48,21 +49,24 @@ public class SearchResults extends AppCompatActivity {
         alloyResultsList = findViewById(R.id.alloyResultsList);
         alloyResultsList.setLayoutManager(new LinearLayoutManager(this));
         topbar = findViewById(R.id.searchResultsTopbar);
+
         Intent inquery = getIntent();
         final Request request = new Request(inquery.getBundleExtra("inquiry"));
-        final SearchResultsAdapter searchResultsAdapter = new SearchResultsAdapter(this,resultsArray,starredListDatabaseManager);
+        this.currentUser=inquery.getStringExtra("user");
+        starredListDatabaseManager = UserDatabaseManager.getInstance(this,currentUser);
+        final SearchResultsAdapter searchResultsAdapter = new SearchResultsAdapter(this,resultsArray,currentUser);
         searchResultsAdapter.setmOnItemClickListener(new SearchResultsAdapter.OnItemClickListener(){
             @Override
             public void onClick(int position){ItemAction(position);}
             @Override
             public void onLongClick(int position,boolean isStarred){
                 if(isStarred){
-                    starredListDatabaseManager.deleteStarredListItem(resultsArray.get(position).getAlloyName());
+                    starredListDatabaseManager.deleteStarredItem(resultsArray.get(position).getAlloyName());
                     Toast.makeText(SearchResults.this,"Item unstarred!",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     StarredListItem starredListItem = new StarredListItem(resultsArray.get(position), true, false, false, false);
-                    starredListDatabaseManager.addStarredListItem(starredListItem);
+                    starredListDatabaseManager.addStarredItem(starredListItem);
                     Toast.makeText(SearchResults.this,"Item starred!",Toast.LENGTH_SHORT).show();
                 }
                 searchResultsAdapter.notifyItemChanged(position);
@@ -163,7 +167,9 @@ public class SearchResults extends AppCompatActivity {
     private void ItemAction(int position) {
         SingleAlloyItem alloyItem = resultsArray.get(position);
         Intent jumpToDetail = new Intent(SearchResults.this, detaied_alloy.class);
-        jumpToDetail.putExtra("alloyItem",new assistingTools().pacakgingbundle(alloyItem));
+        Bundle item = new Bundle();
+        item.putParcelable("clickedItem",alloyItem);
+        jumpToDetail.putExtras(item);
         startActivity(jumpToDetail);
     }
     public void produceSQLSentence(final Request request) {
