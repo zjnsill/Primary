@@ -12,7 +12,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
-    private StarredListDatabaseManager proxy;
+    private UserDatabaseManager proxy;
+    private String currentUser;
     private Context context;
     private LayoutInflater layoutInflater;
     private ArrayList<SingleAlloyItem> searchResults;
@@ -27,9 +28,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         this.mOnItemClickListener=onItemClickListener;
     }
 
-    public SearchResultsAdapter(Context context,ArrayList<SingleAlloyItem> searchResults,StarredListDatabaseManager proxy){
+    public SearchResultsAdapter(Context context,ArrayList<SingleAlloyItem> searchResults,String userName){
         this.context=context;
-        this.proxy = proxy;
+        this.currentUser = userName;
+        this.proxy = UserDatabaseManager.getInstance(context,currentUser);
         layoutInflater=LayoutInflater.from(this.context);
         this.searchResults=searchResults;
     }
@@ -70,7 +72,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         viewHolder.DensityTV.setText("Density: "+Item.getDensity()+"");
         viewHolder.ElasticModuTV.setText("Elastic modulus: "+Item.getElasticModu()+"");
         viewHolder.MeltingRangeTV.setText("Melting Range: "+Item.getMeltingRange_Min()+"~"+Item.getMeltingRange_Max());
-        viewHolder.HardnessTV.setText("Hardness: "+Item.getHardness()+"");
+        viewHolder.HardnessTV.setText("Hardness: "+Item.getMeltingRangeString()+"");
         final boolean isStarred = proxy.hasItem(Item.getAlloyName());
         if(isStarred){viewHolder.isStarredIV.setImageResource(R.drawable.ic_star);}
         else {viewHolder.isStarredIV.setImageResource(R.drawable.ic_star_empty);}

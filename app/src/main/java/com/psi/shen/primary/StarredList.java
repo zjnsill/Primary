@@ -18,10 +18,11 @@ import java.util.ArrayList;
 
 public class StarredList extends AppCompatActivity {
     private TopBar StarredListTopbar;
+    private String currentUser;
     private ArrayList<StarredListItem> starredListData = new ArrayList<>();
     private ArrayList<StarredListItem> waitingToCloud=new ArrayList<>();
     private ArrayList<StarredListItem> waitingToDelete=new ArrayList<>();
-    private StarredListDatabaseManager starredDatabase= StarredListDatabaseManager.getInstance(StarredList.this);
+    private UserDatabaseManager userDatabaseManager;
 
 
 
@@ -30,6 +31,9 @@ public class StarredList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starred_list);
 
+        Intent nameIntent = getIntent();
+        this.currentUser = nameIntent.getStringExtra("userName");//need modification in relative java file;
+        userDatabaseManager = UserDatabaseManager.getInstance(this,currentUser);
         StarredListTopbar = findViewById(R.id.StarredListTopbar);
         StarredListTopbar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {
             @Override
@@ -49,7 +53,7 @@ public class StarredList extends AppCompatActivity {
                 refreshList();
             }
         });
-        starredListData = starredDatabase.getDataArray();
+        starredListData = userDatabaseManager.GetAllItems();
 
         RecyclerView recyclerView = findViewById(R.id.starredRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -58,7 +62,9 @@ public class StarredList extends AppCompatActivity {
             @Override
             public void onClick(int position) {
                 Intent jumpToDetail = new Intent(StarredList.this,detaied_alloy.class);
-                jumpToDetail.putExtra("alloyItem",new assistingTools().pacakgingbundle(starredListData.get(position).getAlloyItem()));
+                Bundle itemBundle = new Bundle();
+                itemBundle.putParcelable("clickedItem",starredListData.get(position).getAlloyItem());
+                jumpToDetail.putExtras(itemBundle);
                 startActivity(jumpToDetail);
             }
 
@@ -114,7 +120,7 @@ public class StarredList extends AppCompatActivity {
                 starredListData.get(position).isToBeClouded = true;
                 starredListData.get(position).isToBeDeleted= false;
                 starredListAdapter.notifyItemChanged(position);
-                starredDatabase.updateStarredListItem(starredListData.get(position));
+                userDatabaseManager.updateStarredItem(starredListData.get(position));
                 dialog.dismiss();
                 dialog.cancel();
             }
@@ -157,7 +163,7 @@ public class StarredList extends AppCompatActivity {
     void DeleteQueue(){
         int queueSize = waitingToDelete.size();
         for(int i=0;i<queueSize;i++){
-            starredDatabase.deleteStarredListItem(waitingToDelete.get(i).getAlloyItem().getAlloyName());
+            userDatabaseManager.deleteStarredItem(waitingToDelete.get(i).getAlloyItem().getAlloyName());
         }
         waitingToDelete.clear();
     }

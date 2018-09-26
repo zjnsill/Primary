@@ -6,93 +6,19 @@ import android.view.ViewGroup;
 
 public class SingleAlloyItem implements Parcelable{
     private String AlloyName,NamingStandard,Component;
-    private double Density,ThermalExpan,ThermalCon,SpecificHeat,
-            Resistivity,ElasticModu,PoissonsRatio,MeltingRange_Min,MeltingRange_Max,DampingIndex,
+    private double Density,ThermalExpan,ThermalCon,SpecificHeat,Resistivity,ElasticModu,PoissonsRatio,MeltingRange_Min,MeltingRange_Max,DampingIndex,
             Hardness_Min, Hardness_Max;
     private String Forging, Weldability, Machining, SurfaceTreatment, CorrisionResistance;
     private double FractureToughness;
-    public boolean[] Validation = new boolean[21];//boolean[21] accordingly have value or not (Changed)
-
-    public SingleAlloyItem(String alloyName,String namingStandard,String component,double density,double thermalExpan,double thermalCon,double specificHeat,
-                           double resistivity,double elasticModu,double poissonsRatio,double meltingRange_Min,double meltingRange_Max,double dampingIndex,
-                           double hardness_Min,double hardness_Max,String forging,String weldability,String machining,String surfaceTreatment,String corrisionResistance,
-                           double fractureToughness){
-        this.AlloyName=alloyName;
-        this.NamingStandard=namingStandard; // New Added
-        this.Component=component;
-        this.Density=density;
-        this.ThermalCon=thermalCon;
-        this.ThermalExpan=thermalExpan;
-        this.SpecificHeat=specificHeat;
-        this.Resistivity=resistivity;
-        this.ElasticModu=elasticModu;
-        this.PoissonsRatio=poissonsRatio;   // New Added
-        this.MeltingRange_Min=meltingRange_Min;
-        this.MeltingRange_Max=meltingRange_Max;
-        this.DampingIndex=dampingIndex; // New Added
-        this.Hardness_Min=hardness_Min; // New Added
-        this.Hardness_Max=hardness_Max; // Name Changed
-        this.Forging=forging;   // New Added
-        this.Weldability=weldability;   // New Added
-        this.Machining=machining;   // New Added
-        this.SurfaceTreatment=surfaceTreatment; // New Added
-        this.CorrisionResistance=corrisionResistance;   // New Added
-        this.FractureToughness=fractureToughness;   // New Added
-    }
-
-    public SingleAlloyItem(String[] returnDatas){
-        for(int i = 0; i < 21; i++){Validation[i]=(returnDatas[i]!=null);}
-        if(Validation[0])
-            this.AlloyName = returnDatas[0];
-        if(Validation[1])
-            this.NamingStandard = returnDatas[1];
-        if(Validation[2])
-            this.Component = returnDatas[2];
-        if(Validation[3])
-            this.Density = Double.parseDouble(returnDatas[3]);
-        if(Validation[4])
-            this.ThermalCon = Double.parseDouble(returnDatas[4]);
-        if(Validation[5])
-            this.ThermalExpan = Double.parseDouble(returnDatas[5]);
-        if(Validation[6])
-            this.SpecificHeat = Double.parseDouble(returnDatas[6]);
-        if(Validation[7])
-            this.Resistivity = Double.parseDouble(returnDatas[7]);
-        if(Validation[8])
-            this.ElasticModu = Double.parseDouble(returnDatas[8]);
-        if(Validation[9])
-            this.PoissonsRatio = Double.parseDouble(returnDatas[9]);
-        if(Validation[10])
-            this.MeltingRange_Min = Double.parseDouble(returnDatas[10]);
-        if(Validation[11])
-            this.MeltingRange_Max = Double.parseDouble(returnDatas[11]);
-        if(Validation[12])
-            this.DampingIndex = Double.parseDouble(returnDatas[12]);
-        if(Validation[13])
-            this.Hardness_Min = Double.parseDouble(returnDatas[13]);
-        if(Validation[14])
-            this.Hardness_Max = Double.parseDouble(returnDatas[14]);
-        if(Validation[15])
-            this.Forging = returnDatas[15];
-        if(Validation[16])
-            this.Weldability = returnDatas[16];
-        if(Validation[17])
-            this.Machining = returnDatas[17];
-        if(Validation[18])
-            this.SurfaceTreatment = returnDatas[18];
-        if(Validation[19])
-            this.CorrisionResistance = returnDatas[19];
-        if(Validation[20])
-            this.FractureToughness = Double.parseDouble(returnDatas[20]);
-    }
-
+    public boolean[] Validation = new boolean[19];
+    //take 0.0 and "" as the default value, then we can save time on these much judgements
 
     public SingleAlloyItem(String alloyName,String namingStandard,String component,double density,double thermalExpan,double thermalCon,double specificHeat,
                            double resistivity,double elasticModu,double poissonsRatio,double meltingRange_Min,double meltingRange_Max,double dampingIndex,
                            double hardness_Min,double hardness_Max,String forging,String weldability,String machining,String surfaceTreatment,String corrisionResistance,
                            double fractureToughness,boolean[] validation){
         this.AlloyName=alloyName;
-        this.NamingStandard=namingStandard; // New Added
+        this.NamingStandard=namingStandard;
         this.Component=component;
         this.Density=density;
         this.ThermalCon=thermalCon;
@@ -100,83 +26,112 @@ public class SingleAlloyItem implements Parcelable{
         this.SpecificHeat=specificHeat;
         this.Resistivity=resistivity;
         this.ElasticModu=elasticModu;
-        this.PoissonsRatio=poissonsRatio;   // New Added
+        this.PoissonsRatio=poissonsRatio;
         this.MeltingRange_Min=meltingRange_Min;
         this.MeltingRange_Max=meltingRange_Max;
-        this.DampingIndex=dampingIndex; // New Added
-        this.Hardness_Min=hardness_Min; // New Added
-        this.Hardness_Max=hardness_Max; // Name Changed
-        this.Forging=forging;   // New Added
-        this.Weldability=weldability;   // New Added
-        this.Machining=machining;   // New Added
-        this.SurfaceTreatment=surfaceTreatment; // New Added
-        this.CorrisionResistance=corrisionResistance;   // New Added
-        this.FractureToughness=fractureToughness;   // New Added
-        this.Validation=validation.clone();
+        this.DampingIndex=dampingIndex;
+        this.Hardness_Min=hardness_Min;
+        this.Hardness_Max=hardness_Max;
+        this.Forging=forging;
+        this.Weldability=weldability;
+        this.Machining=machining;
+        this.SurfaceTreatment=surfaceTreatment;
+        this.CorrisionResistance=corrisionResistance;
+        this.FractureToughness=fractureToughness;
+        this.Validation = validation;
     }
 
+    public SingleAlloyItem(String[] returnDatas){
+        for(int i = 0; i < 21; i++){Validation[i]=(returnDatas[i]!=null);}
+        this.AlloyName = Validation[0]? returnDatas[0]:"";
+        this.NamingStandard = Validation[1]? returnDatas[1]:"";
+        this.Component = Validation[2]? returnDatas[2]:"";
+        this.Density = Validation[3]? Double.parseDouble(returnDatas[3]):0.0;
+        this.ThermalCon = Validation[4]? Double.parseDouble(returnDatas[4]):0.0;
+        this.ThermalExpan = Validation[5]? Double.parseDouble(returnDatas[5]):0.0;
+        this.SpecificHeat = Validation[6]? Double.parseDouble(returnDatas[6]):0.0;
+        this.Resistivity = Validation[7]? Double.parseDouble(returnDatas[7]):0.0;
+        this.ElasticModu = Validation[8]? Double.parseDouble(returnDatas[8]):0.0;
+        this.PoissonsRatio = Validation[9]? Double.parseDouble(returnDatas[9]):0.0;
+        this.MeltingRange_Min = Validation[10]? Double.parseDouble(returnDatas[10]):0.0;
+        this.MeltingRange_Max = Validation[10]? Double.parseDouble(returnDatas[11]):0.0;
+        this.DampingIndex = Validation[11]? Double.parseDouble(returnDatas[12]):0.0;
+        this.Hardness_Min = Validation[12]? Double.parseDouble(returnDatas[13]):0.0;
+        this.Hardness_Max = Validation[12]? Double.parseDouble(returnDatas[14]):0.0;
+        this.Forging = Validation[13]? returnDatas[15]:"";
+        this.Weldability = Validation[14]? returnDatas[16]:"";
+        this.Machining = Validation[15]? returnDatas[17]:"";
+        this.SurfaceTreatment = Validation[16]? returnDatas[18]:"";
+        this.CorrisionResistance = Validation[17]? returnDatas[19]:"";
+        this.FractureToughness = Validation[18]? Double.parseDouble(returnDatas[20]):0.0;
+    }
+
+
     public String getAlloyName() {
-        return Validation[0]? AlloyName:"";
+        return AlloyName;
     }
     public String getNamingStandard() {
-        return Validation[1] ? NamingStandard : "";
+        return NamingStandard;
     }
     public String getComponent() {
-        return Validation[2]? Component:"";
+        return Component;
     }
     public double getDensity() {
-        return Validation[3]? Density:0.0;
+        return Density;
     }
     public double getThermalExpan() {
-        return Validation[4]? ThermalExpan:0.0;
+        return ThermalExpan;
     }
     public double getThermalCon() {
-        return Validation[5]? ThermalCon:0.0;
+        return ThermalCon;
     }
     public double getSpecificHeat() {
-        return Validation[6]? SpecificHeat:0.0;
+        return SpecificHeat;
     }
     public double getResistivity() {
-        return Validation[7]? Resistivity:0.0;
+        return Resistivity;
     }
     public double getElasticModu() {
-        return Validation[8]? ElasticModu:0.0;
+        return ElasticModu;
     }
     public double getPoissonsRatio() {
-        return Validation[9] ? PoissonsRatio : 0.0;
+        return PoissonsRatio;
     }
-    public double getMeltingRange_Min() {
-        return Validation[10]? MeltingRange_Min:0.0;
+    public double getMeltingRange_Min(){
+        return MeltingRange_Min;
     }
     public double getMeltingRange_Max() {
-        return Validation[11]? MeltingRange_Max:0.0;
+        return Validation[10]? MeltingRange_Max:0.0;
+    }
+    public String getMeltingRangeString(){
+        return Validation[10]? MeltingRange_Min+"~"+MeltingRange_Max:"";
     }
     public double getDampingIndex() {
-        return Validation[12] ? DampingIndex : 0.0;
+        return DampingIndex;
     }
     public double getHardness_Min() {
-        return Validation[13]? Hardness_Min:0.0;
+        return Hardness_Min;
     }
     public double getHardness_Max() {
-        return Validation[14] ? Hardness_Max : 0.0;
+        return Hardness_Max;
     }
     public String getForging() {
-        return Validation[15] ? Forging : "";
+        return Forging;
     }
     public String getWeldability() {
-        return Validation[16] ? Weldability : "";
+        return Weldability;
     }
     public String getMachining() {
-        return Validation[17] ? Machining : "";
+        return Machining;
     }
     public String getSurfaceTreatment() {
-        return Validation[18] ? SurfaceTreatment : "";
+        return SurfaceTreatment;
     }
     public String getCorrisionResistance() {
-        return Validation[19] ? CorrisionResistance : "";
+        return CorrisionResistance;
     }
     public double getFractureToughness() {
-        return Validation[20] ? FractureToughness : 0.0;
+        return FractureToughness;
     }
 
     @Override
