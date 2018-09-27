@@ -110,10 +110,7 @@ public class bottomSheet extends AppCompatActivity {
         welcome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentUser==defaultUser){
-                    mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-                else{sheetAction();}
+                sheetAction();
             }
         });
         //
