@@ -3,6 +3,7 @@ package com.psi.shen.primary;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,12 +12,28 @@ import android.util.Log;
 import android.widget.Toast;
 
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchResults extends AppCompatActivity {
     private TopBar topbar;
@@ -25,6 +42,28 @@ public class SearchResults extends AppCompatActivity {
     private String currentUser;
     private UserDatabaseManager starredListDatabaseManager;
 
+    JSONArray alloys = null;
+
+    // JSON node names
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_ALLOYS = "alloys";
+    private static final String TAG_NAME = "Name";
+    private static final String TAG_NAMING_STANDARD = "Naming_Standard";
+    private static final String TAG_DENSITY = "Density";
+    private static final String TAG_THERMAL_EXPANSION_COEFFICIENT = "Thermal_Expansion_Coefficient";
+    private static final String TAG_THERMAL_CONDUCTIVITY = "Thermal_conductivity";
+    private static final String TAG_SPECIFIC_HEAT = "Specific_Heat";
+    private static final String TAG_RESISTIVITY = "Resistivity";
+    private static final String TAG_ELASTIC_MODULUS = "Elastic_Modulus";
+    private static final String TAG_POISSONS_RATIO = "Poisson\'s_Ratio";
+    private static final String TAG_MELTING_RANGE_MIN = "Melting_Range_Min";
+    private static final String TAG_MELTING_RANGE_MAX = "Melting_Range_Max";
+    private static final String TAG_DAMPING_INDEX = "Damping_Index";
+    private static final String TAG_BRINELL_HARDNESS_MIN = "Brinell_Hardness_Min";
+    private static final String TAG_BRINELL_HARDNESS_MAX = "Brinell_Hardness_Max";
+    private static final String TAG_FRACTURE_TOUGHNESS = "Fracture_Toughness";
+
+    /*
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static final String URL = "jdbc:mysql://cd-cdb-1dpkpdzc.sql.tencentcdb.com:63711/alloy";
     private static final String USERNAME = "root";
@@ -33,6 +72,7 @@ public class SearchResults extends AppCompatActivity {
     private Statement st;
     private ResultSet rs;
     private String SQLSentence;
+    */
 
     Handler mHandler =new Handler(){
         public void handleMessage(Message msg){
@@ -92,6 +132,14 @@ public class SearchResults extends AppCompatActivity {
             }
         };//methods in onDestroy can avoid memeory leak issue
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }).start();
+
+        /*
         new Thread(new Runnable() {
             volatile boolean flag = false;
             @Override
@@ -159,7 +207,7 @@ public class SearchResults extends AppCompatActivity {
                     }
                 }
             }
-        }).start();
+        }).start();*/
         //prepare data and inform recyclerView when data is prepared
 
     }
@@ -172,6 +220,62 @@ public class SearchResults extends AppCompatActivity {
         jumpToDetail.putExtras(item);
         startActivity(jumpToDetail);
     }
+
+    private JSONObject executeHttpPost(final Request request) {
+        String path="http://118.25.122.232/test/get_all_alloys.php";
+        //List<NameValuePair> params = new ArrayList<NameValuePair>();
+        //params.add(new BasicNameValuePair("Naming_Standard", "Elektron"));
+        //params.add(new BasicNameValuePair("Density_Max", "1.9"));
+        List<NameValuePair> params = paramsList(request);
+        InputStream is = null;
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(path);
+            httpPost.setEntity(new UrlEncodedFormEntity(params));
+
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            is = httpEntity.getContent();
+
+            return parseInfo(is);
+        } catch(Exception e) {
+            Log.getStackTraceString(e);
+        }
+        return null;
+    }
+
+    private List<NameValuePair> paramsList(final Request request) {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        boolean flag = false;
+        String name = request.getName();
+        String namingStandard = request.getNamingStandard();
+        boolean[] component = request.getComponet();
+        double[] doubledatas = request.getDoubleArray();
+        boolean[] validation = request.getValidation();
+
+        return params;
+    }
+
+    private JSONObject parseInfo(InputStream in) throws IOException {
+        BufferedReader br=new BufferedReader(new InputStreamReader(in));
+        StringBuilder sb=new StringBuilder();
+        String line=null;
+        String json = null;
+        JSONObject jsonObject = null;
+        while ((line=br.readLine())!=null){
+            sb.append(line+"\n");
+        }
+        json = sb.toString();
+        //Log.i(TAG, "parseInfo: sb:"+json);
+        try {
+            jsonObject = new JSONObject(json);
+        } catch(JSONException e) {
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+        return jsonObject;
+    }
+
+    /*
     public void produceSQLSentence(final Request request) {
         boolean flag = false;
         String name = request.getName();
@@ -383,7 +487,7 @@ public class SearchResults extends AppCompatActivity {
         SQLSentence += " ORDER BY Name";
         SQLSentence += ";";
         Log.i("Mainactivity", SQLSentence);
-    }
+    }*/
 
     @Override
     protected void onDestroy(){
