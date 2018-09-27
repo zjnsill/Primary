@@ -42,3 +42,18 @@ validation[16]->SurfaceTreatment
 validation[17]->CorrisionResistance
 validation[18]->FractureToughness
 ```
+
+---
+
+2018 9.26 meeting
+1.数据库的完善
+2.添加应用的实例
+3.物理性能的数据->随温度的变化
+4.在首页增加镁合金的介绍->可以在about页面里添加
+5.UI界面的丰富
+6.挑选title and icon
+7.可以增加横向比较的功能
+8.可以增加三维的金属结构的观察功能
+
+
+---
