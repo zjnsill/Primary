@@ -97,7 +97,7 @@ public class SingleAlloyItem implements Parcelable{
         this.RareElements_Max = rareElements_Max;
         this.Validation = validation;
     }
-
+//
     public SingleAlloyItem(Builder builder){
             this.AlloyName=builder.AlloyName;
             this.NamingStandard=builder.NamingStandard;
