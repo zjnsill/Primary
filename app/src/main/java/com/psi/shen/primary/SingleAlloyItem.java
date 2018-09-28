@@ -1,5 +1,6 @@
 package com.psi.shen.primary;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.ViewGroup;
@@ -14,6 +15,34 @@ public class SingleAlloyItem implements Parcelable{
         Zr_Min, Zr_Max, Ag_Min, Ag_Max, Cu_Min, Cu_Max, Th_Min, Th_Max, Y_Min, Y_Max, RareElements_Min, RareElements_Max;
     public boolean[] Validation = new boolean[31];
     //take 0.0 and "" as the default value, then we can save time on these much judgements
+
+    public SingleAlloyItem(String alloyName,String namingStandard,String component,double density,double thermalExpan,double thermalCon,double specificHeat,
+                           double resistivity,double elasticModu,double poissonsRatio,double meltingRange_Min,double meltingRange_Max,double dampingIndex,
+                           double hardness_Min,double hardness_Max,String forging,String weldability,String machining,String surfaceTreatment,String corrisionResistance,
+                           double fractureToughness,boolean[] validation){
+        this.AlloyName=alloyName;
+        this.NamingStandard=namingStandard;
+        this.Component=component;
+        this.Density=density;
+        this.ThermalCon=thermalCon;
+        this.ThermalExpan=thermalExpan;
+        this.SpecificHeat=specificHeat;
+        this.Resistivity=resistivity;
+        this.ElasticModu=elasticModu;
+        this.PoissonsRatio=poissonsRatio;
+        this.MeltingRange_Min=meltingRange_Min;
+        this.MeltingRange_Max=meltingRange_Max;
+        this.DampingIndex=dampingIndex;
+        this.Hardness_Min=hardness_Min;
+        this.Hardness_Max=hardness_Max;
+        this.Forging=forging;
+        this.Weldability=weldability;
+        this.Machining=machining;
+        this.SurfaceTreatment=surfaceTreatment;
+        this.CorrisionResistance=corrisionResistance;
+        this.FractureToughness=fractureToughness;
+        this.Validation = validation;
+    }//keep this constructer to maintain the constructing method in other files
 
     public SingleAlloyItem(String alloyName,String namingStandard,String component,double density,double thermalExpan,double thermalCon,double specificHeat,
                            double resistivity,double elasticModu,double poissonsRatio,double meltingRange_Min,double meltingRange_Max,double dampingIndex,
@@ -68,6 +97,204 @@ public class SingleAlloyItem implements Parcelable{
         this.RareElements_Max = rareElements_Max;
         this.Validation = validation;
     }
+
+    public SingleAlloyItem(Builder builder){
+            this.AlloyName=builder.AlloyName;
+            this.NamingStandard=builder.NamingStandard;
+            this.Component=builder.Component;
+            this.Density=builder.Density;
+            this.ThermalCon=builder.ThermalCon;
+            this.ThermalExpan=builder.ThermalExpan;
+            this.SpecificHeat=builder.SpecificHeat;
+            this.Resistivity=builder.Resistivity;
+            this.ElasticModu=builder.ElasticModu;
+            this.PoissonsRatio=builder.PoissonsRatio;
+            this.MeltingRange_Min=builder.MeltingRange_Min;
+            this.MeltingRange_Max=builder.MeltingRange_Max;
+            this.DampingIndex=builder.DampingIndex;
+            this.Hardness_Min=builder.Hardness_Min;
+            this.Hardness_Max=builder.Hardness_Max;
+            this.Forging=builder.Forging;
+            this.Weldability=builder.Weldability;
+            this.Machining=builder.Machining;
+            this.SurfaceTreatment=builder.SurfaceTreatment;
+            this.CorrisionResistance=builder.CorrisionResistance;
+            this.FractureToughness=builder.FractureToughness;
+            this.Al_Min = builder.Al_Min;
+            this.Al_Max = builder.Al_Max;
+            this.Mn_Min = builder.Mn_Min;
+            this.Mn_Max = builder.Mn_Max;
+            this.Zn_Min = builder.Zn_Min;
+            this.Zn_Max = builder.Zn_Max;
+            this.Mg_Min = builder.Mg_Min;
+            this.Mg_Max = builder.Mg_Max;
+            this.Nd_Min = builder.Nd_Min;
+            this.Nd_Max = builder.Nd_Max;
+            this.Gd_Min = builder.Gd_Min;
+            this.Gd_Max = builder.Gd_Max;
+            this.Zr_Min = builder.Zr_Min;
+            this.Zr_Max = builder.Zr_Max;
+            this.Ag_Min = builder.Ag_Min;
+            this.Ag_Max = builder.Ag_Max;
+            this.Cu_Min = builder.Cu_Min;
+            this.Cu_Max = builder.Cu_Max;
+            this.Th_Min = builder.Th_Min;
+            this.Th_Max = builder.Th_Max;
+            this.Y_Min = builder.Y_Min;
+            this.Y_Max = builder.Y_Max;
+            this.RareElements_Min = builder.RareElements_Min;
+            this.RareElements_Max = builder.RareElements_Max;
+            this.Validation = builder.Validation;
+        }
+
+
+
+    public static class Builder {
+        private String AlloyName = "", NamingStandard = "", Component = "";
+        private double Density, ThermalExpan, ThermalCon, SpecificHeat, Resistivity, ElasticModu, PoissonsRatio, MeltingRange_Min, MeltingRange_Max, DampingIndex,
+                Hardness_Min, Hardness_Max;
+        private String Forging = "", Weldability = "", Machining = "", SurfaceTreatment = "", CorrisionResistance = "";
+        private double FractureToughness;
+        private double Al_Min, Al_Max, Mn_Min, Mn_Max, Zn_Min, Zn_Max, Mg_Min, Mg_Max, Nd_Min, Nd_Max, Gd_Min, Gd_Max,
+                Zr_Min, Zr_Max, Ag_Min, Ag_Max, Cu_Min, Cu_Max, Th_Min, Th_Max, Y_Min, Y_Max, RareElements_Min, RareElements_Max;
+        private boolean[] Validation = new boolean[31];
+
+        //use builder method to make constructor easier
+
+        public Builder(String name, boolean[] validation) {
+            this.AlloyName = name;
+            this.Validation = validation.clone();
+        }
+
+        public Builder NamingStandard(String namingStandard) {
+            this.NamingStandard = namingStandard;
+            return this;
+        }
+
+        public Builder Component(String component) {
+            this.Component = component;
+            return this;
+        }
+
+        public Builder Density(double density) {
+            this.Density = density;
+            return this;
+        }
+
+        public Builder ThermalExpan(double thermalExpan) {
+            this.ThermalExpan = thermalExpan;
+            return this;
+        }
+
+        public Builder ThermalCon(double thermalCon) {
+            this.ThermalCon = thermalCon;
+            return this;
+        }
+
+        public Builder SpecificHeat(double specificHeat) {
+            this.SpecificHeat = specificHeat;
+            return this;
+        }
+
+        public Builder Resistivity(double resistivity) {
+            this.Resistivity = resistivity;
+            return this;
+        }
+
+        public Builder ElasticModu(double elasticModu) {
+            this.ElasticModu = elasticModu;
+            return this;
+        }
+
+        public Builder PoissonRatio(double poissonsRatio) {
+            this.PoissonsRatio = poissonsRatio;
+            return this;
+        }
+
+        public Builder MeltingRange(double meltingRange_Min, double meltingRange_Max) {
+            this.MeltingRange_Min = meltingRange_Min;
+            this.MeltingRange_Max = meltingRange_Max;
+            return this;
+        }
+
+        public Builder DampingIndex(double dampingIndex) {
+            this.DampingIndex = dampingIndex;
+            return this;
+        }
+
+        public Builder Hardness(double hardness_Min, double hardness_Max) {
+            this.Hardness_Min = hardness_Min;
+            this.Hardness_Max = hardness_Max;
+            return this;
+        }
+
+        public Builder Forging(String forging) {
+            this.Forging = forging;
+            return this;
+        }
+
+        public Builder Weldability(String weldability) {
+            this.Weldability = weldability;
+            return this;
+        }
+
+        public Builder Machining(String machining) {
+            this.Machining = machining;
+            return this;
+        }
+
+        public Builder SurfaceTreatment(String surfaceTreatment) {
+            this.SurfaceTreatment = surfaceTreatment;
+            return this;
+        }
+
+        public Builder CorrisionResistance(String corrisionResistance) {
+            this.CorrisionResistance = corrisionResistance;
+            return this;
+        }
+
+        public Builder FractureTou(double fractureToughness) {
+            this.FractureToughness = fractureToughness;
+            return this;
+        }
+
+        public Builder ElementPercentage(double Al_Min, double Al_Max, double Mn_Min, double Mn_Max, double Zn_Min, double Zn_Max,
+                                         double Mg_Min, double Mg_Max, double Nd_Min, double Nd_Max, double Gd_Min, double Gd_Max,
+                                         double Zr_Min, double Zr_Max, double Ag_Min, double Ag_Max, double Cu_Min, double Cu_Max,
+                                         double Th_Min, double Th_Max, double Y_Min, double Y_Max, double RareElements_Min, double RareElements_Max) {
+            this.Al_Min = Al_Min;
+            this.Al_Max = Al_Max;
+            this.Mn_Min = Mn_Min;
+            this.Mn_Max = Mn_Max;
+            this.Zn_Min = Zn_Min;
+            this.Zn_Max = Zn_Max;
+            this.Mg_Min = Mg_Min;
+            this.Mg_Max = Mg_Max;
+            this.Nd_Min = Nd_Min;
+            this.Nd_Max = Nd_Max;
+            this.Gd_Min = Gd_Min;
+            this.Gd_Max = Gd_Max;
+            this.Zr_Min = Zr_Min;
+            this.Zr_Max = Zr_Max;
+            this.Ag_Min = Ag_Min;
+            this.Ag_Max = Ag_Max;
+            this.Cu_Min = Cu_Min;
+            this.Cu_Max = Cu_Max;
+            this.Th_Min = Th_Min;
+            this.Th_Max = Th_Max;
+            this.Y_Min = Y_Min;
+            this.Y_Max = Y_Max;
+            this.RareElements_Min = RareElements_Min;
+            this.RareElements_Max = RareElements_Max;
+            return this;
+        }
+
+        public SingleAlloyItem build() {
+            return new SingleAlloyItem(this);
+        }
+    }
+
+
 
     public SingleAlloyItem(String[] returnDatas){
         for(int i = 0; i < 11; i++)
@@ -385,3 +612,4 @@ public class SingleAlloyItem implements Parcelable{
         in.readBooleanArray(this.Validation);
     }
 }
+
