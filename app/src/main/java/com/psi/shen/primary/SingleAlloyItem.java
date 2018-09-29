@@ -98,6 +98,10 @@ public class SingleAlloyItem implements Parcelable{
         this.Validation = validation;
     }
 
+    //tranditional constructor
+
+    //use builder method to make constructor easier
+
     public SingleAlloyItem(Builder builder){
             this.AlloyName=builder.AlloyName;
             this.NamingStandard=builder.NamingStandard;
@@ -147,19 +151,15 @@ public class SingleAlloyItem implements Parcelable{
             this.Validation = builder.Validation;
         }
 
-
-
     public static class Builder {
-        private String AlloyName = "", NamingStandard = "", Component = "";
+        private String AlloyName, NamingStandard = "", Component = "";
         private double Density, ThermalExpan, ThermalCon, SpecificHeat, Resistivity, ElasticModu, PoissonsRatio, MeltingRange_Min, MeltingRange_Max, DampingIndex,
                 Hardness_Min, Hardness_Max;
         private String Forging = "", Weldability = "", Machining = "", SurfaceTreatment = "", CorrisionResistance = "";
         private double FractureToughness;
         private double Al_Min, Al_Max, Mn_Min, Mn_Max, Zn_Min, Zn_Max, Mg_Min, Mg_Max, Nd_Min, Nd_Max, Gd_Min, Gd_Max,
                 Zr_Min, Zr_Max, Ag_Min, Ag_Max, Cu_Min, Cu_Max, Th_Min, Th_Max, Y_Min, Y_Max, RareElements_Min, RareElements_Max;
-        private boolean[] Validation = new boolean[31];
-
-        //use builder method to make constructor easier
+        private boolean[] Validation ;
 
         public Builder(String name, boolean[] validation) {
             this.AlloyName = name;
@@ -292,6 +292,7 @@ public class SingleAlloyItem implements Parcelable{
         public SingleAlloyItem build() {
             return new SingleAlloyItem(this);
         }
+
     }
 
 
@@ -496,6 +497,9 @@ public class SingleAlloyItem implements Parcelable{
     public double getRareElements_Max() {
         return RareElements_Max;
     }
+
+
+    //Parcelable method
 
     @Override
     public int describeContents(){
