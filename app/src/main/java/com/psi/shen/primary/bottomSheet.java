@@ -23,8 +23,8 @@ public class bottomSheet extends AppCompatActivity {
     private TextView nameTV,starredItemCountTV,welcome,editTV,cancelTV,signOutTV,signInTV,deleteInfoTV;
     private CardView searchCV,createCV,starredCV,aboutCV;
     private EditText enterEmail;
-    private String currentUser;
-    private String defaultUser = "tempUser";
+    private signedUser defaultUser = signedUser.DefaultUser;
+    private signedUser currentUser;
 
 
     @Override
@@ -32,7 +32,6 @@ public class bottomSheet extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_sheet);
 
-        currentUser = defaultUser;
 
         bottomSheetView = findViewById(R.id.user_bottom_sheet);
         mBehavior = BottomSheetBehavior.from(bottomSheetView);
@@ -50,8 +49,7 @@ public class bottomSheet extends AppCompatActivity {
         //functions to ask user to sign in;
         //currently return francis as the previously signed user;
         //if the user is not signed in, use default user;
-        currentUser = defaultUser;
-        String email = "francis@126.com";
+        currentUser = new signedUser.Builder(defaultUser.getName(),defaultUser.getPhone()).build();
         //
         //
 
@@ -132,7 +130,7 @@ public class bottomSheet extends AppCompatActivity {
             signInTV.setClickable(true);
             editTV.setVisibility(View.INVISIBLE);
             editTV.setClickable(false);
-            enterEmail.setText(email);
+            enterEmail.setText(currentUser.getEmail());
         }else{
             signOutTV.setClickable(true);
             signOutTV.setVisibility(View.VISIBLE);
@@ -201,6 +199,18 @@ public class bottomSheet extends AppCompatActivity {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = alpha;
         getWindow().setAttributes(lp);
+    }
+
+    void showVerifyWindow(){
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View VerifyView = layoutInflater.inflate(R.layout.verify_phone_num,null);
+        View parentView = layoutInflater.inflate(R.layout.activity_bottom_sheet,null);
+        EditText newPhoneNum = VerifyView.findViewById(R.id.newPhone);
+        EditText verifyCode = VerifyView.findViewById(R.id.VerifyCode);
+        TextView sendCode = VerifyView.findViewById(R.id.SendCode);
+        TextView cancel = VerifyView.findViewById(R.id.VerifyCancel);
+        TextView verify = VerifyView.findViewById(R.id.VerifyVerify);
+
     }
 
 
