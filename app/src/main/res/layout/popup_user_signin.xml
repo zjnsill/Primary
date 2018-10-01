@@ -20,7 +20,7 @@
             android:padding="30dp">
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/SignInTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito"
@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:ems="10"
-                        android:hint="Enter Phone number"
+                        android:hint="Account"
                         android:inputType="phone" />
 
                     <TextView
@@ -75,29 +75,29 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/validationCode"
+                            android:id="@+id/Passcode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toLeftOf="@id/SendCode"
                             android:layout_weight="1"
                             android:background="@null"
                             android:ems="10"
-                            android:hint="Enter validation code"
+                            android:hint="Passcode"
                             android:inputType="number" />
 
-                        <TextView
-                            android:id="@+id/SendCode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_weight="1"
-                            android:text="Send Code"
-                            android:textColor="@android:color/background_dark"
-                            android:textSize="15sp" />
                     </RelativeLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/forgotPasscode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:text="Forgot Passcode?"
+                android:textSize="10sp"
+                android:textStyle="italic" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,6 +127,8 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+
+
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

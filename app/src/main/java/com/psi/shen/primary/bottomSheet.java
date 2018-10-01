@@ -7,6 +7,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,11 +21,11 @@ import android.widget.TextView;
 public class bottomSheet extends AppCompatActivity {
     private View bottomSheetView;
     private BottomSheetBehavior mBehavior;
-    private TextView nameTV,starredItemCountTV,welcome,editTV,cancelTV,signOutTV,signInTV,deleteInfoTV;
+    private TextView nameTV,starredItemCountTV,welcome,editTV,Email,phoneNum,signOutTV,signInTV,deleteInfoTV,Bio,expandIndicator;
     private CardView searchCV,createCV,starredCV,aboutCV;
-    private EditText enterEmail;
     private signedUser defaultUser = signedUser.DefaultUser;
     private signedUser currentUser;
+    private int MAX_Bio_Line=3,EXPANDED_Bio_Line=6;
 
 
     @Override
@@ -42,20 +43,61 @@ public class bottomSheet extends AppCompatActivity {
         signOutTV = bottomSheetView.findViewById(R.id.signOut);//sign out TextView
         deleteInfoTV = bottomSheetView.findViewById(R.id.deleteInfo);//delete user INFO TextView
         welcome = findViewById(R.id.userName);//welcome on the top
+        phoneNum = findViewById(R.id.phoneNum);
+        Bio = findViewById(R.id.Bio);
+        expandIndicator = findViewById(R.id.expandIndicator);
         editTV = bottomSheetView.findViewById(R.id.editTV);
-        enterEmail = bottomSheetView.findViewById(R.id.enterEmail);
+        Email = bottomSheetView.findViewById(R.id.Email);
 
 
         //functions to ask user to sign in;
         //currently return francis as the previously signed user;
         //if the user is not signed in, use default user;
-        currentUser = new signedUser.Builder(defaultUser.getName(),defaultUser.getPhone()).build();
+        //currentUser = new signedUser.Builder(defaultUser.getName(),defaultUser.getPhone()).build();
+        String s = "one important lesson learnt from this lesson is that we can have a clear" +
+                " target of what we should learn in the future. Give a example, in our product, " +
+                "we used knowledge from liner algebra, virtual machine, computer network, data structure. " +
+                "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
+        currentUser = new signedUser.Builder("francis","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
         //
+        welcome.setText("Welcome "+currentUser.getName());
+        nameTV.setText("Signed in as "+currentUser.getName());
+        phoneNum.setText("Phone Number: "+defaultUser.getPhone());
+        starredItemCountTV.setText(currentUser.getStarredItemCount());
+        Email.setText(currentUser.getEmail());
+        Bio.setMaxLines(MAX_Bio_Line);
+        Bio.setText("Bio: "+currentUser.getBio());
+        expandIndicator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(expandIndicator.getText().toString().equals("...more")){
+                    if(Bio.getLineCount()>MAX_Bio_Line){
+                        Bio.setMaxLines(EXPANDED_Bio_Line);
+                        Bio.requestLayout();
+                        expandIndicator.setText("collapse");
+                        Bio.setVerticalScrollBarEnabled(true);
+                        Bio.setMovementMethod(ScrollingMovementMethod.getInstance());
+                    }else {
+                        expandIndicator.setText("collapse");
+                    }
+
+                }else if(expandIndicator.getText().toString().equals("collapse")){
+                    Bio.setMaxLines(MAX_Bio_Line);
+                    Bio.requestLayout();
+                    expandIndicator.setText("...more");
+                    Bio.setVerticalScrollBarEnabled(false);
+                    Bio.setMovementMethod(null);
+                }
+            }
+        });
+
+
         //
 
         editTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 // a new pop up window to modify user info
             }
         });
@@ -87,7 +129,7 @@ public class bottomSheet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent searchIntent = new Intent(bottomSheet.this,Search.class);
-                searchIntent.putExtra("userName",currentUser);
+                searchIntent.putExtra("userName",currentUser.getName());
                 startActivity(searchIntent);
             }
         });
@@ -95,7 +137,7 @@ public class bottomSheet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent createintent = new Intent(bottomSheet.this,CreateAlloy.class);
-                createintent.putExtra("userName",currentUser);
+                createintent.putExtra("userName",currentUser.getName());
                 startActivity(createintent);
             }
         });
@@ -103,7 +145,7 @@ public class bottomSheet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent starredIntent = new Intent(bottomSheet.this,StarredList.class);
-                starredIntent.putExtra("userName",currentUser);
+                starredIntent.putExtra("userName",currentUser.getName());
                 startActivity(starredIntent);
             }
         });
@@ -130,7 +172,7 @@ public class bottomSheet extends AppCompatActivity {
             signInTV.setClickable(true);
             editTV.setVisibility(View.INVISIBLE);
             editTV.setClickable(false);
-            enterEmail.setText(currentUser.getEmail());
+            Email.setText(currentUser.getEmail());
         }else{
             signOutTV.setClickable(true);
             signOutTV.setVisibility(View.VISIBLE);
@@ -158,11 +200,11 @@ public class bottomSheet extends AppCompatActivity {
         View signInView = layoutInflater.inflate(R.layout.popup_user_signin,null);
         View parentView = layoutInflater.inflate(R.layout.activity_bottom_sheet,null);
 
-        TextView sendCodeAction = signInView.findViewById(R.id.SendCode);
         EditText phoneNum = signInView.findViewById(R.id.phoneNum);
-        EditText validationCode = signInView.findViewById(R.id.validationCode);
+        EditText passcode = signInView.findViewById(R.id.Passcode);
         TextView CancelTV = signInView.findViewById(R.id.CancelTV);
         TextView SignInTV = signInView.findViewById(R.id.SignInTV);
+        TextView forgotPasscode = signInView.findViewById(R.id.forgotPasscode);
 
         final PopupWindow signInPopView = new PopupWindow(signInView, WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
         setWindowAlpha(0.2f);
@@ -189,8 +231,15 @@ public class bottomSheet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //request for logging in
-                //return relative infomations
+                //return relative information;
 
+            }
+        });
+        forgotPasscode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //to verify and then reeset passcode viewer;
+                showVerifyWindow(currentUser.getPhone());
             }
         });
 
@@ -201,15 +250,45 @@ public class bottomSheet extends AppCompatActivity {
         getWindow().setAttributes(lp);
     }
 
-    void showVerifyWindow(){
+    void showVerifyWindow(String oldNum){//if in register step,oldNum should be the default user's num;
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View VerifyView = layoutInflater.inflate(R.layout.verify_phone_num,null);
         View parentView = layoutInflater.inflate(R.layout.activity_bottom_sheet,null);
+        final PopupWindow verifyWindow = new PopupWindow(VerifyView,WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        setWindowAlpha(0.2f);
+        verifyWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setWindowAlpha(1.0f);
+            }
+        });
         EditText newPhoneNum = VerifyView.findViewById(R.id.newPhone);
         EditText verifyCode = VerifyView.findViewById(R.id.VerifyCode);
         TextView sendCode = VerifyView.findViewById(R.id.SendCode);
         TextView cancel = VerifyView.findViewById(R.id.VerifyCancel);
-        TextView verify = VerifyView.findViewById(R.id.VerifyVerify);
+        final TextView verify = VerifyView.findViewById(R.id.VerifyVerify);
+        sendCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //send verification code;
+            }
+        });
+        if(!oldNum.equals(defaultUser.getPhone())){
+            newPhoneNum.setText(oldNum);
+        }
+        verifyWindow.setFocusable(false);
+        verifyWindow.setOutsideTouchable(false);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
+        verifyWindow.setBackgroundDrawable(dw);
+        verifyWindow.setAnimationStyle(R.style.sign_in_popup);
+        verifyWindow.showAtLocation(parentView,Gravity.CENTER,0,0);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verifyWindow.dismiss();
+                //implement cancel action;
+            }
+        });
 
     }
 

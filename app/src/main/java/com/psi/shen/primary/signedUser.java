@@ -3,11 +3,14 @@ package com.psi.shen.primary;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class signedUser implements Parcelable {
     private String Name;
     private String Email;
-    private int Phone;
+    private String Phone;
     private String Bio;
+    private ArrayList<String> starredItemArray = new ArrayList<>();
 
     public signedUser(Builder builder){
         this.Name = builder.Name;
@@ -19,9 +22,9 @@ public class signedUser implements Parcelable {
 
     public static class Builder{
         private String Name,Email="",Bio="";
-        private int Phone;
+        private String Phone;
 
-        public Builder(String name,int phone){
+        public Builder(String name,String phone){
             this.Name = name;
             this.Phone = phone;
         }
@@ -38,11 +41,18 @@ public class signedUser implements Parcelable {
         }
     }
 
+    public void addStarredItem(String itemName){
+        starredItemArray.add(itemName);
+    }
+    public void initialStarredItem(ArrayList<String> starredList){
+        this.starredItemArray = starredList;
+    }
+
     public String getName(){
         return Name;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return Phone;
     }
 
@@ -53,6 +63,11 @@ public class signedUser implements Parcelable {
     public String getEmail() {
         return Email;
     }
+
+    public int getStarredItemCount(){
+        return starredItemArray.size();
+    }
+
     //
     //Parcelable
     @Override
@@ -62,7 +77,7 @@ public class signedUser implements Parcelable {
     @Override
     public void writeToParcel(Parcel out,int flag){
         out.writeString(Name);
-        out.writeInt(Phone);
+        out.writeString(Phone);
         out.writeString(Email);
         out.writeString(Bio);
     }
@@ -79,13 +94,13 @@ public class signedUser implements Parcelable {
     };
     public signedUser(Parcel in){
         this.Name = in.readString();
-        this.Phone = in.readInt();
+        this.Phone = in.readString();
         this.Email = in.readString();
         this.Bio = in.readString();
     }
 
     //default user
-    static signedUser DefaultUser = new Builder("DefaultUser",00000000000).Bio("Hey, bad boy, you haven't " +
+    static signedUser DefaultUser = new Builder("DefaultUser","00000000000").Bio("Hey, bad boy, you haven't " +
             "signed in").Email("AlloyProject@sjtu.edu.cn").build();
 
 }

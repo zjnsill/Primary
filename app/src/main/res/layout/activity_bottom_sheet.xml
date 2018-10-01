@@ -196,6 +196,39 @@
                     android:text="Item starred: "
                     android:textSize="14sp" />
 
+                <TextView
+                    android:id="@+id/phoneNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:text="TextView" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/Bio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/expandIndicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="...more"
+                        android:textAlignment="textEnd"
+                        android:textColor="@android:color/holo_red_light"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -205,25 +238,22 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/emailTag"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
-                        android:autoLink="email"
                         android:text="Email: " />
 
-                    <EditText
-                        android:id="@+id/enterEmail"
+                    <TextView
+                        android:id="@+id/Email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="45dp"
-                        android:layout_weight="1"
+                        android:layout_toRightOf="@id/emailTag"
                         android:autoLink="email"
-                        android:ems="30"
-                        android:inputType="textEmailAddress|textEmailSubject"
-                        android:textSize="14sp" />
+                        android:text="TextView" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
