@@ -109,7 +109,7 @@
                     android:layout_marginRight="50dp"
                     android:text="Verify"
                     android:textColor="@color/cardview_dark_background"
-                    android:textSize="24sp" />
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/VerifyCancel"
@@ -119,7 +119,7 @@
                     android:layout_marginLeft="50dp"
                     android:text="Cancel"
                     android:textColor="@android:color/holo_red_dark"
-                    android:textSize="24sp" />
+                    android:textSize="22sp" />
             </RelativeLayout>
 
         </LinearLayout>

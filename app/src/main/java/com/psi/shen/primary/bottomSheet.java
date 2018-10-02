@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class bottomSheet extends AppCompatActivity {
     private View bottomSheetView;
@@ -59,11 +60,12 @@ public class bottomSheet extends AppCompatActivity {
                 "we used knowledge from liner algebra, virtual machine, computer network, data structure. " +
                 "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
         currentUser = new signedUser.Builder("francis","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
+        currentUser = defaultUser;//only for test use
         //
         welcome.setText("Welcome "+currentUser.getName());
         nameTV.setText("Signed in as "+currentUser.getName());
-        phoneNum.setText("Phone Number: "+defaultUser.getPhone());
-        starredItemCountTV.setText(currentUser.getStarredItemCount());
+        phoneNum.setText("Phone Number: "+currentUser.getPhone());
+        starredItemCountTV.setText("Item starred: "+currentUser.getStarredItemCount());
         Email.setText(currentUser.getEmail());
         Bio.setMaxLines(MAX_Bio_Line);
         Bio.setText("Bio: "+currentUser.getBio());
@@ -97,8 +99,12 @@ public class bottomSheet extends AppCompatActivity {
         editTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent editAccountInfo = new Intent(bottomSheet.this,edit_account_info.class);
+                Bundle userInfo = new Bundle();
+                userInfo.putParcelable("user",currentUser);
+                editAccountInfo.putExtras(userInfo);
                 // a new pop up window to modify user info
+                //after changing the profile, automatically jump back to this page and autoamtically sign in;
             }
         });
         signInTV.setOnClickListener(new View.OnClickListener() {
@@ -208,7 +214,7 @@ public class bottomSheet extends AppCompatActivity {
 
         final PopupWindow signInPopView = new PopupWindow(signInView, WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
         setWindowAlpha(0.2f);
-        signInPopView.setFocusable(false);
+        signInPopView.setFocusable(true);
         signInPopView.setOutsideTouchable(false);
         ColorDrawable dw = new ColorDrawable(0x00000000);
         signInPopView.setAnimationStyle(R.style.sign_in_popup);
@@ -238,8 +244,9 @@ public class bottomSheet extends AppCompatActivity {
         forgotPasscode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //to verify and then reeset passcode viewer;
+                signInPopView.dismiss();
                 showVerifyWindow(currentUser.getPhone());
+                //change passcode and require to sign in again or automatically sign in
             }
         });
 
@@ -276,7 +283,7 @@ public class bottomSheet extends AppCompatActivity {
         if(!oldNum.equals(defaultUser.getPhone())){
             newPhoneNum.setText(oldNum);
         }
-        verifyWindow.setFocusable(false);
+        verifyWindow.setFocusable(true);
         verifyWindow.setOutsideTouchable(false);
         ColorDrawable dw = new ColorDrawable(0x00000000);
         verifyWindow.setBackgroundDrawable(dw);
@@ -290,6 +297,32 @@ public class bottomSheet extends AppCompatActivity {
             }
         });
 
+    }
+    void showChangePassView(String userName){
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View changePassView = layoutInflater.inflate(R.layout.change_passcode,null);
+        View parentView = layoutInflater.inflate(R.layout.activity_bottom_sheet,null);
+        final PopupWindow changePassPopup = new PopupWindow(changePassView,WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        setWindowAlpha(0.2f);
+        changePassPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                setWindowAlpha(1.0f);
+            }
+        });
+        TextView changeBtn = changePassView.findViewById(R.id.changeBtn);
+        final EditText newPass = changePassView.findViewById(R.id.newPass);
+        final EditText comfirmPass = changePassView.findViewById(R.id.comfirmPass);
+        changeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(newPass.getText().toString().equals(comfirmPass.getText().toString())){
+                    //update user passcode with the index of user Name;
+                }else{
+                    Toast.makeText(bottomSheet.this,"Please make sure two passcodes agree with each other!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
