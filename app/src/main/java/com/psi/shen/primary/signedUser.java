@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-
+//passcode is not stored in local, which means when editing passcodes,infomations needs to be uoloaded immidiately
 public class signedUser implements Parcelable {
     private String Name;
     private String Email;

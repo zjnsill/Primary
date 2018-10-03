@@ -269,15 +269,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_marginLeft="30dp"
                         android:layout_weight="1"
-                        android:text="Sign Out" />
-
-                    <TextView
-                        android:id="@+id/signIn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:text="Sign in"
-                        android:visibility="visible" />
+                        android:text="Left" />
 
                     <TextView
                         android:id="@+id/deleteInfo"
@@ -286,8 +278,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="30dp"
                         android:layout_weight="1"
-                        android:text="Delete All User Info"
-                        android:textColor="@android:color/holo_red_light" />
+                        android:text="Right" />
                 </RelativeLayout>
 
             </LinearLayout>

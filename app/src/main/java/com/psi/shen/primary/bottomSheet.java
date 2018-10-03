@@ -1,6 +1,7 @@
 package com.psi.shen.primary;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -22,7 +23,7 @@ import android.widget.Toast;
 public class bottomSheet extends AppCompatActivity {
     private View bottomSheetView;
     private BottomSheetBehavior mBehavior;
-    private TextView nameTV,starredItemCountTV,welcome,editTV,Email,phoneNum,signOutTV,signInTV,deleteInfoTV,Bio,expandIndicator;
+    private TextView nameTV,starredItemCountTV,welcome,editTV,Email,phoneNum,leftTV,signInTV,rightTV,Bio,expandIndicator;
     private CardView searchCV,createCV,starredCV,aboutCV;
     private signedUser defaultUser = signedUser.DefaultUser;
     private signedUser currentUser;
@@ -34,15 +35,19 @@ public class bottomSheet extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_sheet);
 
-
+        Intent ifSigned = getIntent();
+        if(ifSigned.getParcelableExtra("user")!=null){//1 represent as from other activities;
+            currentUser = ifSigned.getParcelableExtra("user");
+            //receive intent from other views;
+        }
         bottomSheetView = findViewById(R.id.user_bottom_sheet);
         mBehavior = BottomSheetBehavior.from(bottomSheetView);
 
         nameTV = bottomSheetView.findViewById(R.id.signedUser);//signed in as
         starredItemCountTV = bottomSheetView.findViewById(R.id.starredItemCount);//item currently stored in cloud
-        signInTV = bottomSheetView.findViewById(R.id.signIn);//sign in TextView
-        signOutTV = bottomSheetView.findViewById(R.id.signOut);//sign out TextView
-        deleteInfoTV = bottomSheetView.findViewById(R.id.deleteInfo);//delete user INFO TextView
+        //signInTV = bottomSheetView.findViewById(R.id.signIn);//sign in TextView
+        leftTV = bottomSheetView.findViewById(R.id.signOut);//sign out TextView
+        rightTV = bottomSheetView.findViewById(R.id.deleteInfo);//delete user INFO TextView
         welcome = findViewById(R.id.userName);//welcome on the top
         phoneNum = findViewById(R.id.phoneNum);
         Bio = findViewById(R.id.Bio);
@@ -107,12 +112,44 @@ public class bottomSheet extends AppCompatActivity {
                 //after changing the profile, automatically jump back to this page and autoamtically sign in;
             }
         });
-        signInTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowSignInView();
-            }
-        });
+        if(currentUser.equals(defaultUser)){
+            leftTV.setText("Sign In");
+            leftTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //implement sign in action;
+                }
+            });
+            rightTV.setText("Register");
+            rightTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //register
+                    showVerifyWindow("",1);
+                }
+            });
+            editTV.setVisibility(View.INVISIBLE);
+            editTV.setClickable(false);
+        }else{
+            leftTV.setText("Sign Out");
+            leftTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //implement sign out actiton;
+                }
+            });
+            rightTV.setText("Delete user info");
+            rightTV.setTextColor(Color.rgb(255,69,58));
+            rightTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //implement delete user Info action;
+                }
+            });
+            editTV.setVisibility(View.VISIBLE);
+            editTV.setClickable(true);
+        }
+
 
         //
         mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -169,26 +206,7 @@ public class bottomSheet extends AppCompatActivity {
             }
         });
 
-        if(currentUser.equals(defaultUser)){
-            signOutTV.setVisibility(View.INVISIBLE);
-            signOutTV.setClickable(false);
-            deleteInfoTV.setVisibility(View.INVISIBLE);
-            deleteInfoTV.setClickable(false);
-            signInTV.setVisibility(View.VISIBLE);
-            signInTV.setClickable(true);
-            editTV.setVisibility(View.INVISIBLE);
-            editTV.setClickable(false);
-            Email.setText(currentUser.getEmail());
-        }else{
-            signOutTV.setClickable(true);
-            signOutTV.setVisibility(View.VISIBLE);
-            deleteInfoTV.setVisibility(View.VISIBLE);
-            deleteInfoTV.setClickable(true);
-            signInTV.setClickable(false);
-            signInTV.setVisibility(View.INVISIBLE);
-            editTV.setVisibility(View.VISIBLE);
-            editTV.setClickable(true);
-        }
+
 
     }
 
@@ -200,6 +218,10 @@ public class bottomSheet extends AppCompatActivity {
             mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
     }
+
+
+
+
 
     void ShowSignInView(){
         LayoutInflater layoutInflater = LayoutInflater.from(this);
@@ -245,7 +267,7 @@ public class bottomSheet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signInPopView.dismiss();
-                showVerifyWindow(currentUser.getPhone());
+                showVerifyWindow(currentUser.getPhone(),3);
                 //change passcode and require to sign in again or automatically sign in
             }
         });
@@ -257,7 +279,7 @@ public class bottomSheet extends AppCompatActivity {
         getWindow().setAttributes(lp);
     }
 
-    void showVerifyWindow(String oldNum){//if in register step,oldNum should be the default user's num;
+    void showVerifyWindow(String Num, final int flag){//flag 1: register,2:editting info,3: forgot passcode 4: changing phone number
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View VerifyView = layoutInflater.inflate(R.layout.verify_phone_num,null);
         View parentView = layoutInflater.inflate(R.layout.activity_bottom_sheet,null);
@@ -269,8 +291,9 @@ public class bottomSheet extends AppCompatActivity {
                 setWindowAlpha(1.0f);
             }
         });
-        EditText newPhoneNum = VerifyView.findViewById(R.id.newPhone);
-        EditText verifyCode = VerifyView.findViewById(R.id.VerifyCode);
+
+        EditText PhoneNum = VerifyView.findViewById(R.id.phoneNum);
+        final EditText verifyCode = VerifyView.findViewById(R.id.VerifyCode);
         TextView sendCode = VerifyView.findViewById(R.id.SendCode);
         TextView cancel = VerifyView.findViewById(R.id.VerifyCancel);
         final TextView verify = VerifyView.findViewById(R.id.VerifyVerify);
@@ -280,8 +303,11 @@ public class bottomSheet extends AppCompatActivity {
                 //send verification code;
             }
         });
-        if(!oldNum.equals(defaultUser.getPhone())){
-            newPhoneNum.setText(oldNum);
+        if(flag==1){
+            phoneNum.setText(null);
+            phoneNum.setHint("Enter your phone number");
+        }else{
+            phoneNum.setText(Num);
         }
         verifyWindow.setFocusable(true);
         verifyWindow.setOutsideTouchable(false);
@@ -293,39 +319,32 @@ public class bottomSheet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 verifyWindow.dismiss();
+                Toast.makeText(bottomSheet.this,"User canceled this process!",Toast.LENGTH_SHORT).show();
                 //implement cancel action;
             }
         });
-
-    }
-    void showChangePassView(String userName){
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View changePassView = layoutInflater.inflate(R.layout.change_passcode,null);
-        View parentView = layoutInflater.inflate(R.layout.activity_bottom_sheet,null);
-        final PopupWindow changePassPopup = new PopupWindow(changePassView,WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
-        setWindowAlpha(0.2f);
-        changePassPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                setWindowAlpha(1.0f);
-            }
-        });
-        TextView changeBtn = changePassView.findViewById(R.id.changeBtn);
-        final EditText newPass = changePassView.findViewById(R.id.newPass);
-        final EditText comfirmPass = changePassView.findViewById(R.id.comfirmPass);
-        changeBtn.setOnClickListener(new View.OnClickListener() {
+        verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(newPass.getText().toString().equals(comfirmPass.getText().toString())){
-                    //update user passcode with the index of user Name;
+                if(phoneNum.getText().toString().isEmpty()){
+                    Toast.makeText(bottomSheet.this,"Please enter phone number!",Toast.LENGTH_SHORT).show();
+                }else if(verifyCode.getText().toString().isEmpty()){
+                    Toast.makeText(bottomSheet.this,"Please enter verify code!",Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(bottomSheet.this,"Please make sure two passcodes agree with each other!",Toast.LENGTH_SHORT).show();
+                    //verify code;
+
+                    Intent toEdittingInfo = new Intent(bottomSheet.this,edit_account_info.class);
+                    Bundle bundle = new Bundle();
+                    signedUser user = new signedUser.Builder(currentUser.getName(),phoneNum.getText().toString()).Email(currentUser.getEmail()).Bio(currentUser.getBio()).build();
+                    bundle.putParcelable("user",user);
+                    bundle.putInt("flag",flag);
+                    toEdittingInfo.putExtras(bundle);
+                    startActivity(toEdittingInfo);
                 }
             }
         });
+
     }
-
-
 
 
 }

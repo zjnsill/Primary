@@ -14,30 +14,51 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.jar.Attributes;
+
 public class edit_account_info extends AppCompatActivity {//in this page, editing and then uploading the user's profile
     TopBar editingTopar;
-    EditText NameEdit,EmailEdit,BioEdit,PhoneEdit;
-
+    EditText NameEdit,EmailEdit,BioEdit,PhoneEdit,newPass,comfirmPass;
+    //this view only accept parcel,that is, the complete signedUser
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_account_info);
-
+        final signedUser currentUser;
+        final int flag;
+        //flag 1: register,2:editting info,3: forgot passcode,4: changing phone Num
+        //register, pass visible; editting pass invisible; 3: forgot pass pass visible; 4: phone Num enable
         Intent beforeEditing = getIntent();
-        final signedUser currentUser = beforeEditing.getParcelableExtra("user");
-
+        currentUser = beforeEditing.getParcelableExtra("user");
+        flag = beforeEditing.getIntExtra("flag",1);
         editingTopar = findViewById(R.id.topBar);
         NameEdit = findViewById(R.id.nameEdit);
         EmailEdit = findViewById(R.id.emailEdit);
         BioEdit = findViewById(R.id.BioEdit);
         PhoneEdit = findViewById(R.id.phoneNumEdit);
+        newPass = findViewById(R.id.newPass);
+        comfirmPass = findViewById(R.id.comfirmPass);
+
         NameEdit.setHint(currentUser.getName());
         EmailEdit.setHint(currentUser.getEmail());
         BioEdit.setHint(currentUser.getBio());
         BioEdit.setVerticalScrollBarEnabled(true);
         BioEdit.setMovementMethod(ScrollingMovementMethod.getInstance());
-        PhoneEdit.setHint(currentUser.getPhone());
+        if(flag!=4){
+            PhoneEdit.setEnabled(true);
+            PhoneEdit.setHint(currentUser.getPhone());
+        }else{
+            PhoneEdit.setEnabled(false);
+            PhoneEdit.setText(currentUser.getPhone());
+        }
+        if(flag==1||flag==3){
+            newPass.setVisibility(View.INVISIBLE);
+            newPass.setEnabled(false);
+        }else{
+            newPass.setEnabled(true);
+            newPass.setVisibility(View.VISIBLE);
+        }
         editingTopar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {
             @Override
             public void leftListener() {
@@ -50,19 +71,50 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
                 String PhoneNum = PhoneEdit.getText().toString();
                 String Bio = BioEdit.getText().toString();
                 String Email = EmailEdit.getText().toString();
-                if((!Name.isEmpty()&&(!PhoneNum.isEmpty()))){
-                    if(!PhoneNum.equals(currentUser.getPhone())){
-                        showVerifyWindow(PhoneNum);
+                String newPasscode = newPass.getText().toString();
+                String comfirmPasscode = comfirmPass.getText().toString();
+                switch (flag){
+                    case 1:
+                    case 2:
+                        if(Name.isEmpty()){
+                            Toast.makeText(edit_account_info.this,"Please enter user name",Toast.LENGTH_SHORT).show();
+                        }else{
+                            signedUser back = new signedUser.Builder(Name,PhoneNum).Bio(Bio).Email(Email).build();
+                            //adding user to cloud
+                            Intent backToBottomSheet = new Intent(edit_account_info.this,bottomSheet.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("user",back);
+                            backToBottomSheet.putExtras(bundle);
+                            startActivity(backToBottomSheet);
+                        }
+                        break;
+                    case 3:{
+                        if(Name.isEmpty()){
+                            Toast.makeText(edit_account_info.this,"Please enter user name",Toast.LENGTH_SHORT).show();
+                        }else if(!newPasscode.equals(comfirmPasscode)){
+                            Toast.makeText(edit_account_info.this,"Passcodes different!",Toast.LENGTH_SHORT).show();
+                        } else {
+                            signedUser back = new signedUser.Builder(Name,PhoneNum).Bio(Bio).Email(Email).build();
+                            Intent backToBottomSheet = new Intent(edit_account_info.this,bottomSheet.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("user",back);
+                            backToBottomSheet.putExtras(bundle);
+                            startActivity(backToBottomSheet);
+                        }
                     }
-                    //editing the user info and upload to cloud;
-                }else{
-                    Toast.makeText(edit_account_info.this,"Please fill Email and Name!",Toast.LENGTH_SHORT).show();
+                    break;
+                    case 4:{
+                            showVerifyWindow(currentUser);
+                        }
+                    default:{}
+                    break;
                 }
-
             }
         });
     }
-    void showVerifyWindow(String phoneNum){//if in register step,oldNum should be the default user's num;
+
+    void showVerifyWindow(signedUser user){//only for situation where phone changed;
+        final signedUser userChangedPhone = user;
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View VerifyView = layoutInflater.inflate(R.layout.verify_phone_num,null);
         View parentView = layoutInflater.inflate(R.layout.activity_edit_account_info,null);
@@ -74,7 +126,7 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
                 setWindowAlpha(1.0f);
             }
         });
-        EditText newPhoneNum = VerifyView.findViewById(R.id.newPhone);
+        final EditText newPhoneNum = VerifyView.findViewById(R.id.PhoneNum);
         final EditText verifyCode = VerifyView.findViewById(R.id.VerifyCode);
         TextView sendCode = VerifyView.findViewById(R.id.SendCode);
         TextView cancel = VerifyView.findViewById(R.id.VerifyCancel);
@@ -85,7 +137,6 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
                 //send verification code;
             }
         });
-        newPhoneNum.setText(phoneNum);
         verifyWindow.setFocusable(true);
         verifyWindow.setOutsideTouchable(false);
         ColorDrawable dw = new ColorDrawable(0x00000000);
@@ -101,8 +152,23 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
         verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String getVerifyCode = verifyCode.getText().toString();
-                //verify the received code;
+                if(NameEdit.getText().toString().isEmpty()){
+                    Toast.makeText(edit_account_info.this,"Enter Name!",Toast.LENGTH_SHORT).show();
+                }
+                else if(PhoneEdit.getText().toString().isEmpty()){
+                    Toast.makeText(edit_account_info.this,"Enter phone number!",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    String getVerifyCode = verifyCode.getText().toString();
+                    //verify the received code;
+                    //uploading the phone num;
+                    Intent intent = new Intent(edit_account_info.this,bottomSheet.class);
+                    Bundle bundle = new Bundle();
+                    signedUser user = new signedUser.Builder(userChangedPhone.getName(),newPhoneNum.getText().toString()).Bio(userChangedPhone.getBio()).Email(userChangedPhone.getEmail()).build();
+                    bundle.putParcelable("user",user);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
             }
         });
     }
