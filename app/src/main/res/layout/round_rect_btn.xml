@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/RoundRectBtn"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="2dp"
-    app:cardCornerRadius="14dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="5dp">
 
     <RelativeLayout
@@ -15,10 +15,11 @@
 
         <ImageView
             android:id="@+id/BtnImg"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
             android:layout_marginBottom="2dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="2dp"
             android:layout_weight="1" />
 
@@ -27,11 +28,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="7dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textSize="15sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

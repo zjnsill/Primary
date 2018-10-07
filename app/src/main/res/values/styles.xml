@@ -15,5 +15,9 @@
         <item name="android:backgroundDimEnabled">false</item>//
         <item name="android:windowContentOverlay">@null</item>
     </style>
+    <style name="sign_in_popup">
+        <item name="android:windowEnterAnimation">@anim/sign_in_popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/sign_in_popup_exit</item>
+    </style>
 
 </resources>

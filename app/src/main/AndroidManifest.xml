@@ -18,13 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Search"></activity>
+        <activity android:name=".Search" />
         <activity android:name=".SearchResults" />
         <activity android:name=".detaied_alloy" />
         <activity android:name=".CreateAlloy" />
         <activity android:name=".StarredList" />
-        <activity android:name=".login" />
-
+        <activity android:name=".edit_account_info"></activity>
     </application>
 
 </manifest>
