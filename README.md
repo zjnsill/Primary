@@ -55,5 +55,10 @@ validation[18]->FractureToughness
 7.可以增加横向比较的功能
 8.可以增加三维的金属结构的观察功能
 
+---
+
+2018.10.7
+Coming up with an astonishing idea about object detecting and autamatically suggesting the possible alloys that makes this objects, it would be fun and easy to achieve under the help of Google TensorFlow.
+I will use my spare time trying to complete this feature and it would ,in my view, definitely help our project.
 
 ---
