@@ -21,47 +21,15 @@ public class Search extends AppCompatActivity {
     private TopBar searchTopBar;
     private RoundRectBtn SearchBtn;
 
-    private EditText nameET;
-    private String Name;
-
-    private EditText hardness_minET,hardness_maxET;
-    //private double hardness_min,hardness_max;
-    private CheckBox AlCB,ZnCB,MnCB,ZrCB,YrCB,OtherCB;
-    private boolean[] Component=new boolean[6];
-    private EditText MeltingPoint_minET,MeltingPoint_maxET;
-    //private double MeltingPoint_min,MeltingPoint_max;
-    private EditText ElasticModu_minET,ElasticModu_maxET;
-    //private double ElasticModu_min,ElasticModu_max;
-    private EditText SpecificHeat_minET,SpecificHeat_maxET;
-    //private double SpecificHeat_min,SpecificHeat_max;
-    private EditText Resistivity_minET,Resistivity_maxET;
-    //private double Resistivity_min,Resistivity_max;
-    private EditText ThermalCon_minET,ThermalCon_maxET;
-    //private double ThermalCon_min,ThermalCon_max;
-    private EditText ThermalExpan_minET,ThermalExpan_maxET;
-    //private double ThermalExpan_min,ThermalExpan_max;
-    private EditText Density_minET,Density_maxET;
-    //private double Density_min,Density_max;
-
-    //New Added:
-    private EditText NamingStandard;
-    private EditText PoissonsRatio_minET, PoissonsRatio_maxET;
-    private EditText DampingIndex_minET, DampingIndex_maxET;
-    private EditText FractureToughness_minET, FractureToughness_maxET;
-
-    private double[] doubleArray ;
-    private boolean[] Validation = new boolean[25];//[3+22]
-    //Name -> boolean[0], hardness_min&max -> boolean[1]&[2], Component -> boolean[3],
-    // MeltingPoint_min&max -> boolean[4]&[5], ElasticModu_min&max -> boolean[6]&[7],
-    // SpecificHeat_min&max -> boolean[8]&[9], Resistivity_min&max -> boolean[10]&[11],
-    // ThermalCon_min&max -> boolean[12]&[13], ThermalExpan_min&max -> boolean[14]&[15],
-    // Density_min&max -> boolean[16]&[17]
-    /* New Added:
-       NamingStandard -> boolean[18], PoissonsRatio_min&max -> boolean[19]&[20],
-       DampingIndex_min&max ->boolean[21]&[22], FractureToughness_min&max -> boolean[23]&[24]
-     */
-
-
+    private EditText NameET,NamingStandardET;
+    private String Name,NamingStandard;
+    private EditText DensityET,ThermalExpanET,ThermalConET,SpecificHeatET,ResistivityET,ElasticModuET,PoissonsRatioET,
+            DampingIndexET,FractureToughnessET,MeltingRange_MinET,MeltingRange_MaxET,Hardness_MinET, Hardness_MaxET,
+            Al_MinET, Al_MaxET, Mn_MinET, Mn_MaxET, Zn_MinET, Zn_MaxET, Mg_MinET, Mg_MaxET, Nd_MinET, Nd_MaxET, Gd_MinET, Gd_MaxET, Zr_MinET,
+            Zr_MaxET, Ag_MinET, Ag_MaxET, Cu_MinET, Cu_MaxET, Th_MinET, Th_MaxET, Y_MinET, Y_MaxET, RareElements_MinET, RareElements_MaxET;
+    private CheckBox AlCB,ZnCB,MnCB,MgCB,NdCB,GdCB,AgCB,CuCB,ThCB,YCB,ZrCB,RareElementsCB;
+    private double[] doubleArray;
+    private boolean[] Validation = new boolean[39];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,57 +63,114 @@ public class Search extends AppCompatActivity {
 
     }
     private void clearAll(){
-        nameET.setText("");
-        hardness_minET.setText("");
-        hardness_maxET.setText("");
+        NameET.setText("");
+        NamingStandardET.setText("");
+        DensityET.setText("");
+        ThermalExpanET.setText("");
+        ThermalConET.setText("");
+        SpecificHeatET.setText("");
+        ResistivityET.setText("");
+        ElasticModuET.setText("");
+        PoissonsRatioET.setText("");
+        DampingIndexET.setText("");
+        FractureToughnessET.setText("");
+        MeltingRange_MinET.setText("");
+        MeltingRange_MaxET.setText("");
+        Hardness_MinET.setText("");
+        Hardness_MaxET.setText("");
+        Al_MinET.setText("");
+        Al_MaxET.setText("");
+        Mn_MinET.setText("");
+        Mn_MaxET.setText("");
+        Zn_MinET.setText("");
+        Zn_MaxET.setText("");
+        Mg_MinET.setText("");
+        Mg_MaxET.setText("");
+        Nd_MinET.setText("");
+        Nd_MaxET.setText("");
+        Gd_MinET.setText("");
+        Gd_MaxET.setText("");
+        Zr_MinET.setText("");
+        Zr_MaxET.setText("");
+        Ag_MinET.setText("");
+        Ag_MaxET.setText("");
+        Cu_MinET.setText("");
+        Cu_MaxET.setText("");
+        Th_MinET.setText("");
+        Th_MaxET.setText("");
+        Y_MinET.setText("");
+        Y_MaxET.setText("");
+        RareElements_MinET.setText("");
+        RareElements_MaxET.setText("");
         AlCB.setChecked(false);
         ZnCB.setChecked(false);
         MnCB.setChecked(false);
+        MgCB.setChecked(false);
+        NdCB.setChecked(false);
+        GdCB.setChecked(false);
+        AgCB.setChecked(false);
+        CuCB.setChecked(false);
+        ThCB.setChecked(false);
+        YCB.setChecked(false);
         ZrCB.setChecked(false);
-        YrCB.setChecked(false);
-        OtherCB.setChecked(false);
-        MeltingPoint_minET.setText("");
-        MeltingPoint_maxET.setText("");
-        ElasticModu_minET.setText("");
-        ElasticModu_maxET.setText("");
-        SpecificHeat_minET.setText("");
-        SpecificHeat_maxET.setText("");
-        Resistivity_minET.setText("");
-        Resistivity_maxET.setText("");
-        ThermalExpan_minET.setText("");
-        ThermalExpan_maxET.setText("");
-        ThermalCon_minET.setText("");
-        ThermalCon_maxET.setText("");
-        Density_minET.setText("");
-        Density_maxET.setText("");
+        RareElementsCB.setChecked(false);
     }
 
+    //need layout
     void setupInputComponent(){
         SearchBtn = findViewById(R.id.searchBtn);
         searchTopBar = findViewById(R.id.searchTopBar);
-        nameET = findViewById(R.id.nameET);
-        hardness_minET=findViewById(R.id.hardness_min_ET);
-        hardness_maxET=findViewById(R.id.hardness_max_ET);
-        AlCB = findViewById(R.id.Al);
-        ZnCB = findViewById(R.id.Zn);
-        MnCB = findViewById(R.id.Mn);
-        ZrCB = findViewById(R.id.Zr);
-        YrCB = findViewById(R.id.Yr);
-        OtherCB = findViewById(R.id.Other);
-        MeltingPoint_minET = findViewById(R.id.meltingPoint_min_ET);
-        MeltingPoint_maxET = findViewById(R.id.meltingPoint_max_ET);
-        ElasticModu_minET = findViewById(R.id.elasticModu_min_ET);
-        ElasticModu_maxET = findViewById(R.id.elasticModu_max_ET);
-        SpecificHeat_minET = findViewById(R.id.specificHeat_min_ET);
-        SpecificHeat_maxET = findViewById(R.id.specificHeat_max_ET);
-        Resistivity_minET = findViewById(R.id.resistivity_min_ET);
-        Resistivity_maxET = findViewById(R.id.resistivity_max_ET);
-        ThermalCon_minET = findViewById(R.id.thermalCon_min_ET);
-        ThermalCon_maxET  = findViewById(R.id.thermnalCon_max_ET);
-        ThermalExpan_minET = findViewById(R.id.thermalExpan_min_ET);
-        ThermalExpan_maxET = findViewById(R.id.thermnalExpan_max_ET);
-        Density_maxET = findViewById(R.id.density_max_ET);
-        Density_minET = findViewById(R.id.density_min_ET);
+        NameET = findViewById(R.id.nameET);
+        NamingStandardET = findViewById(R.id.);
+        DensityET = findViewById(R.id.);
+        ThermalExpanET = findViewById(R.id.);
+        ThermalConET = findViewById(R.id.);
+        SpecificHeatET = findViewById(R.id.);
+        ResistivityET = findViewById(R.id.);
+        ElasticModuET = findViewById(R.id.);
+        PoissonsRatioET = findViewById(R.id.);
+        DampingIndexET = findViewById(R.id.);
+        FractureToughnessET = findViewById(R.id.);
+        MeltingRange_MinET = findViewById(R.id.);
+        MeltingRange_MaxET = findViewById(R.id.);
+        Hardness_MinET = findViewById(R.id.hardness_min_ET);
+        Hardness_MaxET = findViewById(R.id.hardness_max_ET);
+        Al_MinET = findViewById(R.id.);
+        Al_MaxET = findViewById(R.id.);
+        Mn_MinET = findViewById(R.id.);
+        Mn_MaxET = findViewById(R.id.);
+        Zn_MinET = findViewById(R.id.);
+        Zn_MaxET = findViewById(R.id.);
+        Mg_MinET = findViewById(R.id.);
+        Mg_MaxET = findViewById(R.id.);
+        Nd_MinET = findViewById(R.id.);
+        Nd_MaxET = findViewById(R.id.);
+        Gd_MinET = findViewById(R.id.);
+        Gd_MaxET = findViewById(R.id.);
+        Zr_MinET = findViewById(R.id.);
+        Zr_MaxET = findViewById(R.id.);
+        Ag_MinET = findViewById(R.id.);
+        Ag_MaxET = findViewById(R.id.);
+        Cu_MinET = findViewById(R.id.);
+        Cu_MaxET = findViewById(R.id.);
+        Th_MinET = findViewById(R.id.);
+        Th_MaxET = findViewById(R.id.);
+        Y_MinET = findViewById(R.id.);
+        Y_MaxET = findViewById(R.id.);
+        RareElements_MinET = findViewById(R.id.);
+        RareElements_MaxET = findViewById(R.id.);
+        AlCB = findViewById(R.id.);
+        ZnCB = findViewById(R.id.);
+        MnCB = findViewById(R.id.);
+        MgCB = findViewById(R.id.);
+        NdCB = findViewById(R.id.);
+        GdCB = findViewById(R.id.);
+        AgCB = findViewById(R.id.);
+        CuCB = findViewById(R.id.);
+        ThCB = findViewById(R.id.);
+        YCB = findViewById(R.id.);
+        ZrCB = findViewById(R.id.);
+        RareElementsCB = findViewById(R.id.);
         searchTopBar.setLeftAndRightListener(new TopBar.LeftAndRightListener(){
             @Override
             public void rightListener(){
@@ -155,17 +180,6 @@ public class Search extends AppCompatActivity {
             public void leftListener(){
                 //Intent jumpToCustomize = new Intent(Search.this,CreateAlloy.class);
                 //startActivity(jumpToCustomize);
-            }
-        });
-
-        SearchBtn.setBtnOnClickListener(new RoundRectBtn.BtnOnClickListenr() {
-            @Override
-            public void BtnOnClick() {
-                gatherInput();
-                Bundle inquiry = packagingBundle();
-                Intent jumpToResults = new Intent(Search.this,SearchResults.class);
-                jumpToResults.putExtra("inquiry",inquiry);
-                startActivity(jumpToResults);
             }
         });
     }
@@ -188,42 +202,75 @@ public class Search extends AppCompatActivity {
     }
 
     private void gatherInput(){
-        Name = EditTextToString(nameET);
-        Validation[0]=hasInput(nameET);
-        Component[0]=AlCB.isChecked();
-        Component[1]=ZnCB.isChecked();
-        Component[2]=MnCB.isChecked();
-        Component[3]=ZrCB.isChecked();
-        Component[4]=YrCB.isChecked();
-        Component[5]=OtherCB.isChecked();
-        if (!(Component[0] || Component[1] || Component[2] || Component[3]||Component[4]||Component[5])){Validation[3]=false;}
-        else {Validation[3]=true;}
-        doubleArray=new double[]{EditTextTodouble(hardness_minET),EditTextTodouble(hardness_maxET),EditTextTodouble(MeltingPoint_minET),
-                EditTextTodouble(MeltingPoint_maxET),EditTextTodouble(ElasticModu_minET),EditTextTodouble(ElasticModu_maxET),
-                EditTextTodouble(SpecificHeat_minET),EditTextTodouble(SpecificHeat_maxET),EditTextTodouble(Resistivity_minET),
-                EditTextTodouble(Resistivity_maxET),EditTextTodouble(ThermalCon_maxET),EditTextTodouble(ThermalCon_maxET),
-                EditTextTodouble(ThermalExpan_minET),EditTextTodouble(ThermalExpan_maxET),EditTextTodouble(Density_minET),EditTextTodouble(Density_maxET)};
-        Validation[1]=hasInput(hardness_minET);
-        Validation[2]=hasInput(hardness_maxET);
-        Validation[4]=hasInput(MeltingPoint_minET);
-        Validation[5]=hasInput(MeltingPoint_maxET);
-        Validation[6]=hasInput(ElasticModu_minET);
-        Validation[7]=hasInput(ElasticModu_maxET);
-        Validation[8]=hasInput(SpecificHeat_minET);
-        Validation[9]=hasInput(SpecificHeat_maxET);
-        Validation[10]=hasInput(Resistivity_minET);
-        Validation[11] = hasInput(Resistivity_maxET);
-        Validation[12]=hasInput(ThermalCon_minET);
-        Validation[13]=hasInput(ThermalCon_maxET);
-        Validation[14] = hasInput(ThermalExpan_minET);
-        Validation[15] = hasInput(ThermalExpan_maxET);
-        Validation[16]=hasInput(Density_minET);
-        Validation[17] = hasInput(Density_maxET);
+        Name = EditTextToString(NameET);
+        NamingStandard = EditTextToString(NamingStandardET);
+        Validation[0]=hasInput(NameET);
+        Validation[1]=hasInput(NamingStandardET);
+        Validation[2]=hasInput(DensityET);
+        Validation[3]=hasInput(ThermalExpanET);
+        Validation[4]=hasInput(ThermalConET);
+        Validation[5]=hasInput(SpecificHeatET);
+        Validation[6]=hasInput(ResistivityET);
+        Validation[7]=hasInput(ElasticModuET);
+        Validation[8]=hasInput(PoissonsRatioET);
+        Validation[9]=hasInput(DampingIndexET);
+        Validation[10]=hasInput(FractureToughnessET);
+        Validation[11]=hasInput(MeltingRange_MinET);
+        Validation[12]=hasInput(MeltingRange_MaxET);
+        Validation[13]=hasInput(Hardness_MinET);
+        Validation[14]=hasInput(Hardness_MaxET);
+        Validation[15]=hasInput(Al_MinET);
+        Validation[16]=hasInput(Al_MaxET);
+        Validation[17]=hasInput(Mn_MinET);
+        Validation[18]=hasInput(Mn_MaxET);
+        Validation[19]=hasInput(Zn_MinET);
+        Validation[20]=hasInput(Zn_MaxET);
+        Validation[21]=hasInput(Mg_MinET);
+        Validation[22]=hasInput(Mg_MaxET);
+        Validation[23]=hasInput(Nd_MinET);
+        Validation[24]=hasInput(Nd_MaxET);
+        Validation[25]=hasInput(Gd_MinET);
+        Validation[26]=hasInput(Gd_MaxET);
+        Validation[27]=hasInput(Zr_MinET);
+        Validation[28]=hasInput(Zr_MaxET);
+        Validation[29]=hasInput(Ag_MinET);
+        Validation[30]=hasInput(Ag_MaxET);
+        Validation[31]=hasInput(Cu_MinET);
+        Validation[32]=hasInput(Cu_MaxET);
+        Validation[33]=hasInput(Th_MinET);
+        Validation[34]=hasInput(Th_MaxET);
+        Validation[35]=hasInput(Y_MinET);
+        Validation[36]=hasInput(Y_MaxET);
+        Validation[37]=hasInput(RareElements_MinET);
+        Validation[38]=hasInput(RareElements_MaxET);
+        Validation[39]=AlCB.isChecked();
+        Validation[40]=ZnCB.isChecked();
+        Validation[41]=MnCB.isChecked();
+        Validation[42]=MgCB.isChecked();
+        Validation[43]=NdCB.isChecked();
+        Validation[44]=GdCB.isChecked();
+        Validation[45]=AgCB.isChecked();
+        Validation[46]=CuCB.isChecked();
+        Validation[47]=ThCB.isChecked();
+        Validation[48]=YCB.isChecked();
+        Validation[49]=ZrCB.isChecked();
+        Validation[50]=RareElementsCB.isChecked();
+
+        doubleArray=new double[]{EditTextTodouble(DensityET),EditTextTodouble(ThermalExpanET),EditTextTodouble(ThermalConET),
+                EditTextTodouble(SpecificHeatET),EditTextTodouble(ResistivityET),EditTextTodouble(ElasticModuET),EditTextTodouble(PoissonsRatioET),
+                EditTextTodouble(DampingIndexET),EditTextTodouble(FractureToughnessET),EditTextTodouble(MeltingRange_MinET),
+                EditTextTodouble(MeltingRange_MaxET),EditTextTodouble(Hardness_MinET),EditTextTodouble(Hardness_MaxET),
+                EditTextTodouble(Al_MinET),EditTextTodouble(Al_MaxET),EditTextTodouble(Mn_MinET),EditTextTodouble(Mn_MaxET),
+                EditTextTodouble(Zn_MinET),EditTextTodouble(Zn_MaxET),EditTextTodouble(Mg_MinET),EditTextTodouble(Mg_MaxET),
+                EditTextTodouble(Nd_MinET),EditTextTodouble(Nd_MaxET),EditTextTodouble(Gd_MinET),EditTextTodouble(Gd_MaxET),
+                EditTextTodouble(Zr_MinET),EditTextTodouble(Zr_MaxET),EditTextTodouble(Ag_MinET),EditTextTodouble(Ag_MaxET),
+                EditTextTodouble(Cu_MinET),EditTextTodouble(Cu_MaxET),EditTextTodouble(Th_MinET),EditTextTodouble(Th_MaxET),
+                EditTextTodouble(Y_MinET),EditTextTodouble(Y_MaxET),EditTextTodouble(RareElements_MinET),EditTextTodouble(RareElements_MaxET)};
     }
     Bundle packagingBundle(){
         Bundle inquiryBundle = new Bundle();
         inquiryBundle.putString("name",Name);
-        inquiryBundle.putBooleanArray("component",Component);
+        inquiryBundle.putString("namingstandard",NamingStandard);
         inquiryBundle.putDoubleArray("doubleArray",doubleArray);
         inquiryBundle.putBooleanArray("validation",Validation);
         return inquiryBundle;
