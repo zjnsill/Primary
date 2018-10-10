@@ -42,8 +42,6 @@ public class SearchResults extends AppCompatActivity {
     private String currentUser;
     private UserDatabaseManager starredListDatabaseManager;
 
-    JSONArray alloys = null;
-
     // JSON node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_ALLOYS = "alloys";
@@ -62,17 +60,31 @@ public class SearchResults extends AppCompatActivity {
     private static final String TAG_BRINELL_HARDNESS_MIN = "Brinell_Hardness_Min";
     private static final String TAG_BRINELL_HARDNESS_MAX = "Brinell_Hardness_Max";
     private static final String TAG_FRACTURE_TOUGHNESS = "Fracture_Toughness";
-
-    /*
-    private static final String DRIVER = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://cd-cdb-1dpkpdzc.sql.tencentcdb.com:63711/alloy";
-    private static final String USERNAME = "root";
-    private static final String PASSWOED = "sfynb123";
-    private Connection cn;
-    private Statement st;
-    private ResultSet rs;
-    private String SQLSentence;
-    */
+    private static final String TAG_AL_MIN = "Al_Min";
+    private static final String TAG_AL_MAX = "Al_Max";
+    private static final String TAG_MN_MIN = "Mn_Min";
+    private static final String TAG_MN_MAX = "Mn_Max";
+    private static final String TAG_ZN_MIN = "Zn_Min";
+    private static final String TAG_ZN_MAX = "Zn_Max";
+    private static final String TAG_MG_MIN = "Mg_Min";
+    private static final String TAG_MG_MAX = "Mg_Max";
+    private static final String TAG_ND_MIN = "Nd_Min";
+    private static final String TAG_ND_MAX = "Nd_Max";
+    private static final String TAG_GD_MIN = "Gd_Min";
+    private static final String TAG_GD_MAX = "Gd_Max";
+    private static final String TAG_ZR_MIN = "Zr_Min";
+    private static final String TAG_ZR_MAX = "Zr_Max";
+    private static final String TAG_AG_MIN = "Ag_Min";
+    private static final String TAG_AG_MAX = "Ag_Max";
+    private static final String TAG_CU_MIN = "Cu_Min";
+    private static final String TAG_CU_MAX = "Cu_Max";
+    private static final String TAG_TH_MIN = "Th_Min";
+    private static final String TAG_TH_MAX = "Th_Max";
+    private static final String TAG_Y_MIN = "Y_Min";
+    private static final String TAG_Y_MAX = "Y_Max";
+    private static final String TAG_RARE_ELEMENTS_MIN = "Rare_Elements_Min";
+    private static final String TAG_RARE_ELEMENTS_MAX = "Rare_Elements_Max";
+    private static final String TAG_ELEMENTS = "Elements";
 
     Handler mHandler =new Handler(){
         public void handleMessage(Message msg){
@@ -135,10 +147,12 @@ public class SearchResults extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
+                List<SingleAlloyItem> singleAlloyItems = getSingleAlloyItems(request);
             }
         }).start();
-
+        /* 因为之前的代码里用到了bundle，但我不知道怎么用，也不知道怎么传递message，
+         * 所以下面这段以前的代码就只是注释掉没有删掉
+         */
         /*
         new Thread(new Runnable() {
             volatile boolean flag = false;
@@ -221,12 +235,78 @@ public class SearchResults extends AppCompatActivity {
         startActivity(jumpToDetail);
     }
 
-    private JSONObject executeHttpPost(final Request request) {
-        String path="http://118.25.122.232/test/get_all_alloys.php";
-        //List<NameValuePair> params = new ArrayList<NameValuePair>();
-        //params.add(new BasicNameValuePair("Naming_Standard", "Elektron"));
-        //params.add(new BasicNameValuePair("Density_Max", "1.9"));
+    private List<SingleAlloyItem> getSingleAlloyItems(final Request request) {
+        List<SingleAlloyItem> singleAlloyItems = null;
+        List<String> names = getNames(request);
+
+        if(names != null) {
+            for (int i = 0; i < names.size(); i++) {
+                String name = names.get(i);
+                JSONObject attributes = getAttributes(name);
+                JSONObject components = getComponents(name);
+                SingleAlloyItem singleAlloyItem = transferToAlloyItem(attributes, components);
+                singleAlloyItems.add(singleAlloyItem);
+            }
+            return singleAlloyItems;
+        }
+        return null;
+    }
+
+    private List<String> getNames(final Request request) {
+        String path="http://118.25.122.232/android_connect/find.php";
         List<NameValuePair> params = paramsList(request);
+        InputStream is = null;
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(path);
+            httpPost.setEntity(new UrlEncodedFormEntity(params));
+
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            is = httpEntity.getContent();
+
+            JSONObject jsonObject = parseInfo(is);
+            if(jsonObject.getInt(TAG_SUCCESS) == 1) {
+                JSONArray alloys = jsonObject.getJSONArray(TAG_ALLOYS);
+                List<String> nameList = null;
+                for(int i = 0; i < alloys.length(); i++) {
+                    JSONObject c = alloys.getJSONObject(i);
+                    String name = c.getString(TAG_NAME);
+                    nameList.add(name);
+                }
+                return nameList;
+            }
+        } catch(Exception e) {
+            Log.getStackTraceString(e);
+        }
+        return null;
+    }
+
+    private JSONObject getAttributes(String name) {
+        String path="http://118.25.122.232/android_connect/attributes.php";
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("Name", name));
+        InputStream is = null;
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(path);
+            httpPost.setEntity(new UrlEncodedFormEntity(params));
+
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            is = httpEntity.getContent();
+
+            return parseInfo(is);
+        } catch(Exception e) {
+            Log.getStackTraceString(e);
+        }
+        return null;
+    }
+
+    private JSONObject getComponents(String name) {
+        String path="http://118.25.122.232/android_connect/components.php";
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("Name", name));
         InputStream is = null;
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -246,13 +326,182 @@ public class SearchResults extends AppCompatActivity {
 
     private List<NameValuePair> paramsList(final Request request) {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        boolean flag = false;
         String name = request.getName();
         String namingStandard = request.getNamingStandard();
-        boolean[] component = request.getComponet();
-        double[] doubledatas = request.getDoubleArray();
+        double[] doubleDatas = request.getDoubleArray();
         boolean[] validation = request.getValidation();
 
+        if(validation[0])
+            params.add(new BasicNameValuePair("Name", name));
+        if(validation[1])
+            params.add(new BasicNameValuePair("Naming_Standard", namingStandard));
+        if(validation[2])
+            params.add(new BasicNameValuePair("Density_Min", doubleDatas[0] + ""));
+        if(validation[3])
+            params.add(new BasicNameValuePair("Density_Max", doubleDatas[1] + ""));
+        if(validation[4])
+            params.add(new BasicNameValuePair("Thermal_Expansion_Coefficient_Min", doubleDatas[2] + ""));
+        if(validation[5])
+            params.add(new BasicNameValuePair("Thermal_Expansion_Coefficient_Max", doubleDatas[3] + ""));
+        if(validation[6])
+            params.add(new BasicNameValuePair("Thermal_conductivity_Min", doubleDatas[4] + ""));
+        if(validation[7])
+            params.add(new BasicNameValuePair("Thermal_conductivity_Max", doubleDatas[5] + ""));
+        if(validation[8])
+            params.add(new BasicNameValuePair("Specific_Heat_Min", doubleDatas[6] + ""));
+        if(validation[9])
+            params.add(new BasicNameValuePair("Specific_Heat_Max", doubleDatas[7] + ""));
+        if(validation[10])
+            params.add(new BasicNameValuePair("Resistivity_Min", doubleDatas[8] + ""));
+        if(validation[11])
+            params.add(new BasicNameValuePair("Resistivity_Max", doubleDatas[9] + ""));
+        if(validation[12])
+            params.add(new BasicNameValuePair("Elastic_Modulus_Min", doubleDatas[10] + ""));
+        if(validation[13])
+            params.add(new BasicNameValuePair("Elastic_Modulus_Max", doubleDatas[11] + ""));
+        if(validation[14])
+            params.add(new BasicNameValuePair("Poissons_Ratio_Min", doubleDatas[12] + ""));
+        if(validation[15])
+            params.add(new BasicNameValuePair("Poissons_Ratio_Max", doubleDatas[13] + ""));
+        if(validation[16])
+            params.add(new BasicNameValuePair("Damping_Index_Min", doubleDatas[14] + ""));
+        if(validation[17])
+            params.add(new BasicNameValuePair("Damping_Index_Max", doubleDatas[15] + ""));
+        if(validation[18])
+            params.add(new BasicNameValuePair("Toughness_Min", doubleDatas[16] + ""));
+        if(validation[19])
+            params.add(new BasicNameValuePair("Toughness_Max", doubleDatas[17] + ""));
+        if(validation[20])
+            params.add(new BasicNameValuePair("Melting_Range_Min", doubleDatas[18] + ""));
+        if(validation[21])
+            params.add(new BasicNameValuePair("Melting_Range_Max", doubleDatas[19] + ""));
+        if(validation[22])
+            params.add(new BasicNameValuePair("Hardness_Min", doubleDatas[20] + ""));
+        if(validation[23])
+            params.add(new BasicNameValuePair("Hardness_Max", doubleDatas[21] + ""));
+        if(validation[24])
+            params.add(new BasicNameValuePair("Al_Min", doubleDatas[22] + ""));
+        if(validation[25])
+            params.add(new BasicNameValuePair("Al_Max", doubleDatas[23] + ""));
+        if(validation[26])
+            params.add(new BasicNameValuePair("Mn_Min", doubleDatas[24] + ""));
+        if(validation[27])
+            params.add(new BasicNameValuePair("Mn_Max", doubleDatas[25] + ""));
+        if(validation[28])
+            params.add(new BasicNameValuePair("Zn_Min", doubleDatas[26] + ""));
+        if(validation[29])
+            params.add(new BasicNameValuePair("Zn_Max", doubleDatas[27] + ""));
+        if(validation[30])
+            params.add(new BasicNameValuePair("Mg_Min", doubleDatas[28] + ""));
+        if(validation[31])
+            params.add(new BasicNameValuePair("Mg_Max", doubleDatas[29] + ""));
+        if(validation[32])
+            params.add(new BasicNameValuePair("Nd_Min", doubleDatas[30] + ""));
+        if(validation[33])
+            params.add(new BasicNameValuePair("Nd_Max", doubleDatas[31] + ""));
+        if(validation[34])
+            params.add(new BasicNameValuePair("Gd_Min", doubleDatas[32] + ""));
+        if(validation[35])
+            params.add(new BasicNameValuePair("Gd_Max", doubleDatas[33] + ""));
+        if(validation[36])
+            params.add(new BasicNameValuePair("Zr_Min", doubleDatas[34] + ""));
+        if(validation[37])
+            params.add(new BasicNameValuePair("Zr_Max", doubleDatas[35] + ""));
+        if(validation[38])
+            params.add(new BasicNameValuePair("Ag_Min", doubleDatas[36] + ""));
+        if(validation[39])
+            params.add(new BasicNameValuePair("Ag_Max", doubleDatas[37] + ""));
+        if(validation[40])
+            params.add(new BasicNameValuePair("Cu_Min", doubleDatas[38] + ""));
+        if(validation[41])
+            params.add(new BasicNameValuePair("Cu_Max", doubleDatas[39] + ""));
+        if(validation[42])
+            params.add(new BasicNameValuePair("Th_Min", doubleDatas[40] + ""));
+        if(validation[43])
+            params.add(new BasicNameValuePair("Th_Max", doubleDatas[41] + ""));
+        if(validation[44])
+            params.add(new BasicNameValuePair("Y_Min", doubleDatas[42] + ""));
+        if(validation[45])
+            params.add(new BasicNameValuePair("Y_Max", doubleDatas[43] + ""));
+        if(validation[46])
+            params.add(new BasicNameValuePair("Rare_Elements_Min", doubleDatas[44] + ""));
+        if(validation[47])
+            params.add(new BasicNameValuePair("Rare_Elements_Max", doubleDatas[45] + ""));
+
+        String elements = "";
+        boolean flag = false;
+        if(validation[48]) {
+            elements += "Al";
+            flag = true;
+        }
+        if(validation[49]) {
+            if(flag)
+                elements += ",";
+            elements += "Mn";
+            flag = true;
+        }
+        if(validation[50]) {
+            if(flag)
+                elements += ",";
+            elements += "Zn";
+            flag = true;
+        }
+        if(validation[51]) {
+            if(flag)
+                elements += ",";
+            elements += "Mg";
+            flag = true;
+        }
+        if(validation[52]) {
+            if(flag)
+                elements += ",";
+            elements += "Nd";
+            flag = true;
+        }
+        if(validation[53]) {
+            if(flag)
+                elements += ",";
+            elements += "Gd";
+            flag = true;
+        }
+        if(validation[54]) {
+            if(flag)
+                elements += ",";
+            elements += "Zr";
+            flag = true;
+        }
+        if(validation[55]) {
+            if(flag)
+                elements += ",";
+            elements += "Ag";
+            flag = true;
+        }
+        if(validation[56]) {
+            if(flag)
+                elements += ",";
+            elements += "Cu";
+            flag = true;
+        }
+        if(validation[57]) {
+            if(flag)
+                elements += ",";
+            elements += "Th";
+            flag = true;
+        }
+        if(validation[58]) {
+            if(flag)
+                elements += ",";
+            elements += "Y";
+            flag = true;
+        }
+        if(validation[59]) {
+            if(flag)
+                elements += ",";
+            elements += "Rare_Elements";
+            flag = true;
+        }
+        if(flag)
+            params.add(new BasicNameValuePair("Elements", elements));
         return params;
     }
 
@@ -275,219 +524,66 @@ public class SearchResults extends AppCompatActivity {
         return jsonObject;
     }
 
-    /*
-    public void produceSQLSentence(final Request request) {
-        boolean flag = false;
-        String name = request.getName();
-        String namingStandard = request.getNamingStandard();
-        boolean[] component = request.getComponet();
-        double[] doubledatas = request.getDoubleArray();
-        boolean[] validation = request.getValidation();
-        SQLSentence = "";
-        SQLSentence += "SELECT * FROM attributes JOIN components USING(Name) WHERE ";
-        if(validation[0]) {
-            SQLSentence += "Name = \"" + name + "\"";
-            flag = true;
-        }
-        if(validation[18]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Naming_Standard = \"" + namingStandard + "\"";
-            flag = true;
-        }
-        if(validation[3]) {
-            if(flag)
-                SQLSentence += " AND ";
-            boolean flag2 = false;
-            SQLSentence += "FIND_IN_SET(";
-            if(component[0]) {
-                SQLSentence += "\"Al\", Elements)";
-                flag2 = true;
+    private SingleAlloyItem transferToAlloyItem(JSONObject attributes, JSONObject components) {
+        try {
+            if(attributes.getInt(TAG_SUCCESS) == 1 && components.getInt(TAG_SUCCESS) == 1 && attributes.getString(TAG_NAME) == components.getString(TAG_NAME)) {
+                JSONObject attribute = attributes.getJSONArray(TAG_ALLOYS).getJSONObject(0);
+                JSONObject component = components.getJSONArray(TAG_ALLOYS).getJSONObject(0);
+                String[] returnDatas = new String[45];
+                returnDatas[0] = attribute.getString(TAG_NAME);
+                returnDatas[1] = attribute.getString(TAG_NAMING_STANDARD);
+                returnDatas[2] = component.getString(TAG_ELEMENTS);
+                returnDatas[3] = attribute.getString(TAG_DENSITY);
+                returnDatas[4] = attribute.getString(TAG_THERMAL_CONDUCTIVITY);
+                returnDatas[5] = attribute.getString(TAG_THERMAL_EXPANSION_COEFFICIENT);
+                returnDatas[6] = attribute.getString(TAG_SPECIFIC_HEAT);
+                returnDatas[7] = attribute.getString(TAG_RESISTIVITY);
+                returnDatas[8] = attribute.getString(TAG_ELASTIC_MODULUS);
+                returnDatas[9] = attribute.getString(TAG_POISSONS_RATIO);
+                returnDatas[10] = attribute.getString(TAG_MELTING_RANGE_MIN);
+                returnDatas[11] = attribute.getString(TAG_MELTING_RANGE_MAX);
+                returnDatas[12] = attribute.getString(TAG_DAMPING_INDEX);
+                returnDatas[13] = attribute.getString(TAG_BRINELL_HARDNESS_MIN);
+                returnDatas[14] = attribute.getString(TAG_BRINELL_HARDNESS_MAX);
+                returnDatas[15] = ""; // forging
+                returnDatas[16] = ""; // weldability
+                returnDatas[17] = ""; // machining
+                returnDatas[18] = ""; //surface_treatment
+                returnDatas[19] = ""; // corrision_resistance
+                returnDatas[20] = attribute.getString(TAG_FRACTURE_TOUGHNESS);
+                returnDatas[21] = component.getString(TAG_AL_MIN);
+                returnDatas[22] = component.getString(TAG_AL_MAX);
+                returnDatas[23] = component.getString(TAG_MN_MIN);
+                returnDatas[24] = component.getString(TAG_MN_MAX);
+                returnDatas[25] = component.getString(TAG_ZN_MIN);
+                returnDatas[26] = component.getString(TAG_ZN_MAX);
+                returnDatas[27] = component.getString(TAG_MG_MIN);
+                returnDatas[28] = component.getString(TAG_MG_MAX);
+                returnDatas[29] = component.getString(TAG_ND_MIN);
+                returnDatas[30] = component.getString(TAG_ND_MAX);
+                returnDatas[31] = component.getString(TAG_GD_MIN);
+                returnDatas[32] = component.getString(TAG_GD_MAX);
+                returnDatas[33] = component.getString(TAG_ZR_MIN);
+                returnDatas[34] = component.getString(TAG_ZR_MAX);
+                returnDatas[35] = component.getString(TAG_AG_MIN);
+                returnDatas[36] = component.getString(TAG_AG_MAX);
+                returnDatas[37] = component.getString(TAG_CU_MIN);
+                returnDatas[38] = component.getString(TAG_CU_MAX);
+                returnDatas[39] = component.getString(TAG_TH_MIN);
+                returnDatas[40] = component.getString(TAG_TH_MAX);
+                returnDatas[41] = component.getString(TAG_Y_MIN);
+                returnDatas[42] = component.getString(TAG_Y_MAX);
+                returnDatas[43] = component.getString(TAG_RARE_ELEMENTS_MIN);
+                returnDatas[44] = component.getString(TAG_RARE_ELEMENTS_MAX);
+
+                SingleAlloyItem singleAlloyItem = new SingleAlloyItem(returnDatas);
+                return singleAlloyItem;
             }
-            if(component[1]) {
-                if(flag2)
-                    SQLSentence += " AND FIND_IN_SET(";
-                SQLSentence += "\"Zn\", Elements)";
-                flag2 = true;
-            }
-            if(component[2]) {
-                if(flag2)
-                    SQLSentence += " AND FIND_IN_SET(";
-                SQLSentence += "\"Mn\", Elements)";
-                flag2 = true;
-            }
-            if(component[3]) {
-                if(flag2)
-                    SQLSentence += " AND FIND_IN_SET(";
-                SQLSentence += "\"Zr\", Elements)";
-                flag2 = true;
-            }
-            if(component[4]) {
-                if(flag2)
-                    SQLSentence += " AND FIND_IN_SET(";
-                SQLSentence += "\"Y\", Elements)";
-                flag2 = true;
-            }
-            flag = true;
+        } catch (JSONException e) {
+            e.printStackTrace();;
         }
-        if(validation[1]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Brinell_Hardness_Mix > ";
-            SQLSentence += doubledatas[0] + "";
-            flag = true;
-        }
-        if(validation[2]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Brinell_Hardness_Max < ";
-            SQLSentence += doubledatas[1] + "";
-            flag = true;
-        }
-        if(validation[4]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Melting_Range_Min > ";
-            SQLSentence += doubledatas[2] + "";
-            flag = true;
-        }
-        if(validation[5]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Melting_Range_Max < ";
-            SQLSentence += doubledatas[3] + "";
-            flag = true;
-        }
-        if(validation[6]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Elastic_Modulus > ";
-            SQLSentence += doubledatas[4] + "";
-            flag = true;
-        }
-        if(validation[7]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Elastic_Modulus < ";
-            SQLSentence += doubledatas[5] + "";
-            flag = true;
-        }
-        if(validation[8]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Specific_Heat > ";
-            SQLSentence += doubledatas[6] + "";
-            flag = true;
-        }
-        if(validation[9]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Specific_Heat < ";
-            SQLSentence += doubledatas[7] + "";
-            flag = true;
-        }
-        if(validation[10]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Resistivity > ";
-            SQLSentence += doubledatas[8] + "";
-            flag = true;
-        }
-        if(validation[11]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Resistivity < ";
-            SQLSentence += doubledatas[9] + "";
-            flag = true;
-        }
-        if(validation[12]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Thermal_conductivity > ";
-            SQLSentence += doubledatas[10] + "";
-            flag = true;
-        }
-        if(validation[13]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Thermal_conductivity < ";
-            SQLSentence += doubledatas[11] + "";
-            flag = true;
-        }
-        if(validation[14]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Thermal_Expansion_Coefficient > ";
-            SQLSentence += doubledatas[12] + "";
-            flag = true;
-        }
-        if(validation[15]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Thermal_Expansion_Coefficient < ";
-            SQLSentence += doubledatas[13] + "";
-            flag = true;
-        }
-        if(validation[16]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Density > ";
-            SQLSentence += doubledatas[14] + "";
-            flag = true;
-        }
-        if(validation[17]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Density < ";
-            SQLSentence += doubledatas[15] + "";
-            flag = true;
-        }
-        if(validation[19]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Poisson\'s_Ratio > ";
-            SQLSentence += doubledatas[16] + "";
-            flag = true;
-        }
-        if(validation[20]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Poisson\'s_Ratio < ";
-            SQLSentence += doubledatas[17] + "";
-            flag = true;
-        }
-        if(validation[21]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Damping_Index > ";
-            SQLSentence += doubledatas[18] + "";
-            flag = true;
-        }
-        if(validation[22]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Damping_Index < ";
-            SQLSentence += doubledatas[19] + "";
-            flag = true;
-        }
-        if(validation[23]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Fracture_Toughness > ";
-            SQLSentence += doubledatas[20] + "";
-            flag = true;
-        }
-        if(validation[24]) {
-            if(flag)
-                SQLSentence += " AND ";
-            SQLSentence += "Fracture_Toughness < ";
-            SQLSentence += doubledatas[21] + "";
-            flag = true;
-        }
-        SQLSentence += " ORDER BY Name";
-        SQLSentence += ";";
-        Log.i("Mainactivity", SQLSentence);
-    }*/
+        return null;
+    }
 
     @Override
     protected void onDestroy(){
