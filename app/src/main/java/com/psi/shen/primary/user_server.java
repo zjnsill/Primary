@@ -40,7 +40,6 @@ public class user_server {
         else if(phoneNum != null)
             params.add(new BasicNameValuePair("Phone", phoneNum));
         params.add(new BasicNameValuePair("Password", passcode));
-        InputStream is = null;
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(path);
@@ -48,7 +47,7 @@ public class user_server {
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
-            is = httpEntity.getContent();
+            InputStream is = httpEntity.getContent();
 
             JSONObject jsonObject = parseInfo(is);
             int errorCode = jsonObject.getInt(TAG_ERRORCODE);
@@ -84,7 +83,6 @@ public class user_server {
         params.add(new BasicNameValuePair("Phone", user.getPhone()));
         params.add(new BasicNameValuePair("Email", user.getEmail()));
         params.add(new BasicNameValuePair("Bio", user.getBio()));
-        InputStream is = null;
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(path);
@@ -92,7 +90,7 @@ public class user_server {
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
-            is=  httpEntity.getContent();
+            InputStream is=  httpEntity.getContent();
 
             JSONObject jsonObject = parseInfo(is);
             int errorCode = jsonObject.getInt(TAG_ERRORCODE);
@@ -112,13 +110,37 @@ public class user_server {
         return null;
     }
 
-    public boolean changePasscode(String Phone,String Passcode){
+    public boolean changePasscode(String Phone,String Passcode) {
+        String path="http://118.25.122.232/android_connect/changePassword.php";
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        if(!Phone.isEmpty())
+            params.add(new BasicNameValuePair("Phone", Phone));
+        if(!Passcode.isEmpty())
+            params.add(new BasicNameValuePair("Password", Passcode));
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(path);
+            httpPost.setEntity(new UrlEncodedFormEntity(params));
+
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            InputStream is = httpEntity.getContent();
+
+            JSONObject jsonObject = parseInfo(is);
+            int errorCode = jsonObject.getInt(TAG_ERRORCODE);
+            if(errorCode == 0)
+                return true;
+            else
+                return false;
+        } catch(Exception e) {
+            Log.getStackTraceString(e);
+        }
         return false;
     }
 
-    public signedUser changeProfile(signedUser newProfile){
+    public signedUser changeProfile(signedUser newProfile) { //including phone number;
         return null;
-    }//including phone number;
+    }
 
     public signedUser addStarredItem(String Phone, ArrayList<String> newStarredItem){
         return null;
@@ -127,8 +149,8 @@ public class user_server {
     private JSONObject parseInfo(InputStream in) throws IOException {
         BufferedReader  br=new BufferedReader(new InputStreamReader(in));
         StringBuilder sb=new StringBuilder();
-        String line=null;
-        String json = null;
+        String line;
+        String json;
         JSONObject jsonObject = null;
         while ((line=br.readLine())!=null){
             sb.append(line+"\n");

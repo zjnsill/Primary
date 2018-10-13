@@ -210,65 +210,51 @@ public class SingleAlloyItem implements Parcelable{
     //need modification
 
     public SingleAlloyItem(String[] returnDatas){
-        for(int i = 0; i < 45; i++)
-            Validation[i] = (returnDatas[i] != "null");
-        /*
-        Validation[10] = returnDatas[11] != "null";
-        Validation[11] = returnDatas[12] != "null";
-        Validation[12] = returnDatas[13] != "null";
-        Validation[12] = returnDatas[14] != "null";
-        for(int i = 13; i <= 18; i++)
-            Validation[i] = returnDatas[i + 2] != "null";
-        for(int i = 19; i <= 30; i++) {
-            Validation[i] = returnDatas[i + (i - 17)] != "null";
-            Validation[i] = returnDatas[i + (i - 17) + 1] != "null";
-        }*/
-
-        this.AlloyName = Validation[0]? returnDatas[0]:"";
-        this.NamingStandard = Validation[1]? returnDatas[1]:"";
-        this.Component = Validation[2]? returnDatas[2]:"";
-        this.Density = Validation[3]? Double.parseDouble(returnDatas[3]):0.0;
-        this.ThermalCon = Validation[4]? Double.parseDouble(returnDatas[4]):0.0;
-        this.ThermalExpan = Validation[5]? Double.parseDouble(returnDatas[5]):0.0;
-        this.SpecificHeat = Validation[6]? Double.parseDouble(returnDatas[6]):0.0;
-        this.Resistivity = Validation[7]? Double.parseDouble(returnDatas[7]):0.0;
-        this.ElasticModu = Validation[8]? Double.parseDouble(returnDatas[8]):0.0;
-        this.PoissonsRatio = Validation[9]? Double.parseDouble(returnDatas[9]):0.0;
-        this.MeltingRange_Min = Validation[10]? Double.parseDouble(returnDatas[10]):0.0;
-        this.MeltingRange_Max = Validation[10]? Double.parseDouble(returnDatas[11]):0.0;
-        this.DampingIndex = Validation[11]? Double.parseDouble(returnDatas[12]):0.0;
-        this.Hardness_Min = Validation[12]? Double.parseDouble(returnDatas[13]):0.0;
-        this.Hardness_Max = Validation[12]? Double.parseDouble(returnDatas[14]):0.0;
-        this.Forging = Validation[13]? returnDatas[15]:"";
-        this.Weldability = Validation[14]? returnDatas[16]:"";
-        this.Machining = Validation[15]? returnDatas[17]:"";
-        this.SurfaceTreatment = Validation[16]? returnDatas[18]:"";
-        this.CorrisionResistance = Validation[17]? returnDatas[19]:"";
-        this.FractureToughness = Validation[18]? Double.parseDouble(returnDatas[20]):0.0;
-        this.Al_Min = Validation[19] ? Double.parseDouble(returnDatas[21]) : 0.0;
-        this.Al_Max = Validation[19] ? Double.parseDouble(returnDatas[22]) : 0.0;
-        this.Mn_Min = Validation[20] ? Double.parseDouble(returnDatas[23]) : 0.0;
-        this.Mn_Max = Validation[20] ? Double.parseDouble(returnDatas[24]) : 0.0;
-        this.Zn_Min = Validation[21] ? Double.parseDouble(returnDatas[25]) : 0.0;
-        this.Zn_Max = Validation[21] ? Double.parseDouble(returnDatas[26]) : 0.0;
-        this.Mg_Min = Validation[22] ? Double.parseDouble(returnDatas[27]) : 0.0;
-        this.Mg_Max = Validation[22] ? Double.parseDouble(returnDatas[28]) : 0.0;
-        this.Nd_Min = Validation[23] ? Double.parseDouble(returnDatas[29]) : 0.0;
-        this.Nd_Max = Validation[23] ? Double.parseDouble(returnDatas[30]) : 0.0;
-        this.Gd_Min = Validation[24] ? Double.parseDouble(returnDatas[31]) : 0.0;
-        this.Gd_Max = Validation[24] ? Double.parseDouble(returnDatas[32]) : 0.0;
-        this.Zr_Min = Validation[25] ? Double.parseDouble(returnDatas[33]) : 0.0;
-        this.Zr_Max = Validation[25] ? Double.parseDouble(returnDatas[34]) : 0.0;
-        this.Ag_Min = Validation[26] ? Double.parseDouble(returnDatas[35]) : 0.0;
-        this.Ag_Max = Validation[26] ? Double.parseDouble(returnDatas[36]) : 0.0;
-        this.Cu_Min = Validation[27] ? Double.parseDouble(returnDatas[37]) : 0.0;
-        this.Cu_Max = Validation[27] ? Double.parseDouble(returnDatas[38]) : 0.0;
-        this.Th_Min = Validation[28] ? Double.parseDouble(returnDatas[39]) : 0.0;
-        this.Th_Max = Validation[28] ? Double.parseDouble(returnDatas[40]) : 0.0;
-        this.Y_Min = Validation[29] ? Double.parseDouble(returnDatas[41]) : 0.0;
-        this.Y_Max = Validation[29] ? Double.parseDouble(returnDatas[42]) : 0.0;
-        this.RareElements_Min = Validation[30] ? Double.parseDouble(returnDatas[43]) : 0.0;
-        this.RareElements_Max = Validation[30] ? Double.parseDouble(returnDatas[44]) : 0.0;
+        this.AlloyName = (returnDatas[0].equals("null")) ? returnDatas[0]:null;
+        this.NamingStandard = (returnDatas[1].equals("null")) ? returnDatas[1]:null;
+        this.Component = (returnDatas[2].equals("null")) ? returnDatas[2]:null;
+        this.Density = (returnDatas[3].equals("null")) ? Double.parseDouble(returnDatas[3]):null;
+        this.ThermalCon = (returnDatas[4].equals("null")) ? Double.parseDouble(returnDatas[4]):null;
+        this.ThermalExpan = (returnDatas[5].equals("null")) ? Double.parseDouble(returnDatas[5]):null;
+        this.SpecificHeat = (returnDatas[6].equals("null")) ? Double.parseDouble(returnDatas[6]):null;
+        this.Resistivity = (returnDatas[7].equals("null")) ? Double.parseDouble(returnDatas[7]):null;
+        this.ElasticModu = (returnDatas[8].equals("null")) ? Double.parseDouble(returnDatas[8]):null;
+        this.PoissonsRatio = (returnDatas[9].equals("null")) ? Double.parseDouble(returnDatas[9]):null;
+        this.MeltingRange_Min = (returnDatas[10].equals("null")) ? Double.parseDouble(returnDatas[10]):null;
+        this.MeltingRange_Max = (returnDatas[11].equals("null")) ? Double.parseDouble(returnDatas[11]):null;
+        this.DampingIndex = (returnDatas[12].equals("null")) ? Double.parseDouble(returnDatas[12]):null;
+        this.Hardness_Min = (returnDatas[13].equals("null")) ? Double.parseDouble(returnDatas[13]):null;
+        this.Hardness_Max = (returnDatas[14].equals("null")) ? Double.parseDouble(returnDatas[14]):null;
+        this.Forging = (returnDatas[15].equals("null")) ? returnDatas[15]:null;
+        this.Weldability = (returnDatas[16].equals("null")) ? returnDatas[16]:null;
+        this.Machining = (returnDatas[17].equals("null")) ? returnDatas[17]:null;
+        this.SurfaceTreatment = (returnDatas[18].equals("null")) ? returnDatas[18]:null;
+        this.CorrisionResistance = (returnDatas[19].equals("null")) ? returnDatas[19]:null;
+        this.FractureToughness = (returnDatas[20].equals("null")) ? Double.parseDouble(returnDatas[20]):null;
+        this.Al_Min = (returnDatas[21].equals("null")) ? Double.parseDouble(returnDatas[21]) : null;
+        this.Al_Max = (returnDatas[22].equals("null")) ? Double.parseDouble(returnDatas[22]) : null;
+        this.Mn_Min = (returnDatas[23].equals("null")) ? Double.parseDouble(returnDatas[23]) : null;
+        this.Mn_Max = (returnDatas[24].equals("null")) ? Double.parseDouble(returnDatas[24]) : null;
+        this.Zn_Min = (returnDatas[25].equals("null")) ? Double.parseDouble(returnDatas[25]) : null;
+        this.Zn_Max = (returnDatas[26].equals("null")) ? Double.parseDouble(returnDatas[26]) : null;
+        this.Mg_Min = (returnDatas[27].equals("null")) ? Double.parseDouble(returnDatas[27]) : null;
+        this.Mg_Max = (returnDatas[28].equals("null")) ? Double.parseDouble(returnDatas[28]) : null;
+        this.Nd_Min = (returnDatas[29].equals("null")) ? Double.parseDouble(returnDatas[29]) : null;
+        this.Nd_Max = (returnDatas[30].equals("null")) ? Double.parseDouble(returnDatas[30]) : null;
+        this.Gd_Min = (returnDatas[31].equals("null")) ? Double.parseDouble(returnDatas[31]) : null;
+        this.Gd_Max = (returnDatas[32].equals("null")) ? Double.parseDouble(returnDatas[32]) : null;
+        this.Zr_Min = (returnDatas[33].equals("null")) ? Double.parseDouble(returnDatas[33]) : null;
+        this.Zr_Max = (returnDatas[34].equals("null")) ? Double.parseDouble(returnDatas[34]) : null;
+        this.Ag_Min = (returnDatas[35].equals("null")) ? Double.parseDouble(returnDatas[35]) : null;
+        this.Ag_Max = (returnDatas[36].equals("null")) ? Double.parseDouble(returnDatas[36]) : null;
+        this.Cu_Min = (returnDatas[37].equals("null")) ? Double.parseDouble(returnDatas[37]) : null;
+        this.Cu_Max = (returnDatas[38].equals("null")) ? Double.parseDouble(returnDatas[38]) : null;
+        this.Th_Min = (returnDatas[39].equals("null")) ? Double.parseDouble(returnDatas[39]) : null;
+        this.Th_Max = (returnDatas[40].equals("null")) ? Double.parseDouble(returnDatas[40]) : null;
+        this.Y_Min = (returnDatas[41].equals("null")) ? Double.parseDouble(returnDatas[41]) : null;
+        this.Y_Max = (returnDatas[42].equals("null")) ? Double.parseDouble(returnDatas[42]) : null;
+        this.RareElements_Min = (returnDatas[43].equals("null")) ? Double.parseDouble(returnDatas[43]) : null;
+        this.RareElements_Max = (returnDatas[44].equals("null")) ? Double.parseDouble(returnDatas[44]) : null;
     }
 
 

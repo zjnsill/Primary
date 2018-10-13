@@ -176,13 +176,9 @@ public class SearchResults extends AppCompatActivity {
         if(names != null) {
             for (int i = 0; i < names.size(); i++) {
                 String name = names.get(i);
-                Log.i("MainActivity", name);
                 JSONObject attributes = getAttributes(name);
-                Log.i("MainActivity", attributes.toString());
                 JSONObject components = getComponents(name);
-                Log.i("MainActivity", components.toString());
                 JSONObject more_details = getMoreDetails(name);
-                Log.i("MainActivity", more_details.toString());
                 SingleAlloyItem singleAlloyItem = transferToAlloyItem(attributes, components, more_details);
                 singleAlloyItems.add(singleAlloyItem);
             }
@@ -194,7 +190,6 @@ public class SearchResults extends AppCompatActivity {
     private ArrayList<String> getNames(final Request request) {
         String path="http://118.25.122.232/android_connect/find.php";
         List<NameValuePair> params = paramsList(request);
-        InputStream is = null;
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(path);
@@ -202,22 +197,17 @@ public class SearchResults extends AppCompatActivity {
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
-            is = httpEntity.getContent();
+            InputStream is = httpEntity.getContent();
 
             JSONObject jsonObject = parseInfo(is);
             if(jsonObject.getInt(TAG_SUCCESS) == 1) {
                 JSONArray alloys = jsonObject.getJSONArray(TAG_ALLOYS);
-                Log.i("MainActivity", alloys.toString());
                 ArrayList<String> nameList = new ArrayList<>();
                 for(int i = 0; i < alloys.length(); i++) {
-                    //Log.i("MainActivity", i + "");
                     JSONObject c = alloys.getJSONObject(i);
-                    //Log.i("MainActivity", c.toString());
                     String name = c.getString(TAG_NAME);
-                    //Log.i("MainActivity", name);
                     nameList.add(name);
                 }
-                Log.i("MainActivity", nameList.toString());
                 return nameList;
             }
         } catch(Exception e) {
@@ -230,7 +220,6 @@ public class SearchResults extends AppCompatActivity {
         String path="http://118.25.122.232/android_connect/attributes.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("Name", name));
-        InputStream is = null;
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(path);
@@ -238,7 +227,7 @@ public class SearchResults extends AppCompatActivity {
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
-            is = httpEntity.getContent();
+            InputStream is = httpEntity.getContent();
 
             return parseInfo(is);
         } catch(Exception e) {
@@ -251,7 +240,6 @@ public class SearchResults extends AppCompatActivity {
         String path="http://118.25.122.232/android_connect/components.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("Name", name));
-        InputStream is = null;
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(path);
@@ -259,7 +247,7 @@ public class SearchResults extends AppCompatActivity {
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
-            is = httpEntity.getContent();
+            InputStream is = httpEntity.getContent();
 
             return parseInfo(is);
         } catch(Exception e) {
@@ -272,7 +260,6 @@ public class SearchResults extends AppCompatActivity {
         String path="http://118.25.122.232/android_connect/more_details.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("Name", name));
-        InputStream is = null;
         try {
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(path);
@@ -280,7 +267,7 @@ public class SearchResults extends AppCompatActivity {
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
-            is = httpEntity.getContent();
+            InputStream is = httpEntity.getContent();
 
             return parseInfo(is);
         } catch(Exception e) {
@@ -465,18 +452,16 @@ public class SearchResults extends AppCompatActivity {
             elements += "Rare_Elements";
             flag = true;
         }
-        if(flag) {
+        if(flag)
             params.add(new BasicNameValuePair("Elements", elements));
-            //Log.i("MainActivity", elements);
-        }
         return params;
     }
 
     private JSONObject parseInfo(InputStream in) throws IOException {
         BufferedReader br=new BufferedReader(new InputStreamReader(in));
         StringBuilder sb=new StringBuilder();
-        String line=null;
-        String json = null;
+        String line;
+        String json;
         JSONObject jsonObject = null;
         while ((line=br.readLine())!=null){
             sb.append(line+"\n");
@@ -494,20 +479,14 @@ public class SearchResults extends AppCompatActivity {
     private SingleAlloyItem transferToAlloyItem(JSONObject attributes, JSONObject components, JSONObject more_details) {
         try {
             if(attributes.getInt(TAG_SUCCESS) == 1 && components.getInt(TAG_SUCCESS) == 1 && more_details.getInt(TAG_SUCCESS) == 1) {
-                //Log.i("MainActivity", "success");
                 JSONObject attribute = attributes.getJSONArray(TAG_ALLOYS).getJSONObject(0);
                 JSONObject component = components.getJSONArray(TAG_ALLOYS).getJSONObject(0);
-                Log.i("MainActivity", "test");
-                Log.i("MainActivity", attribute.toString());
-                Log.i("MainActivity", component.toString());
-               // JSONObject more_detail = more_details.getJSONArray(TAG_ALLOYS).getJSONObject(0);
+                JSONObject more_detail = more_details.getJSONArray(TAG_ALLOYS).getJSONObject(0);
                 String[] returnDatas = new String[45];
                 returnDatas[0] = attribute.getString(TAG_NAME);
                 returnDatas[1] = attribute.getString(TAG_NAMING_STANDARD);
                 returnDatas[2] = component.getString(TAG_ELEMENTS);
-                //Log.i("MainActivity", "test");
                 returnDatas[3] = attribute.getString(TAG_DENSITY);
-                Log.i("MainActivity", returnDatas[3]);
                 returnDatas[4] = attribute.getString(TAG_THERMAL_CONDUCTIVITY);
                 returnDatas[5] = attribute.getString(TAG_THERMAL_EXPANSION_COEFFICIENT);
                 returnDatas[6] = attribute.getString(TAG_SPECIFIC_HEAT);
@@ -519,18 +498,11 @@ public class SearchResults extends AppCompatActivity {
                 returnDatas[12] = attribute.getString(TAG_DAMPING_INDEX);
                 returnDatas[13] = attribute.getString(TAG_BRINELL_HARDNESS_MIN);
                 returnDatas[14] = attribute.getString(TAG_BRINELL_HARDNESS_MAX);
-                returnDatas[15] = "";
-                returnDatas[16] = "";
-                returnDatas[17] = "";
-                returnDatas[18] = "";
-                returnDatas[19] = "";
-                /*
                 returnDatas[15] = more_detail.getString(TAG_FORGING); // forging
                 returnDatas[16] = more_detail.getString(TAG_WELDABILITY); // weldability
                 returnDatas[17] = more_detail.getString(TAG_MACHINING); // machining
                 returnDatas[18] = more_detail.getString(TAG_SURFACE_TREATMENT); //surface_treatment
                 returnDatas[19] = more_detail.getString(TAG_CORROSION_RESISTANCE); // corrision_resistance
-                */
                 returnDatas[20] = attribute.getString(TAG_FRACTURE_TOUGHNESS);
                 returnDatas[21] = component.getString(TAG_AL_MIN);
                 returnDatas[22] = component.getString(TAG_AL_MAX);
@@ -556,9 +528,8 @@ public class SearchResults extends AppCompatActivity {
                 returnDatas[42] = component.getString(TAG_Y_MAX);
                 returnDatas[43] = component.getString(TAG_RARE_ELEMENTS_MIN);
                 returnDatas[44] = component.getString(TAG_RARE_ELEMENTS_MAX);
-                Log.i("MainActivity", "test");
+
                 SingleAlloyItem singleAlloyItem = new SingleAlloyItem(returnDatas);
-                Log.i("MainActivity", "alloy item produced");
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("returnedItem",singleAlloyItem);
                 Message msg = Message.obtain();
