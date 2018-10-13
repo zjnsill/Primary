@@ -298,18 +298,19 @@ public class SingleAlloyItem implements Parcelable{
 
 
     public SingleAlloyItem(String[] returnDatas){
-        for(int i = 0; i < 11; i++)
-            Validation[i] = (returnDatas[i] != null);
-        Validation[10] = returnDatas[11] != null;
-        Validation[11] = returnDatas[12] != null;
-        Validation[12] = returnDatas[13] != null;
-        Validation[12] = returnDatas[14] != null;
+        for(int i = 0; i < 45; i++)
+            Validation[i] = (returnDatas[i] != "null");
+        /*
+        Validation[10] = returnDatas[11] != "null";
+        Validation[11] = returnDatas[12] != "null";
+        Validation[12] = returnDatas[13] != "null";
+        Validation[12] = returnDatas[14] != "null";
         for(int i = 13; i <= 18; i++)
-            Validation[i] = returnDatas[i + 2] != null;
+            Validation[i] = returnDatas[i + 2] != "null";
         for(int i = 19; i <= 30; i++) {
-            Validation[i] = returnDatas[i + (i - 17)] != null;
-            Validation[i] = returnDatas[i + (i - 17) + 1] != null;
-        }
+            Validation[i] = returnDatas[i + (i - 17)] != "null";
+            Validation[i] = returnDatas[i + (i - 17) + 1] != "null";
+        }*/
 
         this.AlloyName = Validation[0]? returnDatas[0]:"";
         this.NamingStandard = Validation[1]? returnDatas[1]:"";

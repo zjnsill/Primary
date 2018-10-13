@@ -41,7 +41,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/NameTV"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentStart="true"
@@ -52,22 +52,23 @@
                         android:textSize="18sp" />
 
                     <EditText
-                        android:id="@+id/nameET"
-                        android:layout_width="match_parent"
+                        android:id="@+id/NameET"
+                        android:layout_width="281dp"
                         android:layout_height="match_parent"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="1dp"
                         android:layout_marginRight="8dp"
-                        android:layout_toRightOf="@id/textView"
+                        android:layout_toRightOf="@id/NameTV"
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="Alloy Name"
                         android:inputType="textPersonName" />
+
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/HardnessCV"
+                android:id="@+id/NamingStandardCV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
@@ -80,47 +81,33 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textViewh"
+                        android:id="@+id/NamingStandardTV"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
-                        android:gravity="center_vertical"
-                        android:text="Hardness: "
+                        android:layout_weight="1"
+                        android:text="NamingStandard: "
                         android:textSize="18sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <EditText
+                        android:id="@+id/NamingStandardET"
+                        android:layout_width="281dp"
                         android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@id/textViewh"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/hardness_min_ET"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Min"
-                            android:inputType="numberDecimal" />
-
-                        <EditText
-                            android:id="@+id/hardness_max_ET"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Max"
-                            android:inputType="numberDecimal" />
-                    </LinearLayout>
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_toRightOf="@id/NamingStandardTV"
+                        android:layout_weight="1"
+                        android:hint="NamingStandard"
+                        android:inputType="textPersonName" />
 
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/componentCV"
+                android:id="@+id/element_percentageCV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
@@ -133,12 +120,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/element_percentageTV"
                         android:layout_width="342dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="4dp"
-                        android:text="Component"
+                        android:text="Element Percentage"
                         android:textSize="18sp"
                         tools:layout_editor_absoluteX="8dp"
                         tools:layout_editor_absoluteY="317dp" />
@@ -146,6 +133,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -156,65 +145,387 @@
                             android:orientation="horizontal">
 
                             <CheckBox
-                                android:id="@+id/Al"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/MgCB"
+                                android:layout_width="60dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Aluminum" />
+                                android:text=" Mg" />
 
-                            <CheckBox
-                                android:id="@+id/Zn"
-                                android:layout_width="wrap_content"
+                            <EditText
+                                android:id="@+id/Mg_min_ET"
+                                android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Zinc" />
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
 
-                            <CheckBox
-                                android:id="@+id/Mn"
-                                android:layout_width="wrap_content"
+                            <EditText
+                                android:id="@+id/Mg_max_ET"
+                                android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Manganese" />
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/AlCB"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Al" />
+
+                            <EditText
+                                android:id="@+id/Al_min_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/Al_max_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
                             android:orientation="horizontal">
 
                             <CheckBox
-                                android:id="@+id/Zr"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/MnCB"
+                                android:layout_width="60dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Zirconium" />
+                                android:text=" Mn" />
 
-                            <CheckBox
-                                android:id="@+id/Yr"
-                                android:layout_width="wrap_content"
+                            <EditText
+                                android:id="@+id/Mn_min_ET"
+                                android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Yttrium" />
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
 
-                            <CheckBox
-                                android:id="@+id/Other"
-                                android:layout_width="wrap_content"
+                            <EditText
+                                android:id="@+id/Mn_max_ET"
+                                android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Other"
-                                tools:layout_editor_absoluteX="0dp"
-                                tools:layout_editor_absoluteY="362dp" />
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/CuCB"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Cu" />
+
+                            <EditText
+                                android:id="@+id/Cu_min_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/Cu_max_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/ZnCB"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Zn" />
+
+                            <EditText
+                                android:id="@+id/Zn_min_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/Zn_max_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/YCB"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Y" />
+
+                            <EditText
+                                android:id="@+id/Y_min_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/Y_max_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/ZrCB"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Zr" />
+
+                            <EditText
+                                android:id="@+id/Zr_min_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/Zr_max_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/AgCB"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Ag" />
+
+                            <EditText
+                                android:id="@+id/Ag_min_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/Ag_max_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/NdCB"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Nd" />
+
+                            <EditText
+                                android:id="@+id/Nd_min_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/Nd_max_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/GdCB"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Gd" />
+
+                            <EditText
+                                android:id="@+id/Gd_min_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/Gd_max_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/ThCB"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Th" />
+
+                            <EditText
+                                android:id="@+id/Th_min_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/Th_max_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/RareElementsCB"
+                                android:layout_width="125dp"
+                                android:layout_height="wrap_content"
+                                android:text="RareElements" />
+
+                            <EditText
+                                android:id="@+id/RareElements_min_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Min"
+                                android:inputType="numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/RareElementsCB_max_ET"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="Max"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/MeltingPointCV"
+                android:id="@+id/DensityCV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
@@ -227,25 +538,25 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textViewmp"
+                        android:id="@+id/DensityTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
                         android:gravity="center_vertical"
-                        android:text="Melting Point: "
+                        android:text="Density: "
                         android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@id/textViewmp"
+                        android:layout_toRightOf="@id/DensityTV"
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/meltingPoint_min_ET"
+                            android:id="@+id/Density_min_ET"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -254,219 +565,7 @@
                             android:inputType="numberDecimal" />
 
                         <EditText
-                            android:id="@+id/meltingPoint_max_ET"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Max"
-                            android:inputType="numberDecimal" />
-                    </LinearLayout>
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/ElasticModuCV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textViewem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:gravity="center_vertical"
-                        android:text="Elastic modulus: "
-                        android:textSize="18sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@id/textViewem"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/elasticModu_min_ET"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Min"
-                            android:inputType="numberDecimal" />
-
-                        <EditText
-                            android:id="@+id/elasticModu_max_ET"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Max"
-                            android:inputType="numberDecimal" />
-                    </LinearLayout>
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/SpecificHeatCV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textViewsh"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:gravity="center_vertical"
-                        android:text="Specific Heat: "
-                        android:textSize="18sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@id/textViewsh"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/specificHeat_min_ET"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Min"
-                            android:inputType="numberDecimal" />
-
-                        <EditText
-                            android:id="@+id/specificHeat_max_ET"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Max"
-                            android:inputType="numberDecimal" />
-                    </LinearLayout>
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/ResistivityCV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textViewre"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:gravity="center_vertical"
-                        android:text="Resistivity: "
-                        android:textSize="18sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@id/textViewre"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/resistivity_min_ET"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Min"
-                            android:inputType="numberDecimal" />
-
-                        <EditText
-                            android:id="@+id/resistivity_max_ET"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Max"
-                            android:inputType="numberDecimal" />
-                    </LinearLayout>
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/ThermalConCV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textViewtc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:gravity="center_vertical"
-                        android:text="Thermal Conductivity: "
-                        android:textSize="18sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@id/textViewtc"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/thermalCon_min_ET"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Min"
-                            android:inputType="numberDecimal" />
-
-                        <EditText
-                            android:id="@+id/thermnalCon_max_ET"
+                            android:id="@+id/Density_max_ET"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -492,25 +591,25 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@id/textView"
+                        android:id="@+id/ThermalExpanTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
                         android:gravity="center_vertical"
-                        android:text="Thermal Expansion: "
+                        android:text="ThermalExpan: "
                         android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@id/textView"
+                        android:layout_toRightOf="@id/ThermalExpanTV"
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/thermalExpan_min_ET"
+                            android:id="@+id/ThermalExpan_min_ET"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -519,7 +618,7 @@
                             android:inputType="numberDecimal" />
 
                         <EditText
-                            android:id="@+id/thermnalExpan_max_ET"
+                            android:id="@+id/ThermalExpan_max_ET"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -531,9 +630,8 @@
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
-
             <android.support.v7.widget.CardView
-                android:id="@+id/DensityCV"
+                android:id="@+id/ThermalConCV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
@@ -546,25 +644,25 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/TextViewtx"
+                        android:id="@+id/ThermalConTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
                         android:gravity="center_vertical"
-                        android:text="Density: "
+                        android:text="Thermal Con: "
                         android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
-                        android:layout_toRightOf="@id/TextViewtx"
+                        android:layout_toRightOf="@id/ThermalConTV"
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/density_min_ET"
+                            android:id="@+id/ThermalCon_min_ET"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -573,7 +671,431 @@
                             android:inputType="numberDecimal" />
 
                         <EditText
-                            android:id="@+id/density_max_ET"
+                            android:id="@+id/ThermalCon_max_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Max"
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/HardnessCV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/HardnessTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:text="Hardness: "
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@id/HardnessTV"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/Hardness_min_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Min"
+                            android:inputType="numberDecimal" />
+
+                        <EditText
+                            android:id="@+id/Hardness_max_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Max"
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/MeltingRangeCV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/MeltingRangeTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:text="Melting Range: "
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@id/MeltingRangeTV"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/MeltingRange_min_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Min"
+                            android:inputType="numberDecimal" />
+
+                        <EditText
+                            android:id="@+id/MeltingRange_max_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Max"
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/FractureToughnessCV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/FractureToughnessTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:text="Fracture Toughness: "
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@id/FractureToughnessTV"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/FractureToughness_min_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Min"
+                            android:inputType="numberDecimal" />
+
+                        <EditText
+                            android:id="@+id/FractureToughness_max_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Max"
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/ElasticModuCV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ElasticModuTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:text="Elastic Modu: "
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@id/ElasticModuTV"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/ElasticModu_min_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Min"
+                            android:inputType="numberDecimal" />
+
+                        <EditText
+                            android:id="@+id/ElasticModu_max_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Max"
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/SpecificHeatCV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/SpecificHeatTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:text="Specific Heat: "
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@id/SpecificHeatTV"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/SpecificHeat_min_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Min"
+                            android:inputType="numberDecimal" />
+
+                        <EditText
+                            android:id="@+id/SpecificHeat_max_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Max"
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/ResistivityCV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ResistivityTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:text="Resistivity: "
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@id/ResistivityTV"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/Resistivity_min_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Min"
+                            android:inputType="numberDecimal" />
+
+                        <EditText
+                            android:id="@+id/Resistivity_max_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Max"
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/PoissonsRatioCV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/PoissonsRatioTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:text="RPoissons Ratio: "
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@id/PoissonsRatioTV"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/PoissonsRatio_min_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Min"
+                            android:inputType="numberDecimal" />
+
+                        <EditText
+                            android:id="@+id/PoissonsRatio_max_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Max"
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/DampingIndexCV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/DampingIndexTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:text="Damping Index: "
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@id/DampingIndexTV"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/DampingIndex_min_ET"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Min"
+                            android:inputType="numberDecimal" />
+
+                        <EditText
+                            android:id="@+id/DampingIndex_max_ET"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
