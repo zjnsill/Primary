@@ -5,7 +5,7 @@ android {
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.psi.shen.primary"
-        minSdkVersion 24
+        minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -30,5 +30,5 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0-rc02'
     implementation files('libs/mysql-connector-java-5.1.46.jar')
     implementation 'com.android.support:design:27.1.1'
-
+    implementation 'com.android.support:support-annotations:22.0.0'
 }

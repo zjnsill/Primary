@@ -23,13 +23,15 @@ public class Search extends AppCompatActivity {
 
     private EditText NameET,NamingStandardET;
     private String Name,NamingStandard;
-    private EditText DensityET,ThermalExpanET,ThermalConET,SpecificHeatET,ResistivityET,ElasticModuET,PoissonsRatioET,
-            DampingIndexET,FractureToughnessET,MeltingRange_MinET,MeltingRange_MaxET,Hardness_MinET, Hardness_MaxET,
+    private EditText Density_MinET, Density_MaxET, ThermalExpan_MinET, ThermalExpan_MaxET, ThermalCon_MinET,ThermalCon_MaxET,
+            SpecificHeat_MinET,SpecificHeat_MaxET,Resistivity_MinET,Resistivity_MaxET,ElasticModu_MinET,ElasticModu_MaxET,
+            PoissonsRatio_MinET,PoissonsRatio_MaxET, DampingIndex_MinET,DampingIndex_MaxET,FractureToughness_MinET,
+            FractureToughness_MaxET, MeltingRange_MinET,MeltingRange_MaxET,Hardness_MinET, Hardness_MaxET,
             Al_MinET, Al_MaxET, Mn_MinET, Mn_MaxET, Zn_MinET, Zn_MaxET, Mg_MinET, Mg_MaxET, Nd_MinET, Nd_MaxET, Gd_MinET, Gd_MaxET, Zr_MinET,
             Zr_MaxET, Ag_MinET, Ag_MaxET, Cu_MinET, Cu_MaxET, Th_MinET, Th_MaxET, Y_MinET, Y_MaxET, RareElements_MinET, RareElements_MaxET;
     private CheckBox AlCB,ZnCB,MnCB,MgCB,NdCB,GdCB,AgCB,CuCB,ThCB,YCB,ZrCB,RareElementsCB;
     private double[] doubleArray;
-    private boolean[] Validation = new boolean[39];
+    private boolean[] Validation = new boolean[60];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,25 +57,28 @@ public class Search extends AppCompatActivity {
         //starredDatabase.addStarredListItem(starredListData.get(1));
         //starredDatabase.addStarredListItem(starredListData.get(2));
         //Toast.makeText(this,"Some sample data added!",Toast.LENGTH_SHORT).show();
-
-
-
-
-
-
     }
     private void clearAll(){
         NameET.setText("");
         NamingStandardET.setText("");
-        DensityET.setText("");
-        ThermalExpanET.setText("");
-        ThermalConET.setText("");
-        SpecificHeatET.setText("");
-        ResistivityET.setText("");
-        ElasticModuET.setText("");
-        PoissonsRatioET.setText("");
-        DampingIndexET.setText("");
-        FractureToughnessET.setText("");
+        Density_MinET.setText("");
+        Density_MaxET.setText("");
+        ThermalExpan_MinET.setText("");
+        ThermalExpan_MaxET.setText("");
+        ThermalCon_MinET.setText("");
+        ThermalCon_MaxET.setText("");
+        SpecificHeat_MinET.setText("");
+        SpecificHeat_MaxET.setText("");
+        Resistivity_MinET.setText("");
+        Resistivity_MaxET.setText("");
+        ElasticModu_MinET.setText("");
+        ElasticModu_MaxET.setText("");
+        PoissonsRatio_MinET.setText("");
+        PoissonsRatio_MaxET.setText("");
+        DampingIndex_MinET.setText("");
+        DampingIndex_MaxET.setText("");
+        FractureToughness_MinET.setText("");
+        FractureToughness_MaxET.setText("");
         MeltingRange_MinET.setText("");
         MeltingRange_MaxET.setText("");
         Hardness_MinET.setText("");
@@ -120,57 +125,66 @@ public class Search extends AppCompatActivity {
     void setupInputComponent(){
         SearchBtn = findViewById(R.id.searchBtn);
         searchTopBar = findViewById(R.id.searchTopBar);
-        NameET = findViewById(R.id.nameET);
-        NamingStandardET = findViewById(R.id.);
-        DensityET = findViewById(R.id.);
-        ThermalExpanET = findViewById(R.id.);
-        ThermalConET = findViewById(R.id.);
-        SpecificHeatET = findViewById(R.id.);
-        ResistivityET = findViewById(R.id.);
-        ElasticModuET = findViewById(R.id.);
-        PoissonsRatioET = findViewById(R.id.);
-        DampingIndexET = findViewById(R.id.);
-        FractureToughnessET = findViewById(R.id.);
-        MeltingRange_MinET = findViewById(R.id.);
-        MeltingRange_MaxET = findViewById(R.id.);
-        Hardness_MinET = findViewById(R.id.hardness_min_ET);
-        Hardness_MaxET = findViewById(R.id.hardness_max_ET);
-        Al_MinET = findViewById(R.id.);
-        Al_MaxET = findViewById(R.id.);
-        Mn_MinET = findViewById(R.id.);
-        Mn_MaxET = findViewById(R.id.);
-        Zn_MinET = findViewById(R.id.);
-        Zn_MaxET = findViewById(R.id.);
-        Mg_MinET = findViewById(R.id.);
-        Mg_MaxET = findViewById(R.id.);
-        Nd_MinET = findViewById(R.id.);
-        Nd_MaxET = findViewById(R.id.);
-        Gd_MinET = findViewById(R.id.);
-        Gd_MaxET = findViewById(R.id.);
-        Zr_MinET = findViewById(R.id.);
-        Zr_MaxET = findViewById(R.id.);
-        Ag_MinET = findViewById(R.id.);
-        Ag_MaxET = findViewById(R.id.);
-        Cu_MinET = findViewById(R.id.);
-        Cu_MaxET = findViewById(R.id.);
-        Th_MinET = findViewById(R.id.);
-        Th_MaxET = findViewById(R.id.);
-        Y_MinET = findViewById(R.id.);
-        Y_MaxET = findViewById(R.id.);
-        RareElements_MinET = findViewById(R.id.);
-        RareElements_MaxET = findViewById(R.id.);
-        AlCB = findViewById(R.id.);
-        ZnCB = findViewById(R.id.);
-        MnCB = findViewById(R.id.);
-        MgCB = findViewById(R.id.);
-        NdCB = findViewById(R.id.);
-        GdCB = findViewById(R.id.);
-        AgCB = findViewById(R.id.);
-        CuCB = findViewById(R.id.);
-        ThCB = findViewById(R.id.);
-        YCB = findViewById(R.id.);
-        ZrCB = findViewById(R.id.);
-        RareElementsCB = findViewById(R.id.);
+        NameET = findViewById(R.id.NameET);
+        NamingStandardET = findViewById(R.id.NamingStandardET);
+        Density_MinET = findViewById(R.id.Density_min_ET);
+        Density_MaxET = findViewById(R.id.Density_max_ET);
+        ThermalExpan_MinET = findViewById(R.id.ThermalExpan_min_ET);
+        ThermalExpan_MaxET = findViewById(R.id.ThermalExpan_max_ET);
+        ThermalCon_MinET = findViewById(R.id.ThermalCon_min_ET);
+        ThermalCon_MaxET = findViewById(R.id.ThermalCon_max_ET);
+        SpecificHeat_MinET = findViewById(R.id.SpecificHeat_min_ET);
+        SpecificHeat_MaxET = findViewById(R.id.SpecificHeat_max_ET);
+        Resistivity_MinET = findViewById(R.id.Resistivity_min_ET);
+        Resistivity_MaxET = findViewById(R.id.Resistivity_max_ET);
+        ElasticModu_MinET = findViewById(R.id.ElasticModu_min_ET);
+        ElasticModu_MaxET = findViewById(R.id.ElasticModu_max_ET);
+        PoissonsRatio_MinET = findViewById(R.id.PoissonsRatio_min_ET);
+        PoissonsRatio_MaxET = findViewById(R.id.PoissonsRatio_max_ET);
+        DampingIndex_MinET = findViewById(R.id.DampingIndex_min_ET);
+        DampingIndex_MaxET = findViewById(R.id.DampingIndex_max_ET);
+        FractureToughness_MinET = findViewById(R.id.FractureToughness_min_ET);
+        FractureToughness_MaxET = findViewById(R.id.FractureToughness_max_ET);
+        MeltingRange_MinET = findViewById(R.id.MeltingRange_min_ET);
+        MeltingRange_MaxET = findViewById(R.id.MeltingRange_max_ET);
+        Hardness_MinET = findViewById(R.id.Hardness_min_ET);
+        Hardness_MaxET = findViewById(R.id.Hardness_max_ET);
+        Al_MinET = findViewById(R.id.Al_min_ET);
+        Al_MaxET = findViewById(R.id.Al_max_ET);
+        Mn_MinET = findViewById(R.id.Mn_min_ET);
+        Mn_MaxET = findViewById(R.id.Mn_max_ET);
+        Zn_MinET = findViewById(R.id.Zn_min_ET);
+        Zn_MaxET = findViewById(R.id.Zn_max_ET);
+        Mg_MinET = findViewById(R.id.Mg_min_ET);
+        Mg_MaxET = findViewById(R.id.Mg_max_ET);
+        Nd_MinET = findViewById(R.id.Nd_min_ET);
+        Nd_MaxET = findViewById(R.id.Nd_max_ET);
+        Gd_MinET = findViewById(R.id.Gd_min_ET);
+        Gd_MaxET = findViewById(R.id.Gd_max_ET);
+        Zr_MinET = findViewById(R.id.Zr_min_ET);
+        Zr_MaxET = findViewById(R.id.Zr_max_ET);
+        Ag_MinET = findViewById(R.id.Ag_min_ET);
+        Ag_MaxET = findViewById(R.id.Ag_max_ET);
+        Cu_MinET = findViewById(R.id.Cu_min_ET);
+        Cu_MaxET = findViewById(R.id.Cu_max_ET);
+        Th_MinET = findViewById(R.id.Th_min_ET);
+        Th_MaxET = findViewById(R.id.Th_max_ET);
+        Y_MinET = findViewById(R.id.Y_min_ET);
+        Y_MaxET = findViewById(R.id.Y_max_ET);
+        RareElements_MinET = findViewById(R.id.RareElements_min_ET);
+        RareElements_MaxET = findViewById(R.id.RareElementsCB_max_ET);
+        AlCB = findViewById(R.id.AlCB);
+        ZnCB = findViewById(R.id.ZnCB);
+        MnCB = findViewById(R.id.MnCB);
+        MgCB = findViewById(R.id.MgCB);
+        NdCB = findViewById(R.id.NdCB);
+        GdCB = findViewById(R.id.GdCB);
+        AgCB = findViewById(R.id.AgCB);
+        CuCB = findViewById(R.id.CuCB);
+        ThCB = findViewById(R.id.ThCB);
+        YCB = findViewById(R.id.YCB);
+        ZrCB = findViewById(R.id.ZrCB);
+        RareElementsCB = findViewById(R.id.RareElementsCB);
         searchTopBar.setLeftAndRightListener(new TopBar.LeftAndRightListener(){
             @Override
             public void rightListener(){
@@ -204,61 +218,49 @@ public class Search extends AppCompatActivity {
     private void gatherInput(){
         Name = EditTextToString(NameET);
         NamingStandard = EditTextToString(NamingStandardET);
-        Validation[0]=hasInput(NameET);
-        Validation[1]=hasInput(NamingStandardET);
-        Validation[2]=hasInput(DensityET);
-        Validation[3]=hasInput(ThermalExpanET);
-        Validation[4]=hasInput(ThermalConET);
-        Validation[5]=hasInput(SpecificHeatET);
-        Validation[6]=hasInput(ResistivityET);
-        Validation[7]=hasInput(ElasticModuET);
-        Validation[8]=hasInput(PoissonsRatioET);
-        Validation[9]=hasInput(DampingIndexET);
-        Validation[10]=hasInput(FractureToughnessET);
-        Validation[11]=hasInput(MeltingRange_MinET);
-        Validation[12]=hasInput(MeltingRange_MaxET);
-        Validation[13]=hasInput(Hardness_MinET);
-        Validation[14]=hasInput(Hardness_MaxET);
-        Validation[15]=hasInput(Al_MinET);
-        Validation[16]=hasInput(Al_MaxET);
-        Validation[17]=hasInput(Mn_MinET);
-        Validation[18]=hasInput(Mn_MaxET);
-        Validation[19]=hasInput(Zn_MinET);
-        Validation[20]=hasInput(Zn_MaxET);
-        Validation[21]=hasInput(Mg_MinET);
-        Validation[22]=hasInput(Mg_MaxET);
-        Validation[23]=hasInput(Nd_MinET);
-        Validation[24]=hasInput(Nd_MaxET);
-        Validation[25]=hasInput(Gd_MinET);
-        Validation[26]=hasInput(Gd_MaxET);
-        Validation[27]=hasInput(Zr_MinET);
-        Validation[28]=hasInput(Zr_MaxET);
-        Validation[29]=hasInput(Ag_MinET);
-        Validation[30]=hasInput(Ag_MaxET);
-        Validation[31]=hasInput(Cu_MinET);
-        Validation[32]=hasInput(Cu_MaxET);
-        Validation[33]=hasInput(Th_MinET);
-        Validation[34]=hasInput(Th_MaxET);
-        Validation[35]=hasInput(Y_MinET);
-        Validation[36]=hasInput(Y_MaxET);
-        Validation[37]=hasInput(RareElements_MinET);
-        Validation[38]=hasInput(RareElements_MaxET);
-        Validation[39]=AlCB.isChecked();
-        Validation[40]=ZnCB.isChecked();
-        Validation[41]=MnCB.isChecked();
-        Validation[42]=MgCB.isChecked();
-        Validation[43]=NdCB.isChecked();
-        Validation[44]=GdCB.isChecked();
-        Validation[45]=AgCB.isChecked();
-        Validation[46]=CuCB.isChecked();
-        Validation[47]=ThCB.isChecked();
-        Validation[48]=YCB.isChecked();
-        Validation[49]=ZrCB.isChecked();
-        Validation[50]=RareElementsCB.isChecked();
+        Validation[0] = hasInput(NameET);Validation[1] = hasInput(NamingStandardET);
+        Validation[2] = hasInput(Density_MinET);Validation[3] = hasInput(Density_MaxET);
+        Validation[4] = hasInput(ThermalExpan_MinET);Validation[5] = hasInput(ThermalExpan_MaxET);
+        Validation[6] = hasInput(ThermalCon_MinET);Validation[7] = hasInput(ThermalCon_MaxET);
+        Validation[8] = hasInput(SpecificHeat_MinET);Validation[9] = hasInput(SpecificHeat_MaxET);
+        Validation[10] = hasInput(Resistivity_MinET);Validation[11] = hasInput(Resistivity_MaxET);
+        Validation[12] = hasInput(ElasticModu_MinET);Validation[13] = hasInput(ElasticModu_MaxET);
+        Validation[14] = hasInput(PoissonsRatio_MinET);Validation[15] = hasInput(PoissonsRatio_MaxET);
+        Validation[16] = hasInput(DampingIndex_MinET);Validation[17] = hasInput(DampingIndex_MaxET);
+        Validation[18] = hasInput(FractureToughness_MinET);Validation[19] = hasInput(FractureToughness_MaxET);
+        Validation[20] = hasInput(MeltingRange_MinET);Validation[21] = hasInput(MeltingRange_MaxET);
+        Validation[22] = hasInput(Hardness_MinET);Validation[23] = hasInput(Hardness_MaxET);
+        Validation[24] = hasInput(Al_MinET); Validation[25] = hasInput(Al_MaxET);
+        Validation[26] = hasInput(Mn_MinET); Validation[27] = hasInput(Mn_MaxET);
+        Validation[28] = hasInput(Zn_MinET); Validation[29] = hasInput(Zn_MaxET);
+        Validation[30] = hasInput(Mg_MinET); Validation[31] = hasInput(Mg_MaxET);
+        Validation[32] = hasInput(Nd_MinET); Validation[33] = hasInput(Nd_MaxET);
+        Validation[34] = hasInput(Gd_MinET); Validation[35] = hasInput(Gd_MaxET);
+        Validation[36] = hasInput(Zr_MinET); Validation[37] = hasInput(Zr_MaxET);
+        Validation[38] = hasInput(Ag_MinET); Validation[39] = hasInput(Ag_MaxET);
+        Validation[40] = hasInput(Cu_MinET); Validation[41] = hasInput(Cu_MaxET);
+        Validation[42] = hasInput(Th_MinET); Validation[43] = hasInput(Th_MaxET);
+        Validation[44] = hasInput(Y_MinET); Validation[45] = hasInput(Y_MaxET);
+        Validation[46] = hasInput(RareElements_MinET); Validation[47] = hasInput(RareElements_MaxET);
+        Validation[48] = AlCB.isChecked();
+        Validation[49] = MnCB.isChecked();
+        Validation[50] = ZnCB.isChecked();
+        Validation[51] = MgCB.isChecked();
+        Validation[52] = NdCB.isChecked();
+        Validation[53] = GdCB.isChecked();
+        Validation[54] = ZrCB.isChecked();
+        Validation[55] = AgCB.isChecked();
+        Validation[56] = CuCB.isChecked();
+        Validation[57] = ThCB.isChecked();
+        Validation[58] = YCB.isChecked();
+        Validation[59] = RareElementsCB.isChecked();
 
-        doubleArray=new double[]{EditTextTodouble(DensityET),EditTextTodouble(ThermalExpanET),EditTextTodouble(ThermalConET),
-                EditTextTodouble(SpecificHeatET),EditTextTodouble(ResistivityET),EditTextTodouble(ElasticModuET),EditTextTodouble(PoissonsRatioET),
-                EditTextTodouble(DampingIndexET),EditTextTodouble(FractureToughnessET),EditTextTodouble(MeltingRange_MinET),
+        doubleArray=new double[]{EditTextTodouble(Density_MinET),EditTextTodouble(Density_MaxET),EditTextTodouble(ThermalExpan_MinET),
+                EditTextTodouble(ThermalExpan_MaxET),EditTextTodouble(ThermalCon_MinET),EditTextTodouble(ThermalCon_MaxET),
+                EditTextTodouble(SpecificHeat_MinET),EditTextTodouble(SpecificHeat_MaxET),EditTextTodouble(Resistivity_MinET),
+                EditTextTodouble(Resistivity_MaxET),EditTextTodouble(ElasticModu_MinET),EditTextTodouble(ElasticModu_MaxET),
+                EditTextTodouble(PoissonsRatio_MinET),EditTextTodouble(PoissonsRatio_MaxET), EditTextTodouble(DampingIndex_MinET),
+                EditTextTodouble(DampingIndex_MaxET),EditTextTodouble(FractureToughness_MinET),EditTextTodouble(FractureToughness_MaxET),EditTextTodouble(MeltingRange_MinET),
                 EditTextTodouble(MeltingRange_MaxET),EditTextTodouble(Hardness_MinET),EditTextTodouble(Hardness_MaxET),
                 EditTextTodouble(Al_MinET),EditTextTodouble(Al_MaxET),EditTextTodouble(Mn_MinET),EditTextTodouble(Mn_MaxET),
                 EditTextTodouble(Zn_MinET),EditTextTodouble(Zn_MaxET),EditTextTodouble(Mg_MinET),EditTextTodouble(Mg_MaxET),
