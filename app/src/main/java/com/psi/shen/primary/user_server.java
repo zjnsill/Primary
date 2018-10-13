@@ -57,16 +57,16 @@ public class user_server {
                 String Phone = jsonUser.getString(TAG_PHONE);
                 String Email = jsonUser.getString(TAG_EMAIL);
                 String Bio = jsonUser.getString(TAG_BIO);
-                signedUser user = new signedUser(new signedUser.Builder(Name, Phone, Email, Bio, signedUser.SUCCESS));
+                signedUser user = new signedUser(new signedUser.Builder(Name, Phone).Email(Email).Bio(Bio).errorCode(signedUser.SUCCESS));
                 return user;
             } else if(errorCode == 1) { // incorrect password
-                signedUser user = new signedUser(new signedUser.Builder(null, null, null, null, signedUser.INCORRECT_PASSWORD));
+                signedUser user = new signedUser(new signedUser.Builder(null, null).errorCode(signedUser.INCORRECT_PASSWORD));
                 return user;
             } else if(errorCode == 2) { // user not existed
-                signedUser user = new signedUser(new signedUser.Builder(null, null, null, null, signedUser.NO_SUCH_USER));
+                signedUser user = new signedUser(new signedUser.Builder(null, null).errorCode(signedUser.NO_SUCH_USER));
                 return user;
             } else if(errorCode == 3) { // unknown error
-                signedUser user = new signedUser(new signedUser.Builder(null, null, null, null, signedUser.UNKNOWN_ERROR));
+                signedUser user = new signedUser(new signedUser.Builder(null, null).errorCode(signedUser.UNKNOWN_ERROR));
                 return user;
             }
         } catch(Exception e) {
@@ -98,10 +98,10 @@ public class user_server {
                 signedUser returnUser = new signedUser(user, signedUser.SUCCESS);
                 return returnUser;
             } else if(errorCode == 1) { // user already existed
-                signedUser returnUser = new signedUser(new signedUser.Builder(null, null, null, null, signedUser.USER_EXISTED));
+                signedUser returnUser = new signedUser(new signedUser.Builder(null, null).errorCode(signedUser.USER_EXISTED));
                 return returnUser;
             } else if(errorCode == 2) { // unknown error
-                signedUser returnUser = new signedUser(new signedUser.Builder(null, null, null, null,signedUser.UNKNOWN_ERROR));
+                signedUser returnUser = new signedUser(new signedUser.Builder(null, null).errorCode(signedUser.UNKNOWN_ERROR));
                 return returnUser;
             }
         } catch(Exception e) {
