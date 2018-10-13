@@ -2,31 +2,77 @@ package com.psi.shen.primary;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IntDef;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 //passcode is not stored in local, which means when editing passcodes,infomations needs to be uoloaded immidiately
 public class signedUser implements Parcelable {
+    public static final int SUCCESS = 0;
+    public static final int NO_SUCH_USER = 1;
+    public static final int INCORRECT_PASSWORD = 2;
+    public static final int USER_EXISTED = 3;
+    public static final int UNKNOWN_ERROR = 4;
+
+    @IntDef({SUCCESS, NO_SUCH_USER, INCORRECT_PASSWORD, USER_EXISTED, UNKNOWN_ERROR})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface ERROR_CODES {}
+
     private String Name;
     private String Email;
     private String Phone;
     private String Bio;
     private ArrayList<String> starredItemArray = new ArrayList<>();
+    private @ERROR_CODES int errorCode;
+
+    public signedUser() {
+        this.Name = null;
+        this.Email = null;
+        this.Phone = null;
+        this.Bio = null;
+        this.errorCode = SUCCESS;
+    }
 
     public signedUser(Builder builder){
         this.Name = builder.Name;
         this.Bio = builder.Bio;
         this.Email = builder.Email;
         this.Phone = builder.Phone;
+        this.errorCode = builder.errorCode;
+    }
+
+    public signedUser(signedUser user, @ERROR_CODES int errorCode) {
+        this.Name = user.Name;
+        this.Phone = user.Phone;
+        this.Email = user.Email;
+        this.Bio = user.Bio;
+        this.errorCode = errorCode;
     }
 
 
     public static class Builder{
         private String Name,Email="",Bio="";
         private String Phone;
+        private @ERROR_CODES int errorCode;
 
         public Builder(String name,String phone){
             this.Name = name;
             this.Phone = phone;
+            this.errorCode = SUCCESS;
+        }
+
+        public Builder(String name,String phone, @ERROR_CODES int errorCode){
+            this.Name = name;
+            this.Phone = phone;
+            this.errorCode = errorCode;
+        }
+        public Builder(String name, String phone, String email, String bio, @ERROR_CODES int errorCode) {
+            this.Name = name;
+            this.Phone = phone;
+            this.Email = email;
+            this.Bio = bio;
+            this.errorCode = errorCode;
         }
         public Builder Email(String email){
             this.Email = email;
@@ -100,7 +146,7 @@ public class signedUser implements Parcelable {
     }
 
     //default user
-    static signedUser DefaultUser = new Builder("DefaultUser","00000000000").Bio("Hey, bad boy, you haven't " +
+    static signedUser DefaultUser = new Builder("DefaultUser","00000000000", SUCCESS).Bio("Hey, bad boy, you haven't " +
             "signed in").Email("AlloyProject@sjtu.edu.cn").build();
 
 }
