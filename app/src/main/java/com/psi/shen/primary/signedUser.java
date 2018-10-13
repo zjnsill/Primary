@@ -26,13 +26,6 @@ public class signedUser implements Parcelable {
     private ArrayList<String> starredItemArray = new ArrayList<>();
     private @ERROR_CODES int errorCode;
 
-    public signedUser() {
-        this.Name = null;
-        this.Email = null;
-        this.Phone = null;
-        this.Bio = null;
-        this.errorCode = SUCCESS;
-    }
 
     public signedUser(Builder builder){
         this.Name = builder.Name;
@@ -56,12 +49,9 @@ public class signedUser implements Parcelable {
         private String Phone;
         private @ERROR_CODES int errorCode;
 
-        public Builder(String name, String phone, String email, String bio, @ERROR_CODES int errorCode) {
+        public Builder(String name, String phone) {
             this.Name = name;
             this.Phone = phone;
-            this.Email = email;
-            this.Bio = bio;
-            this.errorCode = errorCode;
         }
         public Builder Email(String email){
             this.Email = email;
@@ -109,6 +99,8 @@ public class signedUser implements Parcelable {
         return starredItemArray.size();
     }
 
+    public int getErrorCode(){return this.errorCode;}
+
     //
     //Parcelable
     @Override
@@ -141,8 +133,8 @@ public class signedUser implements Parcelable {
     }
 
     //default user
-    static signedUser DefaultUser = new Builder("DefaultUser","00000000000", null, null, SUCCESS).Bio("Hey, bad boy, you haven't " +
-            "signed in").Email("AlloyProject@sjtu.edu.cn").build();
+    static signedUser DefaultUser = new Builder("DefaultUser","00000000000").Bio("Hey, bad boy, you haven't " +
+            "signed in").Email("AlloyProject@sjtu.edu.cn").errorCode(SUCCESS).build();
 
 }
 
