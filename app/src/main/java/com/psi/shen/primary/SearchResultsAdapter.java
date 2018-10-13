@@ -89,7 +89,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         viewHolder.ResistivityTV.setText("Resistivity: "+Item.getResistivity());
         viewHolder.DensityTV.setText("Density: "+Item.getDensity());
         viewHolder.ComponentTV.setText("Component: "+Item.getComponent());
-        viewHolder.MeltingRangeTV.setText("Melting Range: "+Item.getMeltingRange_Min()+"~"+Item.getMeltingRange_Max());
+        viewHolder.MeltingRangeTV.setText("Melting Range: "+Item.getMeltingRangeString());
         viewHolder.HardnessTV.setText("Hardness: "+Item.getHardness_Min()+"~"+Item.getHardness_Max());
         viewHolder.ThermalConTV.setText("Thermal Conductivity: "+Item.getThermalCon());
         viewHolder.ThermalExpanTV.setText("Thermal Expansion: "+Item.getThermalExpan());
