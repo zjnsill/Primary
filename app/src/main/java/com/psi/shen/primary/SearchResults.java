@@ -146,11 +146,9 @@ public class SearchResults extends AppCompatActivity {
             @Override
             public void run() {
                 ArrayList<SingleAlloyItem> singleAlloyItems = getSingleAlloyItems(request);
+                //Log.i(TAG, singleAlloyItems.toString());
             }
         }).start();
-        /* 因为之前的代码里用到了bundle，但我不知道怎么用，也不知道怎么传递message，
-         * 所以下面这段以前的代码就只是注释掉没有删掉
-         */
     }
 
     private void ItemAction(int position) {
