@@ -508,14 +508,16 @@ public class SearchResults extends AppCompatActivity {
                 returnDatas[43] = component.getString(TAG_RARE_ELEMENTS_MIN);
                 returnDatas[44] = component.getString(TAG_RARE_ELEMENTS_MAX);
 
-                SingleAlloyItem singleAlloyItem = new SingleAlloyItem(returnDatas);
+                /*
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("returnedItem",singleAlloyItem);
                 Message msg = Message.obtain();
                 msg.setData(bundle);
                 msg.what = 1;
                 mHandler.sendMessage(msg);
-                return singleAlloyItem;
+                */
+
+                return new SingleAlloyItem(returnDatas);
             }
         } catch (JSONException e) {
             e.printStackTrace();
