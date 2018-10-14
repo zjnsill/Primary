@@ -28,6 +28,7 @@ public class bottomSheet extends AppCompatActivity {
     private signedUser defaultUser = signedUser.DefaultUser;
     private signedUser currentUser;
     private int MAX_Bio_Line=3,EXPANDED_Bio_Line=6;
+    private UserDatabaseManager userDatabaseManager;
 
 
     @Override
@@ -59,13 +60,14 @@ public class bottomSheet extends AppCompatActivity {
         //functions to ask user to sign in;
         //currently return francis as the previously signed user;
         //if the user is not signed in, use default user;
-        //currentUser = new signedUser.Builder(defaultUser.getName(),defaultUser.getPhone()).build();
+
         String s = "one important lesson learnt from this lesson is that we can have a clear" +
                 " target of what we should learn in the future. Give a example, in our product, " +
                 "we used knowledge from liner algebra, virtual machine, computer network, data structure. " +
                 "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
         currentUser = new signedUser.Builder("francis","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
-        currentUser = defaultUser;//only for test use
+        userDatabaseManager = UserDatabaseManager.getInstance(this,currentUser.getName());
+
         //
         welcome.setText("Welcome "+currentUser.getName());
         nameTV.setText("Signed in as "+currentUser.getName());

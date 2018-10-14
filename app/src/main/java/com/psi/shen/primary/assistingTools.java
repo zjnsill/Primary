@@ -24,22 +24,13 @@ public class assistingTools {
         return out;
     }
 
-    boolean hasInput(EditText editText){
-        return !editText.getText().toString().isEmpty();
-    }
 
-    double EditTextTodouble(EditText editText){
-        if(hasInput(editText)){
-            return Double.parseDouble(editText.getText().toString());
-        }
-        else return 0.0;
+    Double EditTextToDouble(EditText editText){
+        return editText.getText().toString().isEmpty()? null:Double.parseDouble(editText.getText().toString());
     }
 
     String EditTextToString(EditText editText){
-        if(hasInput(editText)){
-            return editText.getText().toString();
-        }
-        else {return "";}
+        return editText.getText().toString().isEmpty()? null:editText.getText().toString();
     }
 
     boolean isAllFalse(boolean[] array){
@@ -59,7 +50,7 @@ public class assistingTools {
         if(Component[3]){out+="Zr ";}
         if(Component[4]){out+="Yr ";}
         if(Component[5]){out+="Others ";}
-        return out;
+        return out.equals("")? null:out;
     }
     //in newer version of datastructure, data transfer can be done using parcelable instead of bundle;
 /*
