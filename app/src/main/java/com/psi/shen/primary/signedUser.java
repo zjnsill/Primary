@@ -47,7 +47,7 @@ public class signedUser implements Parcelable {
     public static class Builder{
         private String Name,Email="",Bio="";
         private String Phone;
-        private @ERROR_CODES int errorCode;
+        private @ERROR_CODES int errorCode=SUCCESS;
 
         public Builder(String name, String phone) {
             this.Name = name;
