@@ -136,8 +136,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_behavior="@string/bottom_sheet_behavior"
-        app:behavior_peekHeight="45dp">
+        app:behavior_peekHeight="45dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
