@@ -39,7 +39,7 @@ public class CreateAlloy extends AppCompatActivity {
 
             @Override
             public void rightListener() {
-                if(!toolSet.hasInput(nameET)){Toast.makeText(CreateAlloy.this,"Please enter alloy name!",Toast.LENGTH_SHORT).show();}
+                if(nameET.getText().toString().isEmpty()){Toast.makeText(CreateAlloy.this,"Please enter alloy name!",Toast.LENGTH_SHORT).show();}
                 else {
                     StarredListItem starredListItem = gatherData();
                     userDatabaseManager.addStarredItem(starredListItem);
@@ -79,65 +79,42 @@ public class CreateAlloy extends AppCompatActivity {
     }
 
     private StarredListItem gatherData(){
-        boolean[] validation=new boolean[21];
-        boolean[] component = new boolean[6];
-        validation[0]=toolSet.hasInput(nameET);
-        validation[1]=toolSet.hasInput(namingStandardET);
         String namingStand = toolSet.EditTextToString(namingStandardET);
         String name = toolSet.EditTextToString(nameET);
+        boolean[] component = new boolean[6];
         component[0]=AlCB.isSelected();
         component[1]=ZnCB.isSelected();
         component[2]=MnCB.isSelected();
         component[3]=ZrCB.isSelected();
         component[4]=YrCB.isSelected();
         component[5]=OtherCB.isSelected();
-        validation[2]= toolSet.isAllFalse(component);
         String componentString = toolSet.getStringComponent(component);
-        validation[3]=toolSet.hasInput(densityET);
-        double density = toolSet.EditTextTodouble(densityET);
-        validation[4]=toolSet.hasInput(thermalExpanET);
-        double thermalExpan = toolSet.EditTextTodouble(thermalExpanET);
-        validation[5]=toolSet.hasInput(thermalConET);
-        double thermalCon = toolSet.EditTextTodouble(thermalConET);
-        validation[6]=toolSet.hasInput(specificHeatET);
-        double specificHeat = toolSet.EditTextTodouble(specificHeatET);
-        validation[7]=toolSet.hasInput(resistivityET);
-        double resistivity = toolSet.EditTextTodouble(resistivityET);
-        validation[8]=toolSet.hasInput(elasticModuET);
-        double elasticModu = toolSet.EditTextTodouble(elasticModuET);
-        validation[9]=toolSet.hasInput(possionsET);
-        double possionRatio = toolSet.EditTextTodouble(possionsET);
-        validation[10]=(toolSet.hasInput(meltingPoint_minET))&(toolSet.hasInput(meltingPoint_maxET));
-        double meltingPoint_min = toolSet.EditTextTodouble(meltingPoint_minET);
-        double meltingPoint_max = toolSet.EditTextTodouble(meltingPoint_maxET);
-        validation[11]=toolSet.hasInput(dampingIndexET);
-        double dampingIndex = toolSet.EditTextTodouble(dampingIndexET);
-        validation[12]=toolSet.hasInput(hardnessMinET)&&toolSet.hasInput(hardnessMaxET);
-        double hardnessMin = toolSet.EditTextTodouble(hardnessMinET);
-        double hardnessMax = toolSet.EditTextTodouble(hardnessMaxET);
-        validation[13] = toolSet.hasInput(forgingET);
+        Double density = toolSet.EditTextToDouble(densityET);
+        Double thermalExpan = toolSet.EditTextToDouble(thermalExpanET);
+        Double thermalCon = toolSet.EditTextToDouble(thermalConET);
+        Double specificHeat = toolSet.EditTextToDouble(specificHeatET);
+        Double resistivity = toolSet.EditTextToDouble(resistivityET);
+        Double elasticModu = toolSet.EditTextToDouble(elasticModuET);
+        Double possionRatio = toolSet.EditTextToDouble(possionsET);
+        Double meltingPoint_min = toolSet.EditTextToDouble(meltingPoint_minET);
+        Double meltingPoint_max = toolSet.EditTextToDouble(meltingPoint_maxET);
+        Double dampingIndex = toolSet.EditTextToDouble(dampingIndexET);
+        Double hardnessMin = toolSet.EditTextToDouble(hardnessMinET);
+        Double hardnessMax = toolSet.EditTextToDouble(hardnessMaxET);
         String forging = toolSet.EditTextToString(forgingET);
-        validation[14] = toolSet.hasInput(weldablityET);
         String weldability = toolSet.EditTextToString(weldablityET);
-        validation[15] = toolSet.hasInput(machiningET);
         String machining = toolSet.EditTextToString(machiningET);
-        validation[16] = toolSet.hasInput(surfaceTreatET);
         String surfaceTreat = toolSet.EditTextToString(surfaceTreatET);
-        validation[17] = toolSet.hasInput(corrisionET);
         String corrision = toolSet.EditTextToString(corrisionET);
-        validation[18] = toolSet.hasInput(fractureET);
-        double fracture = toolSet.EditTextTodouble(fractureET);
+        Double fracture = toolSet.EditTextToDouble(fractureET);
 
-        SingleAlloyItem singleAlloyItem = new SingleAlloyItem(name,namingStand,componentString,density,thermalExpan,thermalCon,specificHeat,resistivity,
-                elasticModu,possionRatio,meltingPoint_min,meltingPoint_max,dampingIndex,hardnessMin,hardnessMax,forging,weldability,machining,surfaceTreat,corrision,
-                fracture,validation);
+        SingleAlloyItem singleAlloyItem = new SingleAlloyItem.Builder(name).NamingStandard(namingStand).Component(componentString).Density(density).ThermalCon(thermalCon)
+                .ThermalExpan(thermalExpan).SpecificHeat(specificHeat).Resistivity(resistivity).ElasticModu(elasticModu).PoissonRatio(possionRatio).MeltingRange(meltingPoint_min,meltingPoint_max)
+                .DampingIndex(dampingIndex).Hardness(hardnessMin,hardnessMax).Forging(forging).Weldability(weldability).Machining(machining).SurfaceTreatment(surfaceTreat).CorrisionResistance(corrision)
+                .FractureTou(fracture).build();
 
         StarredListItem starredListItem = new StarredListItem(singleAlloyItem,false,true,false,false);
         return starredListItem;
     }
-
-
-
-
 
 }
