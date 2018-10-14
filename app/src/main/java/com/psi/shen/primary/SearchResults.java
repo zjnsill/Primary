@@ -145,8 +145,8 @@ public class SearchResults extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<SingleAlloyItem> singleAlloyItems = getSingleAlloyItems(request);
-                //Log.i(TAG, singleAlloyItems.toString());
+                getSingleAlloyItems(request);
+                refreshHandler.sendEmptyMessage(0);
             }
         }).start();
     }
@@ -160,26 +160,13 @@ public class SearchResults extends AppCompatActivity {
         startActivity(jumpToDetail);
     }
 
-    private ArrayList<SingleAlloyItem> getSingleAlloyItems(final SearchRequest request) {
-        ArrayList<SingleAlloyItem> singleAlloyItems = new ArrayList<SingleAlloyItem>();
-        ArrayList<String> names = getNames(request);
-
-        if(names != null) {
-            for (int i = 0; i < names.size(); i++) {
-                String name = names.get(i);
-                JSONObject attributes = getAttributes(name);
-                JSONObject components = getComponents(name);
-                JSONObject more_details = getMoreDetails(name);
-                SingleAlloyItem singleAlloyItem = transferToAlloyItem(attributes, components, more_details);
-                singleAlloyItems.add(singleAlloyItem);
-            }
-            return singleAlloyItems;
-        }
-        return null;
+    private void getSingleAlloyItems(final SearchRequest searchRequest) {
+        JSONObject alloys = getAlloy(searchRequest);
+        transferToAlloyItems(alloys);
     }
 
-    private ArrayList<String> getNames(final SearchRequest searchRequest) {
-        String path="http://118.25.122.232/android_connect/find.php";
+    private JSONObject getAlloy(final SearchRequest searchRequest) {
+        String path = "http://118.25.122.232/android_connect/query.php";
         try {
             OkHttpClient client = new OkHttpClient();
             FormBody.Builder formBody = makeFormBody(searchRequest);
@@ -189,82 +176,7 @@ public class SearchResults extends AppCompatActivity {
                 Log.i(TAG, "" + response.code());
                 Log.i(TAG, "" + response.message());
                 JSONObject jsonObject = new JSONObject(response.body().string());
-                if(jsonObject.getInt(TAG_SUCCESS) == 1) {
-                    JSONArray alloys = jsonObject.getJSONArray(TAG_ALLOYS);
-                    ArrayList<String> nameList = new ArrayList<>();
-                    for(int i = 0; i < alloys.length(); i++) {
-                        JSONObject c = alloys.getJSONObject(i);
-                        String name = c.getString(TAG_NAME);
-                        nameList.add(name);
-                    }
-                    return nameList;
-                }
-            } else {
-                Log.e(TAG, "error");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private JSONObject getAttributes(String name) {
-        String path="http://118.25.122.232/android_connect/attributes.php";
-        try {
-            OkHttpClient client = new OkHttpClient();
-            FormBody.Builder formBody = new FormBody.Builder();
-            formBody.add("Name", name);
-            Request request = new Request.Builder().url(path).post(formBody.build()).build();
-            Response response = client.newCall(request).execute();
-            if(response.isSuccessful()) {
-                Log.i(TAG, "" + response.code());
-                Log.i(TAG, "" + response.message());
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                return jsonObject;
-            } else {
-                Log.e(TAG, "error");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private JSONObject getComponents(String name) {
-        String path="http://118.25.122.232/android_connect/components.php";
-        try {
-            OkHttpClient client = new OkHttpClient();
-            FormBody.Builder formBody = new FormBody.Builder();
-            formBody.add("Name", name);
-            Request request = new Request.Builder().url(path).post(formBody.build()).build();
-            Response response = client.newCall(request).execute();
-            if(response.isSuccessful()) {
-                Log.i(TAG, "" + response.code());
-                Log.i(TAG, "" + response.message());
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                return jsonObject;
-            } else {
-                Log.e(TAG, "error");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private JSONObject getMoreDetails(String name) {
-        String path="http://118.25.122.232/android_connect/more_details.php";
-        try {
-            OkHttpClient client = new OkHttpClient();
-            FormBody.Builder formBody = new FormBody.Builder();
-            formBody.add("Name", name);
-            Request request = new Request.Builder().url(path).post(formBody.build()).build();
-            Response response = client.newCall(request).execute();
-            if(response.isSuccessful()) {
-                Log.i(TAG, "" + response.code());
-                Log.i(TAG, "" + response.message());
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                return jsonObject;
+                return  jsonObject;
             } else {
                 Log.e(TAG, "error");
             }
@@ -455,72 +367,74 @@ public class SearchResults extends AppCompatActivity {
         return formBody;
     }
 
-    private SingleAlloyItem transferToAlloyItem(JSONObject attributes, JSONObject components, JSONObject more_details) {
+    private void transferToAlloyItems(JSONObject alloys) {
         try {
-            if(attributes.getInt(TAG_SUCCESS) == 1 && components.getInt(TAG_SUCCESS) == 1 && more_details.getInt(TAG_SUCCESS) == 1) {
-                JSONObject attribute = attributes.getJSONArray(TAG_ALLOYS).getJSONObject(0);
-                JSONObject component = components.getJSONArray(TAG_ALLOYS).getJSONObject(0);
-                JSONObject more_detail = more_details.getJSONArray(TAG_ALLOYS).getJSONObject(0);
-                String[] returnDatas = new String[45];
-                returnDatas[0] = attribute.getString(TAG_NAME);
-                returnDatas[1] = attribute.getString(TAG_NAMING_STANDARD);
-                returnDatas[2] = component.getString(TAG_ELEMENTS);
-                returnDatas[3] = attribute.getString(TAG_DENSITY);
-                returnDatas[4] = attribute.getString(TAG_THERMAL_CONDUCTIVITY);
-                returnDatas[5] = attribute.getString(TAG_THERMAL_EXPANSION_COEFFICIENT);
-                returnDatas[6] = attribute.getString(TAG_SPECIFIC_HEAT);
-                returnDatas[7] = attribute.getString(TAG_RESISTIVITY);
-                returnDatas[8] = attribute.getString(TAG_ELASTIC_MODULUS);
-                returnDatas[9] = attribute.getString(TAG_POISSONS_RATIO);
-                returnDatas[10] = attribute.getString(TAG_MELTING_RANGE_MIN);
-                returnDatas[11] = attribute.getString(TAG_MELTING_RANGE_MAX);
-                returnDatas[12] = attribute.getString(TAG_DAMPING_INDEX);
-                returnDatas[13] = attribute.getString(TAG_BRINELL_HARDNESS_MIN);
-                returnDatas[14] = attribute.getString(TAG_BRINELL_HARDNESS_MAX);
-                returnDatas[15] = more_detail.getString(TAG_FORGING); // forging
-                returnDatas[16] = more_detail.getString(TAG_WELDABILITY); // weldability
-                returnDatas[17] = more_detail.getString(TAG_MACHINING); // machining
-                returnDatas[18] = more_detail.getString(TAG_SURFACE_TREATMENT); //surface_treatment
-                returnDatas[19] = more_detail.getString(TAG_CORROSION_RESISTANCE); // corrision_resistance
-                returnDatas[20] = attribute.getString(TAG_FRACTURE_TOUGHNESS);
-                returnDatas[21] = component.getString(TAG_AL_MIN);
-                returnDatas[22] = component.getString(TAG_AL_MAX);
-                returnDatas[23] = component.getString(TAG_MN_MIN);
-                returnDatas[24] = component.getString(TAG_MN_MAX);
-                returnDatas[25] = component.getString(TAG_ZN_MIN);
-                returnDatas[26] = component.getString(TAG_ZN_MAX);
-                returnDatas[27] = component.getString(TAG_MG_MIN);
-                returnDatas[28] = component.getString(TAG_MG_MAX);
-                returnDatas[29] = component.getString(TAG_ND_MIN);
-                returnDatas[30] = component.getString(TAG_ND_MAX);
-                returnDatas[31] = component.getString(TAG_GD_MIN);
-                returnDatas[32] = component.getString(TAG_GD_MAX);
-                returnDatas[33] = component.getString(TAG_ZR_MIN);
-                returnDatas[34] = component.getString(TAG_ZR_MAX);
-                returnDatas[35] = component.getString(TAG_AG_MIN);
-                returnDatas[36] = component.getString(TAG_AG_MAX);
-                returnDatas[37] = component.getString(TAG_CU_MIN);
-                returnDatas[38] = component.getString(TAG_CU_MAX);
-                returnDatas[39] = component.getString(TAG_TH_MIN);
-                returnDatas[40] = component.getString(TAG_TH_MAX);
-                returnDatas[41] = component.getString(TAG_Y_MIN);
-                returnDatas[42] = component.getString(TAG_Y_MAX);
-                returnDatas[43] = component.getString(TAG_RARE_ELEMENTS_MIN);
-                returnDatas[44] = component.getString(TAG_RARE_ELEMENTS_MAX);
+            if(alloys.getInt(TAG_SUCCESS) == 1) {
+                JSONArray jsonArray = alloys.getJSONArray(TAG_ALLOYS);
+                ArrayList<SingleAlloyItem> singleAlloyItemArrayList = new ArrayList<>();
+                for(int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject singleAlloy = jsonArray.getJSONObject(i);
+                    String[] returnDatas = new String[45];
+                    returnDatas[0] = singleAlloy.getString(TAG_NAME);
+                    returnDatas[1] = singleAlloy.getString(TAG_NAMING_STANDARD);
+                    returnDatas[2] = singleAlloy.getString(TAG_ELEMENTS);
+                    returnDatas[3] = singleAlloy.getString(TAG_DENSITY);
+                    returnDatas[4] = singleAlloy.getString(TAG_THERMAL_CONDUCTIVITY);
+                    returnDatas[5] = singleAlloy.getString(TAG_THERMAL_EXPANSION_COEFFICIENT);
+                    returnDatas[6] = singleAlloy.getString(TAG_SPECIFIC_HEAT);
+                    returnDatas[7] = singleAlloy.getString(TAG_RESISTIVITY);
+                    returnDatas[8] = singleAlloy.getString(TAG_ELASTIC_MODULUS);
+                    returnDatas[9] = singleAlloy.getString(TAG_POISSONS_RATIO);
+                    returnDatas[10] = singleAlloy.getString(TAG_MELTING_RANGE_MIN);
+                    returnDatas[11] = singleAlloy.getString(TAG_MELTING_RANGE_MAX);
+                    returnDatas[12] = singleAlloy.getString(TAG_DAMPING_INDEX);
+                    returnDatas[13] = singleAlloy.getString(TAG_BRINELL_HARDNESS_MIN);
+                    returnDatas[14] = singleAlloy.getString(TAG_BRINELL_HARDNESS_MAX);
+                    returnDatas[15] = singleAlloy.getString(TAG_FORGING); // forging
+                    returnDatas[16] = singleAlloy.getString(TAG_WELDABILITY); // weldability
+                    returnDatas[17] = singleAlloy.getString(TAG_MACHINING); // machining
+                    returnDatas[18] = singleAlloy.getString(TAG_SURFACE_TREATMENT); //surface_treatment
+                    returnDatas[19] = singleAlloy.getString(TAG_CORROSION_RESISTANCE); // corrision_resistance
+                    returnDatas[20] = singleAlloy.getString(TAG_FRACTURE_TOUGHNESS);
+                    returnDatas[21] = singleAlloy.getString(TAG_AL_MIN);
+                    returnDatas[22] = singleAlloy.getString(TAG_AL_MAX);
+                    returnDatas[23] = singleAlloy.getString(TAG_MN_MIN);
+                    returnDatas[24] = singleAlloy.getString(TAG_MN_MAX);
+                    returnDatas[25] = singleAlloy.getString(TAG_ZN_MIN);
+                    returnDatas[26] = singleAlloy.getString(TAG_ZN_MAX);
+                    returnDatas[27] = singleAlloy.getString(TAG_MG_MIN);
+                    returnDatas[28] = singleAlloy.getString(TAG_MG_MAX);
+                    returnDatas[29] = singleAlloy.getString(TAG_ND_MIN);
+                    returnDatas[30] = singleAlloy.getString(TAG_ND_MAX);
+                    returnDatas[31] = singleAlloy.getString(TAG_GD_MIN);
+                    returnDatas[32] = singleAlloy.getString(TAG_GD_MAX);
+                    returnDatas[33] = singleAlloy.getString(TAG_ZR_MIN);
+                    returnDatas[34] = singleAlloy.getString(TAG_ZR_MAX);
+                    returnDatas[35] = singleAlloy.getString(TAG_AG_MIN);
+                    returnDatas[36] = singleAlloy.getString(TAG_AG_MAX);
+                    returnDatas[37] = singleAlloy.getString(TAG_CU_MIN);
+                    returnDatas[38] = singleAlloy.getString(TAG_CU_MAX);
+                    returnDatas[39] = singleAlloy.getString(TAG_TH_MIN);
+                    returnDatas[40] = singleAlloy.getString(TAG_TH_MAX);
+                    returnDatas[41] = singleAlloy.getString(TAG_Y_MIN);
+                    returnDatas[42] = singleAlloy.getString(TAG_Y_MAX);
+                    returnDatas[43] = singleAlloy.getString(TAG_RARE_ELEMENTS_MIN);
+                    returnDatas[44] = singleAlloy.getString(TAG_RARE_ELEMENTS_MAX);
 
-                SingleAlloyItem singleAlloyItem = new SingleAlloyItem(returnDatas);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("returnedItem",singleAlloyItem);
-                Message msg = Message.obtain();
-                msg.setData(bundle);
-                msg.what = 1;
-                mHandler.sendMessage(msg);
-                return singleAlloyItem;
+                    SingleAlloyItem singleAlloyItem = new SingleAlloyItem(returnDatas);
+                    singleAlloyItemArrayList.add(singleAlloyItem);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("returnedItem", singleAlloyItem);
+                    Message msg = Message.obtain();
+                    msg.setData(bundle);
+                    msg.what = 1;
+                    mHandler.sendMessage(msg);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     @Override
