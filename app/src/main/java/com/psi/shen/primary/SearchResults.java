@@ -108,7 +108,7 @@ public class SearchResults extends AppCompatActivity {
         topbar = findViewById(R.id.searchResultsTopbar);
 
         Intent inquery = getIntent();
-        final Request request = new Request(inquery.getBundleExtra("inquiry"));
+        final SearchRequest request = new SearchRequest(inquery.getBundleExtra("inquiry"));
         this.currentUser=inquery.getStringExtra("user");
         starredListDatabaseManager = UserDatabaseManager.getInstance(this,currentUser);
         final SearchResultsAdapter searchResultsAdapter = new SearchResultsAdapter(this,resultsArray,currentUser);
@@ -169,7 +169,7 @@ public class SearchResults extends AppCompatActivity {
         startActivity(jumpToDetail);
     }
 
-    private ArrayList<SingleAlloyItem> getSingleAlloyItems(final Request request) {
+    private ArrayList<SingleAlloyItem> getSingleAlloyItems(final SearchRequest request) {
         ArrayList<SingleAlloyItem> singleAlloyItems = new ArrayList<SingleAlloyItem>();
         ArrayList<String> names = getNames(request);
 
@@ -187,7 +187,7 @@ public class SearchResults extends AppCompatActivity {
         return null;
     }
 
-    private ArrayList<String> getNames(final Request request) {
+    private ArrayList<String> getNames(final SearchRequest request) {
         String path="http://118.25.122.232/android_connect/find.php";
         List<NameValuePair> params = paramsList(request);
         try {
@@ -276,7 +276,7 @@ public class SearchResults extends AppCompatActivity {
         return null;
     }
 
-    private List<NameValuePair> paramsList(final Request request) {
+    private List<NameValuePair> paramsList(final SearchRequest request) {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         String name = request.getName();
         String namingStandard = request.getNamingStandard();
