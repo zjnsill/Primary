@@ -421,6 +421,7 @@ public class SearchResults extends AppCompatActivity {
                     returnDatas[43] = singleAlloy.getString(TAG_RARE_ELEMENTS_MIN);
                     returnDatas[44] = singleAlloy.getString(TAG_RARE_ELEMENTS_MAX);
 
+
                     SingleAlloyItem singleAlloyItem = new SingleAlloyItem(returnDatas);
                     singleAlloyItemArrayList.add(singleAlloyItem);
 
