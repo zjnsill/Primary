@@ -87,53 +87,53 @@ public class SingleAlloyItem implements Parcelable{
             return this;
         }
 
-        public Builder Density(double density) {
+        public Builder Density(Double density) {
             this.DampingIndex = density;
             return this;
         }
 
-        public Builder ThermalExpan(double thermalExpan) {
+        public Builder ThermalExpan(Double thermalExpan) {
             this.ThermalExpan = thermalExpan;
             return this;
         }
 
-        public Builder ThermalCon(double thermalCon) {
+        public Builder ThermalCon(Double thermalCon) {
             this.ThermalCon = thermalCon;
             return this;
         }
 
-        public Builder SpecificHeat(double specificHeat) {
+        public Builder SpecificHeat(Double specificHeat) {
             this.SpecificHeat = specificHeat;
             return this;
         }
 
-        public Builder Resistivity(double resistivity) {
+        public Builder Resistivity(Double resistivity) {
             this.Resistivity = resistivity;
             return this;
         }
 
-        public Builder ElasticModu(double elasticModu) {
+        public Builder ElasticModu(Double elasticModu) {
             this.ElasticModu = elasticModu;
             return this;
         }
 
-        public Builder PoissonRatio(double poissonsRatio) {
+        public Builder PoissonRatio(Double poissonsRatio) {
             this.PoissonsRatio = poissonsRatio;
             return this;
         }
 
-        public Builder MeltingRange(double meltingRange_Min, double meltingRange_Max) {
+        public Builder MeltingRange(Double meltingRange_Min, Double meltingRange_Max) {
             this.MeltingRange_Min = meltingRange_Min;
             this.MeltingRange_Max = meltingRange_Max;
             return this;
         }
 
-        public Builder DampingIndex(double dampingIndex) {
+        public Builder DampingIndex(Double dampingIndex) {
             this.DampingIndex = dampingIndex;
             return this;
         }
 
-        public Builder Hardness(double hardness_Min, double hardness_Max) {
+        public Builder Hardness(Double hardness_Min, Double hardness_Max) {
             this.Hardness_Min = hardness_Min;
             this.Hardness_Max = hardness_Max;
             return this;
@@ -294,6 +294,12 @@ public class SingleAlloyItem implements Parcelable{
         out += MeltingRange_Max==null? "null":MeltingRange_Max;
         return out.equals("null ~ null")? "No data":out;
     }
+    public Double getMeltingRange_Max() {
+        return MeltingRange_Max;
+    }
+    public Double getMeltingRange_Min() {
+        return MeltingRange_Min;
+    }
     public Double getDampingIndex() {
         return DampingIndex;
     }
@@ -302,6 +308,9 @@ public class SingleAlloyItem implements Parcelable{
     }
     public Double getHardness_Max() {
         return Hardness_Max;
+    }
+    public String getHardnessString(){
+        return Hardness_Min+"~"+Hardness_Max;
     }
     public String getForging() {
         return Forging;

@@ -72,7 +72,6 @@ public class UserDatabaseManager {
         contentValues.put("surfTreat",singleAlloyItem.getSurfaceTreatment());
         contentValues.put("corrResis",singleAlloyItem.getCorrisionResistance());
         contentValues.put("fractureTou",singleAlloyItem.getFractureToughness());
-        contentValues.put("validation",tools.booleanArrayToString(singleAlloyItem.Validation));
         boolean[] temp = new boolean[4];
         temp[0] = starredListItem.isCould;
         temp[1] = starredListItem.isSelfCreated;
@@ -87,7 +86,7 @@ public class UserDatabaseManager {
         SQLiteDatabase db = database.getReadableDatabase();
         Cursor cursor = db.query(currentUser,null,null,null,null,null,null);
         String name,namingStandard,component,forging,weldability,machining,surfTreat,corrResis;
-        double density,thermalExpan,thermalCon,specificHeat,resistivity,elasticmodu,poissonsRatio,meltingRangeMin,meltingRangeMax,dampingIndex,
+        Double density,thermalExpan,thermalCon,specificHeat,resistivity,elasticmodu,poissonsRatio,meltingRangeMin,meltingRangeMax,dampingIndex,
                 hardnessMin,hardnessMax,fractureTou;
         boolean[] validation,property;
         while(cursor.moveToNext()){
@@ -112,11 +111,8 @@ public class UserDatabaseManager {
             surfTreat = cursor.getString(cursor.getColumnIndex("surfTreat"));
             corrResis = cursor.getString(cursor.getColumnIndex("corrResis"));
             fractureTou = cursor.getDouble(cursor.getColumnIndex("fractureTou"));
-            validation = tools.StringToBooleanArray(cursor.getString(cursor.getColumnIndex("validation")));
             property = tools.StringToBooleanArray(cursor.getString(cursor.getColumnIndex("property")));
-            SingleAlloyItem singleAlloyItem = new SingleAlloyItem(name,namingStandard,component,density,thermalExpan,thermalCon,specificHeat,resistivity
-           , elasticmodu,poissonsRatio,meltingRangeMin,meltingRangeMax,dampingIndex,hardnessMin,hardnessMax,forging,weldability,machining,surfTreat,corrResis
-            ,fractureTou,validation);
+            SingleAlloyItem singleAlloyItem = new SingleAlloyItem.Builder(name).NamingStandard(namingStandard).Density(density)
             StarredListItem starredListItem = new StarredListItem(singleAlloyItem,property[0],property[1],property[2],property[3]);
             resultArray.add(starredListItem);
         }
