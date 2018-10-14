@@ -11,14 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,13 +19,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class SearchResults extends AppCompatActivity {
     private TopBar topbar;
@@ -43,6 +35,7 @@ public class SearchResults extends AppCompatActivity {
     private UserDatabaseManager starredListDatabaseManager;
 
     // JSON node names
+    private static final String TAG = "MainActivity";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_ALLOYS = "alloys";
     private static final String TAG_NAME = "Name";
@@ -187,198 +180,205 @@ public class SearchResults extends AppCompatActivity {
         return null;
     }
 
-    private ArrayList<String> getNames(final SearchRequest request) {
+    private ArrayList<String> getNames(final SearchRequest searchRequest) {
         String path="http://118.25.122.232/android_connect/find.php";
-        List<NameValuePair> params = paramsList(request);
         try {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(path);
-            httpPost.setEntity(new UrlEncodedFormEntity(params));
-
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            InputStream is = httpEntity.getContent();
-
-            JSONObject jsonObject = parseInfo(is);
-            if(jsonObject.getInt(TAG_SUCCESS) == 1) {
-                JSONArray alloys = jsonObject.getJSONArray(TAG_ALLOYS);
-                ArrayList<String> nameList = new ArrayList<>();
-                for(int i = 0; i < alloys.length(); i++) {
-                    JSONObject c = alloys.getJSONObject(i);
-                    String name = c.getString(TAG_NAME);
-                    nameList.add(name);
+            OkHttpClient client = new OkHttpClient();
+            FormBody.Builder formBody = makeFormBody(searchRequest);
+            Request request = new Request.Builder().url(path).post(formBody.build()).build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                Log.i(TAG, "" + response.code());
+                Log.i(TAG, "" + response.message());
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                if(jsonObject.getInt(TAG_SUCCESS) == 1) {
+                    JSONArray alloys = jsonObject.getJSONArray(TAG_ALLOYS);
+                    ArrayList<String> nameList = new ArrayList<>();
+                    for(int i = 0; i < alloys.length(); i++) {
+                        JSONObject c = alloys.getJSONObject(i);
+                        String name = c.getString(TAG_NAME);
+                        nameList.add(name);
+                    }
+                    return nameList;
                 }
-                return nameList;
+            } else {
+                Log.e(TAG, "error");
             }
-        } catch(Exception e) {
-            Log.getStackTraceString(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     private JSONObject getAttributes(String name) {
         String path="http://118.25.122.232/android_connect/attributes.php";
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("Name", name));
         try {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(path);
-            httpPost.setEntity(new UrlEncodedFormEntity(params));
-
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            InputStream is = httpEntity.getContent();
-
-            return parseInfo(is);
-        } catch(Exception e) {
-            Log.getStackTraceString(e);
+            OkHttpClient client = new OkHttpClient();
+            FormBody.Builder formBody = new FormBody.Builder();
+            formBody.add("Name", name);
+            Request request = new Request.Builder().url(path).post(formBody.build()).build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                Log.i(TAG, "" + response.code());
+                Log.i(TAG, "" + response.message());
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                return jsonObject;
+            } else {
+                Log.e(TAG, "error");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     private JSONObject getComponents(String name) {
         String path="http://118.25.122.232/android_connect/components.php";
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("Name", name));
         try {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(path);
-            httpPost.setEntity(new UrlEncodedFormEntity(params));
-
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            InputStream is = httpEntity.getContent();
-
-            return parseInfo(is);
-        } catch(Exception e) {
-            Log.getStackTraceString(e);
+            OkHttpClient client = new OkHttpClient();
+            FormBody.Builder formBody = new FormBody.Builder();
+            formBody.add("Name", name);
+            Request request = new Request.Builder().url(path).post(formBody.build()).build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                Log.i(TAG, "" + response.code());
+                Log.i(TAG, "" + response.message());
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                return jsonObject;
+            } else {
+                Log.e(TAG, "error");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     private JSONObject getMoreDetails(String name) {
         String path="http://118.25.122.232/android_connect/more_details.php";
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("Name", name));
         try {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(path);
-            httpPost.setEntity(new UrlEncodedFormEntity(params));
-
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            InputStream is = httpEntity.getContent();
-
-            return parseInfo(is);
-        } catch(Exception e) {
-            Log.getStackTraceString(e);
+            OkHttpClient client = new OkHttpClient();
+            FormBody.Builder formBody = new FormBody.Builder();
+            formBody.add("Name", name);
+            Request request = new Request.Builder().url(path).post(formBody.build()).build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                Log.i(TAG, "" + response.code());
+                Log.i(TAG, "" + response.message());
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                return jsonObject;
+            } else {
+                Log.e(TAG, "error");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
 
-    private List<NameValuePair> paramsList(final SearchRequest request) {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+    private FormBody.Builder makeFormBody(final SearchRequest request) {
+        FormBody.Builder formBody = new FormBody.Builder();
         String name = request.getName();
         String namingStandard = request.getNamingStandard();
         double[] doubleDatas = request.getDoubleArray();
         boolean[] validation = request.getValidation();
 
         if(validation[0])
-            params.add(new BasicNameValuePair("Name", name));
+            formBody.add("Name", name);
         if(validation[1])
-            params.add(new BasicNameValuePair("Naming_Standard", namingStandard));
+            formBody.add("Naming_Standard", namingStandard);
         if(validation[2])
-            params.add(new BasicNameValuePair("Density_Min", doubleDatas[0] + ""));
+            formBody.add("Density_Min", doubleDatas[0] + "");
         if(validation[3])
-            params.add(new BasicNameValuePair("Density_Max", doubleDatas[1] + ""));
+            formBody.add("Density_Max", doubleDatas[1] + "");
         if(validation[4])
-            params.add(new BasicNameValuePair("Thermal_Expansion_Coefficient_Min", doubleDatas[2] + ""));
+            formBody.add("Thermal_Expansion_Coefficient_Min", doubleDatas[2] + "");
         if(validation[5])
-            params.add(new BasicNameValuePair("Thermal_Expansion_Coefficient_Max", doubleDatas[3] + ""));
+            formBody.add("Thermal_Expansion_Coefficient_Max", doubleDatas[3] + "");
         if(validation[6])
-            params.add(new BasicNameValuePair("Thermal_conductivity_Min", doubleDatas[4] + ""));
+            formBody.add("Thermal_conductivity_Min", doubleDatas[4] + "");
         if(validation[7])
-            params.add(new BasicNameValuePair("Thermal_conductivity_Max", doubleDatas[5] + ""));
+            formBody.add("Thermal_conductivity_Max", doubleDatas[5] + "");
         if(validation[8])
-            params.add(new BasicNameValuePair("Specific_Heat_Min", doubleDatas[6] + ""));
+            formBody.add("Specific_Heat_Min", doubleDatas[6] + "");
         if(validation[9])
-            params.add(new BasicNameValuePair("Specific_Heat_Max", doubleDatas[7] + ""));
+            formBody.add("Specific_Heat_Max", doubleDatas[7] + "");
         if(validation[10])
-            params.add(new BasicNameValuePair("Resistivity_Min", doubleDatas[8] + ""));
+            formBody.add("Resistivity_Min", doubleDatas[8] + "");
         if(validation[11])
-            params.add(new BasicNameValuePair("Resistivity_Max", doubleDatas[9] + ""));
+            formBody.add("Resistivity_Max", doubleDatas[9] + "");
         if(validation[12])
-            params.add(new BasicNameValuePair("Elastic_Modulus_Min", doubleDatas[10] + ""));
+            formBody.add("Elastic_Modulus_Min", doubleDatas[10] + "");
         if(validation[13])
-            params.add(new BasicNameValuePair("Elastic_Modulus_Max", doubleDatas[11] + ""));
+            formBody.add("Elastic_Modulus_Max", doubleDatas[11] + "");
         if(validation[14])
-            params.add(new BasicNameValuePair("Poissons_Ratio_Min", doubleDatas[12] + ""));
+            formBody.add("Poissons_Ratio_Min", doubleDatas[12] + "");
         if(validation[15])
-            params.add(new BasicNameValuePair("Poissons_Ratio_Max", doubleDatas[13] + ""));
+            formBody.add("Poissons_Ratio_Max", doubleDatas[13] + "");
         if(validation[16])
-            params.add(new BasicNameValuePair("Damping_Index_Min", doubleDatas[14] + ""));
+            formBody.add("Damping_Index_Min", doubleDatas[14] + "");
         if(validation[17])
-            params.add(new BasicNameValuePair("Damping_Index_Max", doubleDatas[15] + ""));
+            formBody.add("Damping_Index_Max", doubleDatas[15] + "");
         if(validation[18])
-            params.add(new BasicNameValuePair("Toughness_Min", doubleDatas[16] + ""));
+            formBody.add("Toughness_Min", doubleDatas[16] + "");
         if(validation[19])
-            params.add(new BasicNameValuePair("Toughness_Max", doubleDatas[17] + ""));
+            formBody.add("Toughness_Max", doubleDatas[17] + "");
         if(validation[20])
-            params.add(new BasicNameValuePair("Melting_Range_Min", doubleDatas[18] + ""));
+            formBody.add("Melting_Range_Min", doubleDatas[18] + "");
         if(validation[21])
-            params.add(new BasicNameValuePair("Melting_Range_Max", doubleDatas[19] + ""));
+            formBody.add("Melting_Range_Max", doubleDatas[19] + "");
         if(validation[22])
-            params.add(new BasicNameValuePair("Hardness_Min", doubleDatas[20] + ""));
+            formBody.add("Hardness_Min", doubleDatas[20] + "");
         if(validation[23])
-            params.add(new BasicNameValuePair("Hardness_Max", doubleDatas[21] + ""));
+            formBody.add("Hardness_Max", doubleDatas[21] + "");
         if(validation[24])
-            params.add(new BasicNameValuePair("Al_Min", doubleDatas[22] + ""));
+            formBody.add("Al_Min", doubleDatas[22] + "");
         if(validation[25])
-            params.add(new BasicNameValuePair("Al_Max", doubleDatas[23] + ""));
+            formBody.add("Al_Max", doubleDatas[23] + "");
         if(validation[26])
-            params.add(new BasicNameValuePair("Mn_Min", doubleDatas[24] + ""));
+            formBody.add("Mn_Min", doubleDatas[24] + "");
         if(validation[27])
-            params.add(new BasicNameValuePair("Mn_Max", doubleDatas[25] + ""));
+            formBody.add("Mn_Max", doubleDatas[25] + "");
         if(validation[28])
-            params.add(new BasicNameValuePair("Zn_Min", doubleDatas[26] + ""));
+            formBody.add("Zn_Min", doubleDatas[26] + "");
         if(validation[29])
-            params.add(new BasicNameValuePair("Zn_Max", doubleDatas[27] + ""));
+            formBody.add("Zn_Max", doubleDatas[27] + "");
         if(validation[30])
-            params.add(new BasicNameValuePair("Mg_Min", doubleDatas[28] + ""));
+            formBody.add("Mg_Min", doubleDatas[28] + "");
         if(validation[31])
-            params.add(new BasicNameValuePair("Mg_Max", doubleDatas[29] + ""));
+            formBody.add("Mg_Max", doubleDatas[29] + "");
         if(validation[32])
-            params.add(new BasicNameValuePair("Nd_Min", doubleDatas[30] + ""));
+            formBody.add("Nd_Min", doubleDatas[30] + "");
         if(validation[33])
-            params.add(new BasicNameValuePair("Nd_Max", doubleDatas[31] + ""));
+            formBody.add("Nd_Max", doubleDatas[31] + "");
         if(validation[34])
-            params.add(new BasicNameValuePair("Gd_Min", doubleDatas[32] + ""));
+            formBody.add("Gd_Min", doubleDatas[32] + "");
         if(validation[35])
-            params.add(new BasicNameValuePair("Gd_Max", doubleDatas[33] + ""));
+            formBody.add("Gd_Max", doubleDatas[33] + "");
         if(validation[36])
-            params.add(new BasicNameValuePair("Zr_Min", doubleDatas[34] + ""));
+            formBody.add("Zr_Min", doubleDatas[34] + "");
         if(validation[37])
-            params.add(new BasicNameValuePair("Zr_Max", doubleDatas[35] + ""));
+            formBody.add("Zr_Max", doubleDatas[35] + "");
         if(validation[38])
-            params.add(new BasicNameValuePair("Ag_Min", doubleDatas[36] + ""));
+            formBody.add("Ag_Min", doubleDatas[36] + "");
         if(validation[39])
-            params.add(new BasicNameValuePair("Ag_Max", doubleDatas[37] + ""));
+            formBody.add("Ag_Max", doubleDatas[37] + "");
         if(validation[40])
-            params.add(new BasicNameValuePair("Cu_Min", doubleDatas[38] + ""));
+            formBody.add("Cu_Min", doubleDatas[38] + "");
         if(validation[41])
-            params.add(new BasicNameValuePair("Cu_Max", doubleDatas[39] + ""));
+            formBody.add("Cu_Max", doubleDatas[39] + "");
         if(validation[42])
-            params.add(new BasicNameValuePair("Th_Min", doubleDatas[40] + ""));
+            formBody.add("Th_Min", doubleDatas[40] + "");
         if(validation[43])
-            params.add(new BasicNameValuePair("Th_Max", doubleDatas[41] + ""));
+            formBody.add("Th_Max", doubleDatas[41] + "");
         if(validation[44])
-            params.add(new BasicNameValuePair("Y_Min", doubleDatas[42] + ""));
+            formBody.add("Y_Min", doubleDatas[42] + "");
         if(validation[45])
-            params.add(new BasicNameValuePair("Y_Max", doubleDatas[43] + ""));
+            formBody.add("Y_Max", doubleDatas[43] + "");
         if(validation[46])
-            params.add(new BasicNameValuePair("Rare_Elements_Min", doubleDatas[44] + ""));
+            formBody.add("Rare_Elements_Min", doubleDatas[44] + "");
         if(validation[47])
-            params.add(new BasicNameValuePair("Rare_Elements_Max", doubleDatas[45] + ""));
+            formBody.add("Rare_Elements_Max", doubleDatas[45] + "");
 
         String elements = "";
         boolean flag = false;
@@ -453,27 +453,8 @@ public class SearchResults extends AppCompatActivity {
             flag = true;
         }
         if(flag)
-            params.add(new BasicNameValuePair("Elements", elements));
-        return params;
-    }
-
-    private JSONObject parseInfo(InputStream in) throws IOException {
-        BufferedReader br=new BufferedReader(new InputStreamReader(in));
-        StringBuilder sb=new StringBuilder();
-        String line;
-        String json;
-        JSONObject jsonObject = null;
-        while ((line=br.readLine())!=null){
-            sb.append(line+"\n");
-        }
-        json = sb.toString();
-        //Log.i(TAG, "parseInfo: sb:"+json);
-        try {
-            jsonObject = new JSONObject(json);
-        } catch(JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
-        }
-        return jsonObject;
+            formBody.add("Elements", elements);
+        return formBody;
     }
 
     private SingleAlloyItem transferToAlloyItem(JSONObject attributes, JSONObject components, JSONObject more_details) {
