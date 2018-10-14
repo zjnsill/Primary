@@ -67,11 +67,11 @@ public class StarredListAdapter extends RecyclerView.Adapter<StarredListAdapter.
         if(starredListItem.isCould){viewHolder.CloudStatus.setImageResource(R.drawable.ic_cloud_done);}
         else{viewHolder.CloudStatus.setImageResource(R.drawable.ic_cloud_off);}
         if(starredListItem.isToBeClouded){viewHolder.CloudStatus.setImageResource(R.drawable.ic_cloud_upload);}
-        viewHolder.name.setText(singleAlloyItem.Validation[0]? "Name: "+singleAlloyItem.getAlloyName():"No Name");
-        viewHolder.density.setText(singleAlloyItem.Validation[2]? "Density: "+singleAlloyItem.getDensity():"No density data");
-        viewHolder.elasticModu.setText(singleAlloyItem.Validation[7]? "Elastic modulus: "+singleAlloyItem.getElasticModu():"No elastic modulus data");
-        viewHolder.meltingRange.setText(singleAlloyItem.Validation[8]? "Melting Range: "+singleAlloyItem.getMeltingRangeString():"No Data");
-        viewHolder.hardness.setText(singleAlloyItem.Validation[9]? "Hardness: "+singleAlloyItem.getHardness_Min()+"~"+singleAlloyItem.getHardness_Max():"No hardness data");
+        viewHolder.name.setText(singleAlloyItem.getAlloyName());
+        viewHolder.density.setText(singleAlloyItem.getDensity()==null? "Density: "+singleAlloyItem.getDensity():"No data");
+        viewHolder.elasticModu.setText(singleAlloyItem.getElasticModu()==null? "Elastic modulus: "+singleAlloyItem.getElasticModu():"No data");
+        viewHolder.meltingRange.setText(singleAlloyItem.getMeltingRangeString()==null? "Melting Range: "+singleAlloyItem.getMeltingRangeString():"No data");
+        viewHolder.hardness.setText(singleAlloyItem.getHardness_Max()==null? "Hardness: "+singleAlloyItem.getHardnessString():"No data");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
