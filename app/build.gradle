@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.psi.shen.primary"
         minSdkVersion 15
@@ -31,4 +30,5 @@ dependencies {
     implementation files('libs/mysql-connector-java-5.1.46.jar')
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:support-annotations:22.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 }
