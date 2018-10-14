@@ -2,9 +2,9 @@ package com.psi.shen.primary;
 
 import android.os.Bundle;
 
-public class Request {
-    /* Note:
-       the datas in the Request class do not include Forging, Weldability, Machining,
+public class SearchRequest {
+        /* Note:
+       the datas in the SearchRequest class do not include Forging, Weldability, Machining,
        Surface_Treatment, Corrision_Resistance
 
        Validation[0]->AlloyName,
@@ -51,7 +51,7 @@ public class Request {
     private double[] doubleArray = new double[46];
     private boolean[] Validation = new boolean[60];
 
-    public Request(Bundle fromIntent){
+    public SearchRequest(Bundle fromIntent){
         this.Validation = fromIntent.getBooleanArray("validation");
         this.name = fromIntent.getString("name");
         this.namingStandard = fromIntent.getString("namingStandard");
