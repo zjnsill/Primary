@@ -20,6 +20,7 @@ public class UserDatabaseManager {
         database = new UserDatabase(context,this.currentUser,null,1);
     }
 
+
     private static UserDatabaseManager instance;
     public static synchronized UserDatabaseManager getInstance(Context context,String currentUser){
         if(instance==null){instance = new UserDatabaseManager(context,currentUser);}
@@ -88,31 +89,33 @@ public class UserDatabaseManager {
         String name,namingStandard,component,forging,weldability,machining,surfTreat,corrResis;
         Double density,thermalExpan,thermalCon,specificHeat,resistivity,elasticmodu,poissonsRatio,meltingRangeMin,meltingRangeMax,dampingIndex,
                 hardnessMin,hardnessMax,fractureTou;
-        boolean[] validation,property;
+        boolean[] property;
         while(cursor.moveToNext()){
             name = cursor.getString(cursor.getColumnIndex("name"));
-            namingStandard = cursor.getString(cursor.getColumnIndex("namingStandard"));
-            component = cursor.getString(cursor.getColumnIndex("component"));
-            density = cursor.getDouble(cursor.getColumnIndex("density"));
-            thermalExpan = cursor.getDouble(cursor.getColumnIndex("thermalExpan"));
-            thermalCon = cursor.getDouble(cursor.getColumnIndex("thermalCon"));
-            specificHeat = cursor.getDouble(cursor.getColumnIndex("specificHeat"));
-            resistivity = cursor.getDouble(cursor.getColumnIndex("resistivity"));
-            elasticmodu = cursor.getDouble(cursor.getColumnIndex("elasticModu"));
-            poissonsRatio = cursor.getDouble(cursor.getColumnIndex("poissonsRatio"));
-            meltingRangeMin = cursor.getDouble(cursor.getColumnIndex("meltingRangeMin"));
-            meltingRangeMax = cursor.getDouble(cursor.getColumnIndex("meltingRangeMax"));
-            dampingIndex = cursor.getDouble(cursor.getColumnIndex("dampingIndex"));
-            hardnessMin = cursor.getDouble(cursor.getColumnIndex("hardnessMin"));
-            hardnessMax = cursor.getDouble(cursor.getColumnIndex("hardnessMax"));
-            forging = cursor.getString(cursor.getColumnIndex("forging"));
-            weldability = cursor.getString(cursor.getColumnIndex("weldability"));
-            machining = cursor.getString(cursor.getColumnIndex("machining"));
-            surfTreat = cursor.getString(cursor.getColumnIndex("surfTreat"));
-            corrResis = cursor.getString(cursor.getColumnIndex("corrResis"));
-            fractureTou = cursor.getDouble(cursor.getColumnIndex("fractureTou"));
+            namingStandard = cursor.isNull(cursor.getColumnIndex("namingStandard"))? null:cursor.getString(cursor.getColumnIndex("namingStandard"));
+            component = cursor.isNull(cursor.getColumnIndex("component"))? null:cursor.getString(cursor.getColumnIndex("component"));
+            density = cursor.isNull(cursor.getColumnIndex("density"))? null:cursor.getDouble(cursor.getColumnIndex("density"));
+            thermalExpan = cursor.isNull(cursor.getColumnIndex("thermalExpan"))? null:cursor.getDouble(cursor.getColumnIndex("thermalExpan"));
+            thermalCon = cursor.isNull(cursor.getColumnIndex("thermalCon"))? null:cursor.getDouble(cursor.getColumnIndex("thermalCon"));
+            specificHeat = cursor.isNull(cursor.getColumnIndex("specificHeat"))? null:cursor.getDouble(cursor.getColumnIndex("specificHeat"));
+            resistivity = cursor.isNull(cursor.getColumnIndex("resistivity"))? null:cursor.getDouble(cursor.getColumnIndex("resistivity"));
+            elasticmodu = cursor.isNull(cursor.getColumnIndex("elasticModu"))? null:cursor.getDouble(cursor.getColumnIndex("elasticModu"));
+            poissonsRatio = cursor.isNull(cursor.getColumnIndex("poissonsRatio"))? null:cursor.getDouble(cursor.getColumnIndex("poissonsRatio"));
+            meltingRangeMin = cursor.isNull(cursor.getColumnIndex("meltingRangeMin"))? null:cursor.getDouble(cursor.getColumnIndex("meltingRangeMin"));
+            meltingRangeMax = cursor.isNull(cursor.getColumnIndex("meltingRangeMax"))? null:cursor.getDouble(cursor.getColumnIndex("meltingRangeMax"));
+            dampingIndex = cursor.isNull(cursor.getColumnIndex("dampingIndex"))? null:cursor.getDouble(cursor.getColumnIndex("dampingIndex"));
+            hardnessMin = cursor.isNull(cursor.getColumnIndex("hardnessMin"))? null:cursor.getDouble(cursor.getColumnIndex("hardnessMin"));
+            hardnessMax = cursor.isNull(cursor.getColumnIndex("hardnessMax"))? null:cursor.getDouble(cursor.getColumnIndex("hardnessMax"));
+            forging = cursor.isNull(cursor.getColumnIndex("forging"))? null:cursor.getString(cursor.getColumnIndex("forging"));
+            weldability = cursor.isNull(cursor.getColumnIndex("weldability"))? null:cursor.getString(cursor.getColumnIndex("weldability"));
+            machining = cursor.isNull(cursor.getColumnIndex("machining"))? null:cursor.getString(cursor.getColumnIndex("machining"));
+            surfTreat = cursor.isNull(cursor.getColumnIndex("surfTreat"))? null:cursor.getString(cursor.getColumnIndex("surfTreat"));
+            corrResis = cursor.isNull(cursor.getColumnIndex("corrResis"))? null:cursor.getString(cursor.getColumnIndex("corrResis"));
+            fractureTou = cursor.isNull(cursor.getColumnIndex("fractureTou"))? null:cursor.getDouble(cursor.getColumnIndex("fractureTou"));
             property = tools.StringToBooleanArray(cursor.getString(cursor.getColumnIndex("property")));
-            SingleAlloyItem singleAlloyItem = new SingleAlloyItem.Builder(name).NamingStandard(namingStandard).Density(density)
+            SingleAlloyItem singleAlloyItem = new SingleAlloyItem.Builder(name).NamingStandard(namingStandard).Density(density).Component(component).ThermalCon(thermalCon).ThermalExpan(thermalExpan)
+                    .SpecificHeat(specificHeat).Resistivity(resistivity).ElasticModu(elasticmodu).PoissonRatio(poissonsRatio).MeltingRange(meltingRangeMin,meltingRangeMax).DampingIndex(dampingIndex)
+                    .Hardness(hardnessMin,hardnessMax).Forging(forging).Weldability(weldability).Machining(machining).SurfaceTreatment(surfTreat).CorrisionResistance(corrResis).FractureTou(fractureTou).build();
             StarredListItem starredListItem = new StarredListItem(singleAlloyItem,property[0],property[1],property[2],property[3]);
             resultArray.add(starredListItem);
         }
