@@ -3,6 +3,8 @@ package com.psi.shen.primary;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 
 public class bottomSheet extends AppCompatActivity {
     private View bottomSheetView;
@@ -49,7 +52,7 @@ public class bottomSheet extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_sheet);
 
         Intent ifSigned = getIntent();
-        if(ifSigned.getParcelableExtra("user")!=null){//1 represent as from other activities;
+        if(ifSigned.getParcelableExtra("user")!=null){
             currentUser = ifSigned.getParcelableExtra("user");
             //receive intent from other views;
         }
@@ -280,7 +283,21 @@ public class bottomSheet extends AppCompatActivity {
                 }else if(passcode.getText().toString().isEmpty()){
                     Toast.makeText(bottomSheet.this,"Please enter your passcodes!",Toast.LENGTH_SHORT).show();
                 }else{
-                    userUtility.SignIn(null,phoneNum.getText().toString(),passcode.getText().toString());
+                    signedUser returnedUser = userUtility.SignIn(null,phoneNum.getText().toString(),passcode.getText().toString());
+                    if(returnedUser.getErrorCode()==signedUser.NO_SUCH_USER){
+                        Toast.makeText(bottomSheet.this,"User doesn't exist!",Toast.LENGTH_SHORT).show();
+                    }else if(returnedUser.getErrorCode()==signedUser.INCORRECT_PASSWORD){
+                        Toast.makeText(bottomSheet.this,"Wrong passcode!",Toast.LENGTH_SHORT).show();
+                    }else if(returnedUser.getErrorCode()==signedUser.SUCCESS){
+                        Intent userGot = new Intent(bottomSheet.this,bottomSheet.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("user",returnedUser);
+                        userGot.putExtras(bundle);
+                        finish();//to end the current activity and reload with the successfully signed user;
+                        startActivity(userGot);
+                    }else {
+                        Toast.makeText(bottomSheet.this,"Operation Failed, please try latter!",Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
@@ -291,6 +308,7 @@ public class bottomSheet extends AppCompatActivity {
                 signInPopView.dismiss();
                 showVerifyWindow(currentUser.getPhone(),3);
                 //change passcode and require to sign in again or automatically sign in
+
             }
         });
 
@@ -301,7 +319,15 @@ public class bottomSheet extends AppCompatActivity {
         getWindow().setAttributes(lp);
     }
 
-    void showVerifyWindow(String Num, final int flag){//flag 1: register,2:editting info,3: forgot passcode 4: changing phone number
+    public @SMS_Service.SMSERROR int showVerifyWindow(String Num, final int flag){//flag 1: register,2:editting info,3: forgot passcode 4: changing phone number
+        @SMS_Service.SMSERROR int returnERRORInt;
+        final Handler returnValListener = new Handler(){
+            public void handleMessage(Message msg){
+                super.handleMessage(msg);
+                if(msg.what==1){
+                }
+            }
+        };
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View VerifyView = layoutInflater.inflate(R.layout.verify_phone_num,null);
         View parentView = layoutInflater.inflate(R.layout.activity_bottom_sheet,null);
@@ -341,8 +367,9 @@ public class bottomSheet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 verifyWindow.dismiss();
-                Toast.makeText(bottomSheet.this,"User canceled this process!",Toast.LENGTH_SHORT).show();
-                //implement cancel action;
+                Message msg = new Message();
+                msg.what = 1;
+                returnValListener.sendMessage(msg);
             }
         });
         verify.setOnClickListener(new View.OnClickListener() {
@@ -355,13 +382,6 @@ public class bottomSheet extends AppCompatActivity {
                 }else{
                     //verify code;
 
-                    Intent toEdittingInfo = new Intent(bottomSheet.this,edit_account_info.class);
-                    Bundle bundle = new Bundle();
-                    signedUser user = new signedUser.Builder(currentUser.getName(),phoneNum.getText().toString()).Email(currentUser.getEmail()).Bio(currentUser.getBio()).build();
-                    bundle.putParcelable("user",user);
-                    bundle.putInt("flag",flag);
-                    toEdittingInfo.putExtras(bundle);
-                    startActivity(toEdittingInfo);
                 }
             }
         });
