@@ -136,6 +136,16 @@
                         android:textSize="18sp" />
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/CompoPercentage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textSize="18sp" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -322,7 +332,7 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/meltingPoint"
+                        android:id="@+id/meltingRange"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/TV10"
@@ -407,7 +417,7 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/dampingIdex"
+                        android:id="@+id/dampingIndex"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/TV13"
@@ -436,7 +446,7 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/factureTou"
+                        android:id="@+id/fractureTou"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/TV19"

@@ -36,7 +36,7 @@ public class bottomSheet extends AppCompatActivity {
     private signedUser currentUser;
     private int MAX_Bio_Line=3,EXPANDED_Bio_Line=6;
     private UserDatabaseManager userDatabaseManager;
-
+    //declaration of error type
     private static final int VERIFY_OK = 7;
     private static final int VERIFY_WRONG = 8;
     @IntDef({VERIFY_OK,VERIFY_WRONG})
@@ -319,7 +319,7 @@ public class bottomSheet extends AppCompatActivity {
         getWindow().setAttributes(lp);
     }
 
-    public @SMS_Service.SMSERROR int showVerifyWindow(String Num, final int flag){//flag 1: register,2:editting info,3: forgot passcode 4: changing phone number
+    public void showVerifyWindow(String Num, final int flag){//flag 1: register,2:editting info,3: forgot passcode 4: changing phone number
         @SMS_Service.SMSERROR int returnERRORInt;
         final Handler returnValListener = new Handler(){
             public void handleMessage(Message msg){

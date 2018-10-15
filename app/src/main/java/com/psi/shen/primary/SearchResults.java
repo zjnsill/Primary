@@ -1,6 +1,7 @@
 package com.psi.shen.primary;
 
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -33,6 +34,8 @@ public class SearchResults extends AppCompatActivity {
     private RecyclerView alloyResultsList;
     private String currentUser;
     private UserDatabaseManager starredListDatabaseManager;
+    private long countDownTime = 10000;
+    private long countDownInterval = 1;
 
     // JSON node names
     private static final String TAG = "MainActivity";
@@ -134,19 +137,41 @@ public class SearchResults extends AppCompatActivity {
         });
         final LoadingDialog dialog = new LoadingDialog(this,"Loading data");
         dialog.show();
+
         final Handler refreshHandler = new Handler(){
             public void handleMessage(Message msg){
                 super.handleMessage(msg);
                 dialog.close();
                 searchResultsAdapter.notifyDataSetChanged();
             }
-        };//methods in onDestroy can avoid memeory leak issue
+        };
+        //count down time and close this interface;
+        final CountDownTimer countDown = new CountDownTimer(countDownTime,countDownInterval) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                dialog.close();
+                Toast.makeText(SearchResults.this,"Request time out, please try again!",Toast.LENGTH_SHORT).show();
+                refreshHandler.removeCallbacksAndMessages(null);
+                SearchResults.this.finish();
+            }
+        };
+        countDown.start();
+
+
+
+
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 getSingleAlloyItems(request);
                 refreshHandler.sendEmptyMessage(0);
+                countDown.cancel();
             }
         }).start();
     }
@@ -371,7 +396,6 @@ public class SearchResults extends AppCompatActivity {
         try {
             if(alloys.getInt(TAG_SUCCESS) == 1) {
                 JSONArray jsonArray = alloys.getJSONArray(TAG_ALLOYS);
-                ArrayList<SingleAlloyItem> singleAlloyItemArrayList = new ArrayList<>();
                 for(int i = 0; i < jsonArray.length(); i++) {
                     JSONObject singleAlloy = jsonArray.getJSONObject(i);
                     String[] returnDatas = new String[45];
@@ -421,10 +445,7 @@ public class SearchResults extends AppCompatActivity {
                     returnDatas[43] = singleAlloy.getString(TAG_RARE_ELEMENTS_MIN);
                     returnDatas[44] = singleAlloy.getString(TAG_RARE_ELEMENTS_MAX);
 
-
                     SingleAlloyItem singleAlloyItem = new SingleAlloyItem(returnDatas);
-                    singleAlloyItemArrayList.add(singleAlloyItem);
-
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("returnedItem", singleAlloyItem);
                     Message msg = Message.obtain();
@@ -442,5 +463,6 @@ public class SearchResults extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
+
     }
 }
