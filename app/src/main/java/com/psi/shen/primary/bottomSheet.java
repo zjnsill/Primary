@@ -1,7 +1,9 @@
 package com.psi.shen.primary;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,7 +31,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
 public class bottomSheet extends AppCompatActivity {
-    private View bottomSheetView;
+    private View bottomSheetView,backView,bottomsheetLower;
     private BottomSheetBehavior mBehavior;
     private TextView nameTV,starredItemCountTV,welcome,editTV,Email,phoneNum,leftTV,rightTV,Bio,expandIndicator;
     private CardView searchCV,createCV,starredCV,aboutCV;
@@ -36,6 +39,7 @@ public class bottomSheet extends AppCompatActivity {
     private signedUser currentUser;
     private int MAX_Bio_Line=3,EXPANDED_Bio_Line=6;
     private UserDatabaseManager userDatabaseManager;
+
     //declaration of error type
     private static final int VERIFY_OK = 7;
     private static final int VERIFY_WRONG = 8;
@@ -58,6 +62,8 @@ public class bottomSheet extends AppCompatActivity {
         }
         bottomSheetView = findViewById(R.id.user_bottom_sheet);
         mBehavior = BottomSheetBehavior.from(bottomSheetView);
+        backView = findViewById(R.id.backView);
+        bottomsheetLower = bottomSheetView.findViewById(R.id.bottomsheet_lowerPart);
 
         nameTV = bottomSheetView.findViewById(R.id.signedUser);//signed in as
         starredItemCountTV = bottomSheetView.findViewById(R.id.starredItemCount);//item currently stored in cloud
@@ -167,22 +173,20 @@ public class bottomSheet extends AppCompatActivity {
             editTV.setClickable(true);
         }
 
-
+        backView.setDrawingCacheEnabled(true);
         //
         mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if(newState == BottomSheetBehavior.STATE_EXPANDED){
-                }
 
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
 
-
             }
         });
+
         searchCV = findViewById(R.id.SearchCV);
         createCV = findViewById(R.id.CreateCV);
         starredCV = findViewById(R.id.StarredCV);
@@ -226,8 +230,7 @@ public class bottomSheet extends AppCompatActivity {
             }
         });
 
-
-
+        //end of onCreate Methods;
     }
 
     public void sheetAction(){
@@ -386,6 +389,11 @@ public class bottomSheet extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        backView.setDrawingCacheEnabled(false);
     }
 
 

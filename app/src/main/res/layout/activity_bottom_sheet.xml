@@ -7,16 +7,17 @@
     tools:context=".bottomSheet">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/backView"
         android:layout_width="match_parent"
-        android:layout_height="607dp"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_marginStart="8dp"
+            android:layout_marginBottom="10dp"
             android:text="Welcome "
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/textView16"
@@ -26,9 +27,9 @@
             android:id="@+id/textView16"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
+            android:layout_marginEnd="20dp"
             android:background="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,8 +38,8 @@
         <LinearLayout
             android:layout_width="270dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="132dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="20dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="@+id/textView16"
             app:layout_constraintTop_toBottomOf="@+id/textView16">
@@ -122,11 +123,13 @@
             android:id="@+id/textView25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="Developed by Team"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="40dp"
+            android:text="Developed by ZZ Team"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
@@ -135,27 +138,30 @@
         android:id="@+id/user_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:orientation="vertical"
-        app:behavior_peekHeight="45dp"
+        app:behavior_peekHeight="300dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <android.support.v7.widget.CardView
+            android:id="@+id/bottomsheet_CV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="3dp"
+            android:alpha="1"
+            app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="5dp"
-            app:cardElevation="8dp">
+            app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bottomsheet_topbar"
                     android:orientation="horizontal">
 
                     <TextView
@@ -163,6 +169,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:text="Signed in as "
@@ -180,106 +187,110 @@
                         android:text="Edit Accout Info" />
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/textView19"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray" />
-
-                <TextView
-                    android:id="@+id/starredItemCount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="10dp"
-                    android:text="Item starred: "
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/phoneNum"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="10dp"
-                    android:text="TextView" />
-
                 <LinearLayout
+                    android:id="@+id/bottomsheet_lowerPart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bottomsheet_bottom_bar"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/Bio"
+                        android:id="@+id/starredItemCount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Item starred: "
+                        android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/expandIndicator"
+                        android:id="@+id/phoneNum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="...more"
-                        android:textAlignment="textEnd"
-                        android:textColor="@android:color/holo_red_light"
-                        android:textStyle="italic" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="10dp"
+                        android:text="TextView" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/emailTag"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_weight="1"
+                            android:text="Email: " />
+
+                        <TextView
+                            android:id="@+id/Email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/emailTag"
+                            android:autoLink="email"
+                            android:text="TextView" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/Bio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="TextView" />
+
+                        <TextView
+                            android:id="@+id/expandIndicator"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="...more"
+                            android:textAlignment="textEnd"
+                            android:textColor="@android:color/holo_red_light"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/signOut"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="30dp"
+                            android:layout_weight="1"
+                            android:text="Left" />
+
+                        <TextView
+                            android:id="@+id/deleteInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="30dp"
+                            android:layout_weight="1"
+                            android:text="Right" />
+                    </RelativeLayout>
+
                 </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/emailTag"
-                        android:layout_width="40dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_weight="1"
-                        android:text="Email: " />
-
-                    <TextView
-                        android:id="@+id/Email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/emailTag"
-                        android:autoLink="email"
-                        android:text="TextView" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="30dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/signOut"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="30dp"
-                        android:layout_weight="1"
-                        android:text="Left" />
-
-                    <TextView
-                        android:id="@+id/deleteInfo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="30dp"
-                        android:layout_weight="1"
-                        android:text="Right" />
-                </RelativeLayout>
 
             </LinearLayout>
 

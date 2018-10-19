@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Alloy Project</string>
+    <string name="title_activity_tabbed_login_register">tabbed_login_register</string>
 </resources>
