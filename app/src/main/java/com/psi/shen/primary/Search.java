@@ -272,7 +272,7 @@ public class Search extends AppCompatActivity {
     Bundle packagingBundle(){
         Bundle inquiryBundle = new Bundle();
         inquiryBundle.putString("name",Name);
-        inquiryBundle.putString("namingstandard",NamingStandard);
+        inquiryBundle.putString("namingStandard",NamingStandard);
         inquiryBundle.putDoubleArray("doubleArray",doubleArray);
         inquiryBundle.putBooleanArray("validation",Validation);
         return inquiryBundle;
