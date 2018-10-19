@@ -480,7 +480,7 @@ public class SingleAlloyItem implements Parcelable{
         if(packageElementNull[9]) out.writeDouble(Nd_Max);
         if(packageElementNull[10]) out.writeDouble(Gd_Min);
         if(packageElementNull[11]) out.writeDouble(Gd_Max);
-        if(packageElementNull[12]) out.writeDouble(Zr_Max);
+        if(packageElementNull[12]) out.writeDouble(Zr_Min);
         if(packageElementNull[13]) out.writeDouble(Zr_Max);
         if(packageElementNull[14]) out.writeDouble(Ag_Min);
         if(packageElementNull[15]) out.writeDouble(Ag_Max);
