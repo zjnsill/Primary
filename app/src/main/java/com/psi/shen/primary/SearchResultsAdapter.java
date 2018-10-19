@@ -25,7 +25,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     private ArrayList<SingleAlloyItem> searchResults;
     private OnItemClickListener mOnItemClickListener;
 
-    private int expandedHeight=50;
+    private int expandedHeight=100;
 
     public interface OnItemClickListener{
         void onClick(int position);
@@ -115,6 +115,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             }
         });
         //item expand interactive
+        viewHolder.foldedDetail.setVisibility(View.GONE);
         viewHolder.foldArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,7 +168,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
     private void startAnim(View v){
         v.setVisibility(View.VISIBLE);
-        ValueAnimator animator = createDropAnimator(v,0,expandedHeight);
+        int actualHeight = (int)ScreenSizeUtils.getInstance(context).getDisplayDensity()*expandedHeight;
+
+        ValueAnimator animator = createDropAnimator(v,0,actualHeight);
         animator.start();
     }
     private void foldViewAnimation(boolean isFold,View toRotate){

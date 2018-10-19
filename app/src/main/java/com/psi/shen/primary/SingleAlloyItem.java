@@ -164,7 +164,7 @@ public class SingleAlloyItem implements Parcelable{
             return this;
         }
 
-        public Builder FractureTou(double fractureToughness) {
+        public Builder FractureTou(Double fractureToughness) {
             this.FractureToughness = fractureToughness;
             return this;
         }
@@ -267,6 +267,22 @@ public class SingleAlloyItem implements Parcelable{
     public String getComponent() {
         return Component;
     }
+    public String getComponentPercentage(){
+        String outString="";
+        outString+=composePercentage("Al",Al_Min,Al_Max);
+        outString+=composePercentage("Mn",Mn_Min,Mn_Max);
+        outString+=composePercentage("Zn",Zn_Min,Zn_Max);
+        outString+=composePercentage("Mg",Mn_Min,Mn_Max);
+        outString+=composePercentage("Nd",Nd_Min,Nd_Max);
+        outString+=composePercentage("Gd",Gd_Min,Gd_Max);
+        outString+=composePercentage("Zr",Zr_Min,Zr_Max);
+        outString+=composePercentage("Ag",Ag_Min,Ag_Max);
+        outString+=composePercentage("Cu",Cu_Min,Cu_Max);
+        outString+=composePercentage("Th",Th_Min,Th_Max);
+        outString+=composePercentage("Y",Y_Min,Y_Max);
+        outString+=composePercentage("Rare Element",RareElements_Min,RareElements_Max);
+        if(outString.equals("")){return null;}else{return outString;}
+    }
     public Double getDensity() {
         return Density;
     }
@@ -310,7 +326,11 @@ public class SingleAlloyItem implements Parcelable{
         return Hardness_Max;
     }
     public String getHardnessString(){
-        return Hardness_Min+"~"+Hardness_Max;
+        String out = "";
+        if(Hardness_Min!=null) out+=Hardness_Min;
+        out+=" ~ ";
+        if(Hardness_Max!=null) out+=Hardness_Max;
+        return out.equals(" ~ ")? "No data":out;
     }
     public String getForging() {
         return Forging;
@@ -403,7 +423,14 @@ public class SingleAlloyItem implements Parcelable{
         return RareElements_Max;
     }
 
-
+    //
+    private String composePercentage(String element,Double Min,Double Max){
+        if(Min==null&Max==null) return "";
+        if(Min!=null&Max==null) return element+": "+Min.toString()+"~UNKNOWN\n";
+        if(Min==null&Max!=null) return element+": "+"UNKNOWN~"+Max.toString()+"\n";
+        if(Min!=null&Max!=null) return element+": "+Min.toString()+"~"+Max.toString()+"\n";
+        return "";
+    }
     //Parcelable method
 
     @Override
@@ -415,54 +442,56 @@ public class SingleAlloyItem implements Parcelable{
         boolean[] packagedOtherNull = packDoubleNull(new Double[]{Density,ThermalExpan,ThermalCon,SpecificHeat,Resistivity,ElasticModu,PoissonsRatio,MeltingRange_Min,MeltingRange_Max,
                 DampingIndex,Hardness_Min,Hardness_Max,FractureToughness});
         out.writeBooleanArray(packagedOtherNull);
+        boolean[] packageStringNull = packStringNull(new String[]{NamingStandard,Component,Forging,Weldability,Machining,SurfaceTreatment,CorrisionResistance});
+        out.writeBooleanArray(packageStringNull);
         out.writeString(AlloyName);
-        out.writeString(NamingStandard);
-        out.writeString(Component);
-        out.writeDouble(Density==null? 0.0:Density);
-        out.writeDouble(ThermalExpan==null? 0.0:ThermalExpan);
-        out.writeDouble(ThermalCon==null? 0.0:ThermalCon);
-        out.writeDouble(SpecificHeat==null? 0.0:SpecificHeat);
-        out.writeDouble(Resistivity==null? 0.0:Resistivity);
-        out.writeDouble(ElasticModu==null? 0.0:ElasticModu);
-        out.writeDouble(PoissonsRatio==null? 0.0:PoissonsRatio);
-        out.writeDouble(MeltingRange_Min==null? 0.0:MeltingRange_Min);
-        out.writeDouble(MeltingRange_Max==null? 0.0:MeltingRange_Max);
-        out.writeDouble(DampingIndex==null? 0.0:DampingIndex);
-        out.writeDouble(Hardness_Min==null? 0.0:Hardness_Min);
-        out.writeDouble(Hardness_Max==null? 0.0:Hardness_Max);
-        out.writeString(Forging);
-        out.writeString(Weldability);
-        out.writeString(Machining);
-        out.writeString(SurfaceTreatment);
-        out.writeString(CorrisionResistance);
-        out.writeDouble(FractureToughness==null? 0.0:FractureToughness);
+        if(packageStringNull[0]) out.writeString(NamingStandard);
+        if(packageStringNull[1]) out.writeString(Component);
+        if(packagedOtherNull[0]) out.writeDouble(Density);
+        if(packagedOtherNull[1]) out.writeDouble(ThermalExpan);
+        if(packagedOtherNull[2]) out.writeDouble(ThermalCon);
+        if(packagedOtherNull[3]) out.writeDouble(SpecificHeat);
+        if(packagedOtherNull[4]) out.writeDouble(Resistivity);
+        if(packagedOtherNull[5]) out.writeDouble(ElasticModu);
+        if(packagedOtherNull[6]) out.writeDouble(PoissonsRatio);
+        if(packagedOtherNull[7]) out.writeDouble(MeltingRange_Min);
+        if(packagedOtherNull[8]) out.writeDouble(MeltingRange_Max);
+        if(packagedOtherNull[9]) out.writeDouble(DampingIndex);
+        if(packagedOtherNull[10]) out.writeDouble(Hardness_Min);
+        if(packagedOtherNull[11]) out.writeDouble(Hardness_Max);
+        if(packageStringNull[2]) out.writeString(Forging);
+        if(packageStringNull[3]) out.writeString(Weldability);
+        if(packageStringNull[4]) out.writeString(Machining);
+        if(packageStringNull[5]) out.writeString(SurfaceTreatment);
+        if(packageStringNull[6]) out.writeString(CorrisionResistance);
+        if(packagedOtherNull[12]) out.writeDouble(FractureToughness);
         boolean[] packageElementNull = packDoubleNull(new Double[]{Al_Min,Al_Max,Mn_Min,Mn_Max,Zn_Min,Zn_Max,Mg_Min,Mg_Max,Nd_Min,Nd_Max,Gd_Min,Gd_Max,Zr_Min,Zr_Max,Ag_Min,Ag_Max,
                 Cu_Min,Cu_Max,Th_Min,Th_Max,Y_Min,Y_Max,RareElements_Min,RareElements_Max});
         out.writeBooleanArray(packageElementNull);
-        out.writeDouble(Al_Min==null? 0.0:Al_Min);
-        out.writeDouble(Al_Max==null? 0.0:Al_Max);
-        out.writeDouble(Mn_Min==null? 0.0:Mn_Min);
-        out.writeDouble(Mn_Max==null? 0.0:Mn_Max);
-        out.writeDouble(Zn_Min==null? 0.0:Zn_Min);
-        out.writeDouble(Zn_Max==null? 0.0:Zn_Max);
-        out.writeDouble(Mg_Min==null? 0.0:Mg_Min);
-        out.writeDouble(Mg_Max==null? 0.0:Mg_Max);
-        out.writeDouble(Nd_Min==null? 0.0:Nd_Min);
-        out.writeDouble(Nd_Max==null? 0.0:Nd_Max);
-        out.writeDouble(Gd_Min==null? 0.0:Gd_Min);
-        out.writeDouble(Gd_Max==null? 0.0:Gd_Max);
-        out.writeDouble(Zr_Min==null? 0.0:Zr_Max);
-        out.writeDouble(Zr_Max==null? 0.0:Zr_Max);
-        out.writeDouble(Ag_Min==null? 0.0:Ag_Min);
-        out.writeDouble(Ag_Max==null? 0.0:Ag_Max);
-        out.writeDouble(Cu_Min==null? 0.0:Cu_Min);
-        out.writeDouble(Cu_Max==null? 0.0:Cu_Max);
-        out.writeDouble(Th_Min==null? 0.0:Th_Min);
-        out.writeDouble(Th_Max==null? 0.0:Th_Max);
-        out.writeDouble(Y_Min==null? 0.0:Y_Min);
-        out.writeDouble(Y_Max==null? 0.0:Y_Max);
-        out.writeDouble(RareElements_Min==null? 0.0:RareElements_Min);
-        out.writeDouble(RareElements_Max==null? 0.0:RareElements_Max);
+        if(packageElementNull[0]) out.writeDouble(Al_Min);
+        if(packageElementNull[1]) out.writeDouble(Al_Max);
+        if(packageElementNull[2]) out.writeDouble(Mn_Min);
+        if(packageElementNull[3]) out.writeDouble(Mn_Max);
+        if(packageElementNull[4]) out.writeDouble(Zn_Min);
+        if(packageElementNull[5]) out.writeDouble(Zn_Max);
+        if(packageElementNull[6]) out.writeDouble(Mg_Min);
+        if(packageElementNull[7]) out.writeDouble(Mg_Max);
+        if(packageElementNull[8]) out.writeDouble(Nd_Min);
+        if(packageElementNull[9]) out.writeDouble(Nd_Max);
+        if(packageElementNull[10]) out.writeDouble(Gd_Min);
+        if(packageElementNull[11]) out.writeDouble(Gd_Max);
+        if(packageElementNull[12]) out.writeDouble(Zr_Max);
+        if(packageElementNull[13]) out.writeDouble(Zr_Max);
+        if(packageElementNull[14]) out.writeDouble(Ag_Min);
+        if(packageElementNull[15]) out.writeDouble(Ag_Max);
+        if(packageElementNull[16]) out.writeDouble(Cu_Min);
+        if(packageElementNull[17]) out.writeDouble(Cu_Max);
+        if(packageElementNull[18]) out.writeDouble(Th_Min);
+        if(packageElementNull[19]) out.writeDouble(Th_Max);
+        if(packageElementNull[20]) out.writeDouble(Y_Min);
+        if(packageElementNull[21]) out.writeDouble(Y_Max);
+        if(packageElementNull[22]) out.writeDouble(RareElements_Min);
+        if(packageElementNull[23]) out.writeDouble(RareElements_Max);
     }
 
     public static final  Parcelable.Creator<SingleAlloyItem> CREATOR = new Creator<SingleAlloyItem>() {
@@ -479,56 +508,66 @@ public class SingleAlloyItem implements Parcelable{
 
     public SingleAlloyItem(Parcel in){
         boolean[] otherPackNull = new boolean[13];
+        boolean[] StringNull = new boolean[7];
         in.readBooleanArray(otherPackNull);
+        in.readBooleanArray(StringNull);
         this.AlloyName = in.readString();
-        this.NamingStandard = in.readString();
-        this.Component = in.readString();
-        this.Density = otherPackNull[0]? null:in.readDouble();
-        this.ThermalExpan = otherPackNull[1]? null:in.readDouble();
-        this.ThermalCon = otherPackNull[2]? null:in.readDouble();
-        this.SpecificHeat = otherPackNull[3]? null:in.readDouble();
-        this.Resistivity = otherPackNull[4]? null:in.readDouble();
-        this.ElasticModu = otherPackNull[5]? null:in.readDouble();
-        this.PoissonsRatio = otherPackNull[6]? null:in.readDouble();
-        this.MeltingRange_Min = otherPackNull[7]? null:in.readDouble();
-        this.MeltingRange_Max = otherPackNull[8]? null:in.readDouble();
-        this.DampingIndex = otherPackNull[9]? null:in.readDouble();
-        this.Hardness_Min = otherPackNull[10]? null:in.readDouble();
-        this.Hardness_Max = otherPackNull[11]? null:in.readDouble();
-        this.Forging = in.readString();
-        this.Weldability = in.readString();
-        this.Machining = in.readString();
-        this.SurfaceTreatment = in.readString();
-        this.CorrisionResistance = in.readString();
-        this.FractureToughness = otherPackNull[12]? null:in.readDouble();
+        this.NamingStandard = StringNull[0]? in.readString():null;
+        this.Component = StringNull[1]? in.readString():null;
+        this.Density = otherPackNull[0]? in.readDouble():null;
+        this.ThermalExpan = otherPackNull[1]? in.readDouble():null;
+        this.ThermalCon = otherPackNull[2]? in.readDouble():null;
+        this.SpecificHeat = otherPackNull[3]? in.readDouble():null;
+        this.Resistivity = otherPackNull[4]? in.readDouble():null;
+        this.ElasticModu = otherPackNull[5]? in.readDouble():null;
+        this.PoissonsRatio = otherPackNull[6]? in.readDouble():null;
+        this.MeltingRange_Min = otherPackNull[7]? in.readDouble():null;
+        this.MeltingRange_Max = otherPackNull[8]? in.readDouble():null;
+        this.DampingIndex = otherPackNull[9]? in.readDouble():null;
+        this.Hardness_Min = otherPackNull[10]? in.readDouble():null;
+        this.Hardness_Max = otherPackNull[11]? in.readDouble():null;
+        this.Forging = StringNull[2]? in.readString():null;
+        this.Weldability = StringNull[3]? in.readString():null;
+        this.Machining = StringNull[4]? in.readString():null;
+        this.SurfaceTreatment = StringNull[5]? in.readString():null;
+        this.CorrisionResistance = StringNull[6]? in.readString():null;
+        this.FractureToughness = otherPackNull[12]? in.readDouble():null;
         boolean[] elementNull = new boolean[24];
         in.readBooleanArray(elementNull);
-        this.Al_Min = elementNull[0]? null:in.readDouble();
-        this.Al_Max = elementNull[1]? null:in.readDouble();
-        this.Mn_Min = elementNull[2]? null:in.readDouble();
-        this.Mn_Max = elementNull[3]? null:in.readDouble();
-        this.Zn_Min = elementNull[4]? null:in.readDouble();
-        this.Zn_Max = elementNull[5]? null:in.readDouble();
-        this.Mg_Min = elementNull[6]? null:in.readDouble();
-        this.Mg_Max = elementNull[7]? null:in.readDouble();
-        this.Nd_Min = elementNull[8]? null:in.readDouble();
-        this.Nd_Max = elementNull[9]? null:in.readDouble();
-        this.Gd_Min = elementNull[10]? null:in.readDouble();
-        this.Gd_Max = elementNull[11]? null:in.readDouble();
-        this.Zr_Min = elementNull[12]? null:in.readDouble();
-        this.Zr_Max = elementNull[13]? null:in.readDouble();
-        this.Ag_Min = elementNull[14]? null:in.readDouble();
-        this.Ag_Max = elementNull[15]? null:in.readDouble();
-        this.Cu_Min = elementNull[16]? null:in.readDouble();
-        this.Cu_Max = elementNull[17]? null:in.readDouble();
-        this.Th_Min = elementNull[18]? null:in.readDouble();
-        this.Th_Max = elementNull[19]? null:in.readDouble();
-        this.Y_Min = elementNull[20]? null:in.readDouble();
-        this.Y_Max = elementNull[21]? null:in.readDouble();
-        this.RareElements_Min = elementNull[22]? null:in.readDouble();
-        this.RareElements_Max = elementNull[23]? null:in.readDouble();
+        this.Al_Min = elementNull[0]? in.readDouble():null;
+        this.Al_Max = elementNull[1]? in.readDouble():null;
+        this.Mn_Min = elementNull[2]? in.readDouble():null;
+        this.Mn_Max = elementNull[3]? in.readDouble():null;
+        this.Zn_Min = elementNull[4]? in.readDouble():null;
+        this.Zn_Max = elementNull[5]? in.readDouble():null;
+        this.Mg_Min = elementNull[6]? in.readDouble():null;
+        this.Mg_Max = elementNull[7]? in.readDouble():null;
+        this.Nd_Min = elementNull[8]? in.readDouble():null;
+        this.Nd_Max = elementNull[9]? in.readDouble():null;
+        this.Gd_Min = elementNull[10]? in.readDouble():null;
+        this.Gd_Max = elementNull[11]? in.readDouble():null;
+        this.Zr_Min = elementNull[12]? in.readDouble():null;
+        this.Zr_Max = elementNull[13]? in.readDouble():null;
+        this.Ag_Min = elementNull[14]? in.readDouble():null;
+        this.Ag_Max = elementNull[15]? in.readDouble():null;
+        this.Cu_Min = elementNull[16]? in.readDouble():null;
+        this.Cu_Max = elementNull[17]? in.readDouble():null;
+        this.Th_Min = elementNull[18]? in.readDouble():null;
+        this.Th_Max = elementNull[19]? in.readDouble():null;
+        this.Y_Min = elementNull[20]? in.readDouble():null;
+        this.Y_Max = elementNull[21]? in.readDouble():null;
+        this.RareElements_Min = elementNull[22]? in.readDouble():null;
+        this.RareElements_Max = elementNull[23]? in.readDouble():null;
     }
-    private boolean[] packDoubleNull(Double[] data){
+    private boolean[] packDoubleNull(Double[] data){//true for not null
+        int size = data.length;
+        boolean[] out = new boolean[size];
+        for(int i=0;i<size;i++){
+            out[i]= !(data[i]==null);
+        }
+        return out;
+    }
+    private boolean[] packStringNull(String[] data){
         int size = data.length;
         boolean[] out = new boolean[size];
         for(int i=0;i<size;i++){
