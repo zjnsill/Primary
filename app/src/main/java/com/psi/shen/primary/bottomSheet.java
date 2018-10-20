@@ -333,7 +333,7 @@ public class bottomSheet extends AppCompatActivity {
                 }else if(passcode.getText().toString().isEmpty()){
                     Toast.makeText(bottomSheet.this,"Please enter your passcodes!",Toast.LENGTH_SHORT).show();
                 }else{
-                    signedUser returnedUser = userUtility.SignIn(null,phoneNum.getText().toString(),passcode.getText().toString());
+                    signedUser returnedUser = userUtility.SignIn(phoneNum.getText().toString(),passcode.getText().toString());
                     if(returnedUser.getErrorCode()==signedUser.NO_SUCH_USER){
                         Toast.makeText(bottomSheet.this,"User doesn't exist!",Toast.LENGTH_SHORT).show();
                     }else if(returnedUser.getErrorCode()==signedUser.INCORRECT_PASSWORD){
