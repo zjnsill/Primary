@@ -99,7 +99,7 @@ public class signedUser implements Parcelable {
         return starredItemArray.size();
     }
 
-    public int getErrorCode(){return this.errorCode;}
+    public @ERROR_CODES int getErrorCode() { return this.errorCode; }
 
     //
     //Parcelable
