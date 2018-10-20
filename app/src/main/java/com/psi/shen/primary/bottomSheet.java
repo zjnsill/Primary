@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -26,9 +28,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mob.MobSDK;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
 public class bottomSheet extends AppCompatActivity {
     private View bottomSheetView,backView,bottomsheetLower;
@@ -48,7 +55,46 @@ public class bottomSheet extends AppCompatActivity {
     public @interface PHONE_VERIFY{}
 
     private user_server userUtility = new user_server();
+    //定义SMShandler
+    private EventHandler eventHandler = new EventHandler() {
+        public void afterEvent(int event, int result, Object data) {
+            Message msg = new Message();
+            msg.arg1 = event;
+            msg.arg2 = result;
+            msg.obj = data;
+            new Handler(Looper.getMainLooper(), new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message msg) {
+                    int event = msg.arg1;
+                    int result = msg.arg2;
+                    Object data = msg.obj;
+                    if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                        if (result == SMSSDK.RESULT_COMPLETE) {
+                            // TODO 处理成功得到验证码的结果
+                            Toast.makeText(bottomSheet.this, "send ok", Toast.LENGTH_SHORT).show();
+                            // 请注意，此时只是完成了发送验证码的请求，验证码短信还需要几秒钟之后才送达
+                        } else {
+                            // TODO 处理错误的结果
+                            ((Throwable) data).printStackTrace();
+                            Toast.makeText(bottomSheet.this, "can't send code", Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                        if (result == SMSSDK.RESULT_COMPLETE) {
+                            // TODO 处理验证码验证通过的结果
+                            Toast.makeText(bottomSheet.this, "verification ok", Toast.LENGTH_SHORT).show();
 
+                        } else {
+                            // TODO 处理错误的结果
+                            Toast.makeText(bottomSheet.this, "verification failed", Toast.LENGTH_SHORT).show();
+                            ((Throwable) data).printStackTrace();
+                        }
+                    }
+                    // TODO 其他接口的返回结果也类似，根据event判断当前数据属于哪个接口
+                    return false;
+                }
+            }).sendMessage(msg);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +132,8 @@ public class bottomSheet extends AppCompatActivity {
                 " target of what we should learn in the future. Give a example, in our product, " +
                 "we used knowledge from liner algebra, virtual machine, computer network, data structure. " +
                 "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
-        currentUser = new signedUser.Builder("francis","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
+        //currentUser = new signedUser.Builder("francis","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
+        currentUser = defaultUser;
         userDatabaseManager = UserDatabaseManager.getInstance(this,currentUser.getName());
         //
         //
@@ -324,6 +371,7 @@ public class bottomSheet extends AppCompatActivity {
 
     public void showVerifyWindow(String Num, final int flag){//flag 1: register,2:editting info,3: forgot passcode 4: changing phone number
         @SMS_Service.SMSERROR int returnERRORInt;
+        MobSDK.init(this);
         final Handler returnValListener = new Handler(){
             public void handleMessage(Message msg){
                 super.handleMessage(msg);
@@ -343,15 +391,34 @@ public class bottomSheet extends AppCompatActivity {
             }
         });
 
-        EditText PhoneNum = VerifyView.findViewById(R.id.phoneNum);
+        final EditText phoneNum = VerifyView.findViewById(R.id.PhoneNum);
         final EditText verifyCode = VerifyView.findViewById(R.id.VerifyCode);
-        TextView sendCode = VerifyView.findViewById(R.id.SendCode);
+        final TextView sendCode = VerifyView.findViewById(R.id.SendCode);
         TextView cancel = VerifyView.findViewById(R.id.VerifyCancel);
         final TextView verify = VerifyView.findViewById(R.id.VerifyVerify);
         sendCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //send verification code;
+                String phone = phoneNum.getText().toString();
+                SMSSDK.registerEventHandler(eventHandler);
+                SMSSDK.getVerificationCode("86", phone);
+                phoneNum.setEnabled(false);
+                CountDownTimer timer = new CountDownTimer(60000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        sendCode.setEnabled(false);
+                        sendCode.setText("(wait " + millisUntilFinished / 1000 + " s)");
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        sendCode.setEnabled(true);
+                        sendCode.setText("Send Code");
+
+                    }
+                }.start();
             }
         });
         if(flag==1){
@@ -373,6 +440,7 @@ public class bottomSheet extends AppCompatActivity {
                 Message msg = new Message();
                 msg.what = 1;
                 returnValListener.sendMessage(msg);
+
             }
         });
         verify.setOnClickListener(new View.OnClickListener() {
@@ -384,7 +452,9 @@ public class bottomSheet extends AppCompatActivity {
                     Toast.makeText(bottomSheet.this,"Please enter verify code!",Toast.LENGTH_SHORT).show();
                 }else{
                     //verify code;
-
+                    String code = verifyCode.getText().toString();
+                    String phone =phoneNum.getText().toString();
+                    SMSSDK.submitVerificationCode("86", phone, code);
                 }
             }
         });
@@ -394,7 +464,6 @@ public class bottomSheet extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         backView.setDrawingCacheEnabled(false);
+        SMSSDK.unregisterEventHandler(eventHandler);
     }
-
-
 }
