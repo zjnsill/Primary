@@ -132,9 +132,13 @@ public class bottomSheet extends AppCompatActivity {
                 " target of what we should learn in the future. Give a example, in our product, " +
                 "we used knowledge from liner algebra, virtual machine, computer network, data structure. " +
                 "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
-        //currentUser = new signedUser.Builder("francis","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
-        currentUser = defaultUser;
+        currentUser = new signedUser.Builder("shen","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
         userDatabaseManager = UserDatabaseManager.getInstance(this,currentUser.getName());
+        if(!userDatabaseManager.hasTable()){
+            userDatabaseManager.insertNewTable(currentUser.getName());
+            Log.i("Database","new table inserted");
+        }
+
         //
         //
         welcome.setText("Welcome "+currentUser.getName());
