@@ -153,6 +153,20 @@ public class UserDatabaseManager {
         db.execSQL(sql);
         db.close();
     }
+
+    public boolean hasTable(){
+        SQLiteDatabase db = database.getReadableDatabase();
+        String sql = "select count(*) from sqlite_master where type = 'table' and name = "+currentUser;
+        boolean hasTable = false;
+        try{
+        Cursor cursor = db.rawQuery(sql,null);
+        if(cursor.moveToNext()){
+            int count = cursor.getInt(0);
+            if(count>0) hasTable = true;
+        }
+        }catch (Exception e){}
+        return hasTable;
+    }
     public void clearAllData(String tableName){
         SQLiteDatabase db = database.getWritableDatabase();
         String sql = "delete from"+tableName;
