@@ -12,29 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".bottomSheet">
-            <!--
+        <activity android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
         </activity>
-        <activity android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+        <activity android:name=".bottomSheet"/>
         <activity android:name=".Search" />
         <activity android:name=".SearchResults" />
         <activity android:name=".detaied_alloy" />
         <activity android:name=".CreateAlloy" />
         <activity android:name=".StarredList" />
         <activity android:name=".edit_account_info" />
-        <activity android:name=".tabbed_login_register"></activity>
+        <activity android:name=".tabbed_login_register" />
+
     </application>
 
 </manifest>

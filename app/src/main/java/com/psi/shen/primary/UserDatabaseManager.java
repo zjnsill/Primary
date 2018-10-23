@@ -18,6 +18,11 @@ public class UserDatabaseManager {
     public UserDatabaseManager(Context context,String currentUser){
         this.currentUser = currentUser;
         database = new UserDatabase(context,this.currentUser,null,1);
+        String sql = "create table if not exists "+ currentUser +" (_id integer primary key autoincrement,name varchar(40),namingStandard varchar(40),component varchar(40)" +
+                ", density decimal(6,2),thermalExpan decimal(6,2),thermalCon decimal(6,2),specificHeat decimal(6,2),resistivity decimal(6,2), elasticModu decimal(6,2)" +
+                ",poissonsRatio decimal(6,2),meltingRangeMin decimal(6,2),meltingRangeMax decimal(6,2),dampingIndex decimal(6,2),hardnessMin decimal(6,2)" +
+                ",hardnessMax decimal(6,2),forging text,weldability text,machining text,surfTreat text,corrResis text,fractureTou text,validation varchar(40),property varchar(10))";
+        database.getWritableDatabase().execSQL(sql);
     }
 
 

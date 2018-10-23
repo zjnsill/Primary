@@ -18,6 +18,7 @@ import android.support.v7.widget.CardView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -46,6 +47,8 @@ public class bottomSheet extends AppCompatActivity {
     private signedUser currentUser;
     private int MAX_Bio_Line=3,EXPANDED_Bio_Line=6;
     private UserDatabaseManager userDatabaseManager;
+
+    private long exitTime;
 
     //declaration of error type
     private static final int VERIFY_OK = 7;
@@ -134,11 +137,6 @@ public class bottomSheet extends AppCompatActivity {
                 "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
         currentUser = new signedUser.Builder("shen","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
         userDatabaseManager = UserDatabaseManager.getInstance(this,currentUser.getName());
-        if(!userDatabaseManager.hasTable()){
-            userDatabaseManager.insertNewTable(currentUser.getName());
-            Log.i("Database","new table inserted");
-        }
-
         //
         //
         welcome.setText("Welcome "+currentUser.getName());
@@ -464,6 +462,28 @@ public class bottomSheet extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            if(mBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            } else {
+                logoutApp();
+            }
+        }
+        return true;
+    }
+
+    private void logoutApp() {
+        if(System.currentTimeMillis() - exitTime > 2000) {
+            Toast.makeText(this, "Press again to exit the Application", Toast.LENGTH_LONG).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+        }
+    }
+
     @Override
     protected void onDestroy(){
         super.onDestroy();
