@@ -1,14 +1,10 @@
 package com.psi.shen.primary;
 
-import android.os.Parcel;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -186,7 +182,27 @@ public class user_server {
         return null;
     }
 
-    public signedUser addStarredItem(String Phone, ArrayList<String> newStarredItem){
+    public signedUser addStarredItem(String Phone, ArrayList<String> newStarredItem) { //return editted profile;
+        String path = "http://118.25.122.232/android_connect/addStarredItem.php";
+        try {
+            OkHttpClient client = new OkHttpClient();
+            FormBody.Builder formBody = new FormBody.Builder();
+            formBody.add("Phone", Phone);
+            formBody.add("NewStarredItem", newStarredItem.toString());
+            Request request = new Request.Builder().url(path).post(formBody.build()).build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                Log.i(TAG, "response.code() = " + response.code());
+                Log.i(TAG, "response.message() = " + response.message());
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                int errorCode = jsonObject.getInt(TAG_ERRORCODE);
+                if(errorCode == 0) {
+                    //signedUser returnUser = new
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
-    }//return editted profile;
+    }
 }
