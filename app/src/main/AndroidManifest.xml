@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".bottomSheet"/>
         <activity android:name=".Search" />
-        <activity android:name=".SearchResults" />
+        <activity android:name=".SearchResults"/>
         <activity android:name=".detaied_alloy" />
         <activity android:name=".CreateAlloy" />
         <activity android:name=".StarredList" />

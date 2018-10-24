@@ -20,6 +20,7 @@ public class user_server {
     private static final String TAG_PHONE = "Phone";
     private static final String TAG_EMAIL = "Email";
     private static final String TAG_BIO = "Bio";
+    private static final String TAG_STARREDITEMS = "starredItems";
 
     public user_server(){}
     public signedUser SignIn(String phoneNum, String passcode) {
@@ -188,7 +189,7 @@ public class user_server {
             OkHttpClient client = new OkHttpClient();
             FormBody.Builder formBody = new FormBody.Builder();
             formBody.add("Phone", Phone);
-            formBody.add("NewStarredItem", newStarredItem.toString());
+            formBody.add("NewStarredItems", newStarredItem.toString());
             Request request = new Request.Builder().url(path).post(formBody.build()).build();
             Response response = client.newCall(request).execute();
             if(response.isSuccessful()) {
@@ -197,8 +198,83 @@ public class user_server {
                 JSONObject jsonObject = new JSONObject(response.body().string());
                 int errorCode = jsonObject.getInt(TAG_ERRORCODE);
                 if(errorCode == 0) {
-                    //signedUser returnUser = new
+                    String name = jsonObject.getJSONObject(TAG_USER).getString(TAG_NAME);
+                    String phone = jsonObject.getJSONObject(TAG_USER).getString(TAG_PHONE);
+                    String starredItemstr = jsonObject.getJSONObject(TAG_USER).getString(TAG_STARREDITEMS);
+                    return new signedUser.Builder(name, phone).errorCode(signedUser.SUCCESS).starredItems(starredItemstr).build();
+                } else if(errorCode == 1) {
+                    return new signedUser.Builder(null, null).errorCode(signedUser.NO_SUCH_USER).build();
+                } else if (errorCode == 2) {
+                    return new signedUser.Builder(null, null).errorCode(signedUser.UNKNOWN_ERROR).build();
                 }
+            } else {
+                Log.e(TAG, "error");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public signedUser getStarredItem(String Phone) { //return whole profile;
+        String path = "http://118.25.122.232/android_connect/addStarredItem.php";
+        try {
+            OkHttpClient client = new OkHttpClient();
+            FormBody.Builder formBody = new FormBody.Builder();
+            formBody.add("Phone", Phone);
+            formBody.add("NewStarredItems", "");
+            Request request = new Request.Builder().url(path).post(formBody.build()).build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                Log.i(TAG, "response.code() = " + response.code());
+                Log.i(TAG, "response.message() = " + response.message());
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                int errorCode = jsonObject.getInt(TAG_ERRORCODE);
+                if(errorCode == 0) {
+                    String name = jsonObject.getJSONObject(TAG_USER).getString(TAG_NAME);
+                    String phone = jsonObject.getJSONObject(TAG_USER).getString(TAG_PHONE);
+                    String starredItemstr = jsonObject.getJSONObject(TAG_USER).getString(TAG_STARREDITEMS);
+                    return new signedUser.Builder(name, phone).errorCode(signedUser.SUCCESS).starredItems(starredItemstr).build();
+                } else if(errorCode == 1) {
+                    return new signedUser.Builder(null, null).errorCode(signedUser.NO_SUCH_USER).build();
+                } else if (errorCode == 2) {
+                    return new signedUser.Builder(null, null).errorCode(signedUser.UNKNOWN_ERROR).build();
+                }
+            } else {
+                Log.e(TAG, "error");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public signedUser removeStarredItem(String Phone, ArrayList<String> StarredItem) { //return editted profile;
+        String path = "http://118.25.122.232/android_connect/removeStarredItem.php";
+        try {
+            OkHttpClient client = new OkHttpClient();
+            FormBody.Builder formBody = new FormBody.Builder();
+            formBody.add("Phone", Phone);
+            formBody.add("RemoveStarredItems", StarredItem.toString());
+            Request request = new Request.Builder().url(path).post(formBody.build()).build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                Log.i(TAG, "response.code() = " + response.code());
+                Log.i(TAG, "response.message() = " + response.message());
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                int errorCode = jsonObject.getInt(TAG_ERRORCODE);
+                if(errorCode == 0) {
+                    String name = jsonObject.getJSONObject(TAG_USER).getString(TAG_NAME);
+                    String phone = jsonObject.getJSONObject(TAG_USER).getString(TAG_PHONE);
+                    String starredItemstr = jsonObject.getJSONObject(TAG_USER).getString(TAG_STARREDITEMS);
+                    return new signedUser.Builder(name, phone).errorCode(signedUser.SUCCESS).starredItems(starredItemstr).build();
+                } else if(errorCode == 1) {
+                    return new signedUser.Builder(null, null).errorCode(signedUser.NO_SUCH_USER).build();
+                } else if (errorCode == 2) {
+                    return new signedUser.Builder(null, null).errorCode(signedUser.UNKNOWN_ERROR).build();
+                }
+            } else {
+                Log.e(TAG, "error");
             }
         } catch (Exception e) {
             e.printStackTrace();

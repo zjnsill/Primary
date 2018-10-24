@@ -32,6 +32,7 @@ public class signedUser implements Parcelable {
         this.Bio = builder.Bio;
         this.Email = builder.Email;
         this.Phone = builder.Phone;
+        this.starredItemArray = builder.starredItemArray;
         this.errorCode = builder.errorCode;
     }
 
@@ -40,6 +41,7 @@ public class signedUser implements Parcelable {
         this.Phone = user.Phone;
         this.Email = user.Email;
         this.Bio = user.Bio;
+        this.starredItemArray = user.starredItemArray;
         this.errorCode = errorCode;
     }
 
@@ -47,6 +49,7 @@ public class signedUser implements Parcelable {
     public static class Builder{
         private String Name,Email="",Bio="";
         private String Phone;
+        private ArrayList<String> starredItemArray = new ArrayList<>();
         private @ERROR_CODES int errorCode=SUCCESS;
 
         public Builder(String name, String phone) {
@@ -59,6 +62,15 @@ public class signedUser implements Parcelable {
         }
         public Builder Bio(String bio){
             this.Bio = bio;
+            return this;
+        }
+
+        public Builder starredItems(String starredItemstr) {
+            this.starredItemArray = new ArrayList<>();
+            String[] temp = starredItemstr.split(",");
+            for(int i = 0; i < temp.length; i++) {
+                this.starredItemArray.add(temp[i]);
+            }
             return this;
         }
 
