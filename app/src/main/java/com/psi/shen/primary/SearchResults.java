@@ -133,7 +133,10 @@ public class SearchResults extends AppCompatActivity {
             }
 
             @Override
-            public void rightListener() {}
+            public void rightListener() {
+                Intent sortIntent = new Intent(SearchResults.this, SortAlloys.class);
+                startActivity(sortIntent);
+            }
         });
         final LoadingDialog dialog = new LoadingDialog(this,"Loading data");
         dialog.show();

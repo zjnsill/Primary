@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -85,15 +88,15 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position){
         final SingleAlloyItem Item = searchResults.get(position);
-        viewHolder.NameTV.setText(Item.getAlloyName());
-        viewHolder.ResistivityTV.setText("Resistivity: "+Item.getResistivity());
-        viewHolder.DensityTV.setText("Density: "+Item.getDensity());
-        viewHolder.ComponentTV.setText("Component: "+Item.getComponent());
-        viewHolder.MeltingRangeTV.setText("Melting Range: "+Item.getMeltingRangeString());
-        viewHolder.HardnessTV.setText("Hardness: "+Item.getHardness_Min()+"~"+Item.getHardness_Max());
-        viewHolder.ThermalConTV.setText("Thermal Conductivity: "+Item.getThermalCon());
-        viewHolder.ThermalExpanTV.setText("Thermal Expansion: "+Item.getThermalExpan());
-        viewHolder.SpecificHeat.setText("Specific Heat: "+Item.getSpecificHeat());
+        setNullableText(viewHolder.NameTV, "Name: ", Item.getAlloyName());
+        setNullableText(viewHolder.ResistivityTV, "Resistivity: ", Item.getResistivity());
+        setNullableText(viewHolder.DensityTV, "Density: ", Item.getDensity());
+        setNullableText(viewHolder.ComponentTV, "Component: ", Item.getComponent());
+        setNullableText(viewHolder.MeltingRangeTV, "Melting Range: ", Item.getMeltingRangeString());
+        setNullableText(viewHolder.HardnessTV, "Hardness: ", Item.getHardnessString());
+        setNullableText(viewHolder.ThermalConTV, "Thermal Conductivity: ", Item.getThermalCon());
+        setNullableText(viewHolder.ThermalExpanTV, "Thermal Expansion: ", Item.getThermalExpan());
+        setNullableText(viewHolder.SpecificHeat, "Specific Heat: ", Item.getSpecificHeat());
         final boolean isStarred = proxy.hasItem(Item.getAlloyName());
         if(isStarred){viewHolder.isStarredIV.setImageResource(R.drawable.ic_star);}
         //star interactive methods
@@ -134,12 +137,16 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 mOnItemClickListener.onClick(position);
             }
         });
-
-
-
-
-
     }
+
+    private void setNullableText(TextView textView, String str, Double nullableDouble) {
+        textView.setText(nullableDouble == null ? str + "No data" : str + nullableDouble.toString());
+    }
+
+    private void setNullableText(TextView textView, String str, String in) {
+        textView.setText(in == null ? str + "No data" : str + in);
+    }
+
     //methods to expand the detail view
     private ValueAnimator createDropAnimator(final View v,int start,int end){
         ValueAnimator animator = ValueAnimator.ofInt(start,end);
