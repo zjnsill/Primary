@@ -135,6 +135,7 @@ public class SearchResults extends AppCompatActivity {
             @Override
             public void rightListener() {
                 Intent sortIntent = new Intent(SearchResults.this, SortAlloys.class);
+                sortIntent.putExtra("resultsArray", resultsArray);
                 startActivity(sortIntent);
             }
         });
