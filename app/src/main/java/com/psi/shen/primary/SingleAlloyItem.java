@@ -426,9 +426,9 @@ public class SingleAlloyItem implements Parcelable{
     //
     private String composePercentage(String element,Double Min,Double Max){
         if(Min==null&Max==null) return "";
-        if(Min!=null&Max==null) return element+": > "+Min.toString()+"%\n";
-        if(Min==null&Max!=null) return element+": < "+Max.toString()+"%\n";
-        if(Min!=null&Max!=null) return element+": "+Min.toString()+"% ~ "+Max.toString()+"%\n";
+        if(Min!=null&Max==null) return element+": "+Min.toString()+"~UNKNOWN\n";
+        if(Min==null&Max!=null) return element+": "+"UNKNOWN~"+Max.toString()+"\n";
+        if(Min!=null&Max!=null) return element+": "+Min.toString()+"~"+Max.toString()+"\n";
         return "";
     }
     //Parcelable method
