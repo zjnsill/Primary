@@ -48,6 +48,7 @@ public class Search extends AppCompatActivity {
                 Intent jumpToResults = new Intent(Search.this,SearchResults.class);
                 jumpToResults.putExtra("inquiry",input);
                 jumpToResults.putExtra("user",currentUser);
+                jumpToResults.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(jumpToResults);
             }
         });

@@ -65,6 +65,7 @@ public class StarredList extends AppCompatActivity {
                 Bundle itemBundle = new Bundle();
                 itemBundle.putParcelable("clickedItem",starredListData.get(position).getAlloyItem());
                 jumpToDetail.putExtras(itemBundle);
+                jumpToDetail.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(jumpToDetail);
             }
 
@@ -155,6 +156,7 @@ public class StarredList extends AppCompatActivity {
 
     void refreshList(){
         Intent refresh = new Intent(StarredList.this,StarredList.class);
+        refresh.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(refresh);
         finish();
         overridePendingTransition(0,0);

@@ -46,6 +46,7 @@ public class CreateAlloy extends AppCompatActivity {
                     Toast ts = Toast.makeText(CreateAlloy.this, "Item successfully saved to starred list!", Toast.LENGTH_SHORT);
                     ts.show();
                     Intent backToSearch = new Intent(CreateAlloy.this, Search.class);
+                    backToSearch.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(backToSearch);
                 }
             }

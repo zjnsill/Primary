@@ -49,7 +49,6 @@ public class bottomSheet extends AppCompatActivity {
     private int MAX_Bio_Line=3,EXPANDED_Bio_Line=6;
     private UserDatabaseManager userDatabaseManager;
 
-
     private Button testUse;
 
     private long exitTime;
@@ -184,6 +183,7 @@ public class bottomSheet extends AppCompatActivity {
                 Bundle userInfo = new Bundle();
                 userInfo.putParcelable("user",currentUser);
                 editAccountInfo.putExtras(userInfo);
+                editAccountInfo.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(editAccountInfo);
             }
         });
@@ -248,16 +248,18 @@ public class bottomSheet extends AppCompatActivity {
         searchCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent searchIntent = new Intent(bottomSheet.this,Search.class);
-                searchIntent.putExtra("userName",currentUser.getName());
+                Intent searchIntent = new Intent(bottomSheet.this, Search.class);
+                searchIntent.putExtra("userName", currentUser.getName());
+                searchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(searchIntent);
             }
         });
         createCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent createintent = new Intent(bottomSheet.this,CreateAlloy.class);
-                createintent.putExtra("userName",currentUser.getName());
+                Intent createintent = new Intent(bottomSheet.this, CreateAlloy.class);
+                createintent.putExtra("userName", currentUser.getName());
+                createintent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(createintent);
             }
         });
@@ -266,6 +268,7 @@ public class bottomSheet extends AppCompatActivity {
             public void onClick(View v) {
                 Intent starredIntent = new Intent(bottomSheet.this,StarredList.class);
                 starredIntent.putExtra("userName",currentUser.getName());
+                starredIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(starredIntent);
             }
         });
@@ -292,6 +295,7 @@ public class bottomSheet extends AppCompatActivity {
                 Bundle arg = new Bundle();
                 arg.putInt("ambition",101);
                 toTest.putExtra("ambition",arg);
+                toTest.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(toTest);
             }
         });
@@ -362,6 +366,7 @@ public class bottomSheet extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("user",returnedUser);
                         userGot.putExtras(bundle);
+                        userGot.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         finish();//to end the current activity and reload with the successfully signed user;
                         startActivity(userGot);
                     }else {
@@ -494,7 +499,7 @@ public class bottomSheet extends AppCompatActivity {
 
     private void logoutApp() {
         if(System.currentTimeMillis() - exitTime > 2000) {
-            Toast.makeText(this, "Press again to exit the Application", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Press again to exit the Application", Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
         } else {
             finish();

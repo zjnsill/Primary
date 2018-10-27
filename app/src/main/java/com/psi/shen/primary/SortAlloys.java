@@ -174,6 +174,7 @@ public class SortAlloys extends AppCompatActivity {
                 Bundle item = new Bundle();
                 item.putParcelable("clickedItem", selectedAlloyItem);
                 jumpToDetail.putExtras(item);
+                jumpToDetail.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(jumpToDetail);
             }
 
