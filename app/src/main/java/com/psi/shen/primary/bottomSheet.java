@@ -275,7 +275,9 @@ public class bottomSheet extends AppCompatActivity {
         aboutCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //wait to be complement;
+                Intent aboutIntent = new Intent(bottomSheet.this, AboutActivity.class);
+                aboutIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(aboutIntent);
             }
         });
 

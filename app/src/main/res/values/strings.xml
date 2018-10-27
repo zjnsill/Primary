@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Alloy Project</string>
+    <string name="version">1.0.1</string>
+    <string name="app_full_name">Alloy Project v1.0.1</string>
     <string name="title_activity_tabbed_login_register">tabbed_login_register</string>
+    <string name="sfy">An undergraduate student in University of Michigan - Shanghai Jiao Tong University Joint Institute, majored in Computer Science.</string>
+    <string name="sfyEmail">sfy@sjtu.edu.cn</string>
+    <string name="twh">An undergraduate student in School of Naval Architecture, Ocean and Civil Engineering, majored in Engineering Mechanics.</string>
+    <string name="twhEmail">twhhome@sjtu.edu.cn</string>
+    <string name="zjn">An undergraduate student in School of Electronic Information and Electrical Engineering, majored in Electrical Engineering.</string>
+    <string name="zjnEmail">331553021@qq.com</string>
+    <string name="appIntro">This is one of the innovation projects of college students. We build this application to help people, especially those researchers and students, to get attributes of alloys easily.</string>
 </resources>
