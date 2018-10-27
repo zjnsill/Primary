@@ -36,9 +36,9 @@ public class viewPagerVerifyPhone extends Fragment {
         verifyBtn = view.findViewById(R.id.verify_btn);
 
         getCodeBtn.setClickable(false);
-        getCodeBtn.setBackgroundColor(0xff9e9e9e);
+        getCodeBtn.setBackgroundResource(R.color.btn_unclickable_grey);
         verifyBtn.setClickable(false);
-        verifyBtn.setBackgroundColor(0xff9e9e9e);
+        verifyBtn.setBackgroundResource(R.color.btn_unclickable_grey);
 
         verifyphoenET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -50,7 +50,7 @@ public class viewPagerVerifyPhone extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!s.toString().isEmpty()){
                     getCodeBtn.setClickable(true);
-                    getCodeBtn.setBackgroundColor(0xffff8800);
+                    getCodeBtn.setBackgroundResource(R.color.btn_clickable_orange);
                 }
             }
 
@@ -69,7 +69,7 @@ public class viewPagerVerifyPhone extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!verifyphoenET.getText().toString().isEmpty()&!s.toString().isEmpty()){
                     verifyBtn.setClickable(true);
-                    verifyBtn.setBackgroundColor(0xffff8800);
+                    verifyBtn.setBackgroundResource(R.color.btn_clickable_orange);
                 }
             }
 

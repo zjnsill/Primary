@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class viewPagerLogin extends Fragment {
         forgetPassTV = view.findViewById(R.id.forgetPass);
         loginBtn = view.findViewById(R.id.logIn_btn);
         loginBtn.setClickable(false);
-        loginBtn.setBackgroundColor(getResources().getColor(R.color.smssdk_lv_tv_color));
+        loginBtn.setBackgroundResource(R.color.btn_unclickable_grey);
         return view;
 
     }
@@ -59,14 +60,41 @@ public class viewPagerLogin extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!s.toString().isEmpty()&!phoneNumET.getText().toString().isEmpty()){
+                if(!passcodeET.getText().toString().isEmpty()&!phoneNumET.getText().toString().isEmpty()){
                     loginBtn.setClickable(true);
-                    loginBtn.setBackgroundColor(0xff99cc00);
+                    loginBtn.setBackgroundColor(0xff4caf50);
+                }
+                if(passcodeET.getText().toString().isEmpty()|phoneNumET.getText().toString().isEmpty()){
+                    loginBtn.setClickable(false);
+                    loginBtn.setBackgroundColor(0xff9e9e9e);
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s){
+            }
+        });
+        phoneNumET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!passcodeET.getText().toString().isEmpty()&!phoneNumET.getText().toString().isEmpty()){
+                    loginBtn.setClickable(true);
+                    loginBtn.setBackgroundColor(0xff4caf50);
+                }
+                if(passcodeET.getText().toString().isEmpty()|phoneNumET.getText().toString().isEmpty()){
+                    loginBtn.setClickable(false);
+                    loginBtn.setBackgroundColor(0xff9e9e9e);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
         loginBtn.setOnClickListener(new View.OnClickListener() {

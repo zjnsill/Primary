@@ -13,12 +13,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
-public class LoginRegisterEnterinfo extends AppCompatActivity implements viewPagerLogin.login,viewPagerVerifyPhone.VerifyPhoneUtil {
+public class LoginRegisterEnterinfo extends AppCompatActivity implements viewPagerLogin.login,viewPagerVerifyPhone.VerifyPhoneUtil,
+viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedBioEmail{
     ViewPager viewPager;
     TextView statusTitle;
     ArrayList<String> titleStringSet=new ArrayList<>();
     ArrayList<Integer> contentSet = new ArrayList<>();
     Bundle ambition;
+    signedUser currentUser;
+    //TODO 完善这个变量的传输；
+    //这个用户数据在之后改其他东西的时候可能会用到；
 
     public static final int LOGIN = 101;
     public static final int REGISTER = 102;
@@ -55,6 +59,25 @@ public class LoginRegisterEnterinfo extends AppCompatActivity implements viewPag
     public void verifyCode(String phone,String Code){
         //TODO verify verification code;
     }
+    @Override
+    public void changePass(String oldPass,String newPass){
+        //TODO change the passcode, the following user phone number can be used;
+        String user_phone = currentUser.getPhone();
+    }
+    @Override
+    public void setedPasscode(String passcode){
+        //TODO set passcode for the user;
+        String user_phone = currentUser.getPhone();
+    }
+    @Override
+    public void set_Bio(String Bio){
+        //TODO update Bio;
+    }
+    @Override
+    public void set_Email(String Email){
+        //TODO update Email;
+    }
+
 
 
 
@@ -90,12 +113,10 @@ public class LoginRegisterEnterinfo extends AppCompatActivity implements viewPag
         }
         LogUtilViewPagerAdapter adapter = new LogUtilViewPagerAdapter(getSupportFragmentManager(),contentSet);
         viewPager.setAdapter(adapter);
-
-
-
-
-
     }
+
+
+    
 
 
 
