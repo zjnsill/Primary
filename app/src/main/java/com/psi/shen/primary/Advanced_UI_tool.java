@@ -11,7 +11,7 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
-
+//this class is build for guassian blur, however, if this blurring effect is not satisfying, delete this file to keep organized;
 public class Advanced_UI_tool {
     public Advanced_UI_tool(){}
 

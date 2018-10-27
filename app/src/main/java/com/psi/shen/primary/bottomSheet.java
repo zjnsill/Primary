@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -47,6 +48,9 @@ public class bottomSheet extends AppCompatActivity {
     private signedUser currentUser;
     private int MAX_Bio_Line=3,EXPANDED_Bio_Line=6;
     private UserDatabaseManager userDatabaseManager;
+
+
+    private Button testUse;
 
     private long exitTime;
 
@@ -276,6 +280,19 @@ public class bottomSheet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sheetAction();
+            }
+        });
+
+
+        testUse = findViewById(R.id.testUse);
+        testUse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toTest = new Intent(bottomSheet.this,LoginRegisterEnterinfo.class);
+                Bundle arg = new Bundle();
+                arg.putInt("ambition",101);
+                toTest.putExtra("ambition",arg);
+                startActivity(toTest);
             }
         });
 
