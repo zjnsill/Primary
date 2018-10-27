@@ -85,6 +85,7 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
                             Bundle bundle = new Bundle();
                             bundle.putParcelable("user",back);
                             backToBottomSheet.putExtras(bundle);
+                            backToBottomSheet.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(backToBottomSheet);
                         }
                         break;
@@ -99,6 +100,7 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
                             Bundle bundle = new Bundle();
                             bundle.putParcelable("user",back);
                             backToBottomSheet.putExtras(bundle);
+                            backToBottomSheet.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(backToBottomSheet);
                         }
                     }
@@ -167,6 +169,7 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
                     signedUser user = new signedUser.Builder(userChangedPhone.getName(),newPhoneNum.getText().toString()).Bio(userChangedPhone.getBio()).Email(userChangedPhone.getEmail()).build();
                     bundle.putParcelable("user",user);
                     intent.putExtras(bundle);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                 }
             }

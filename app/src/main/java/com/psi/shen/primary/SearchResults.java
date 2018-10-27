@@ -136,6 +136,7 @@ public class SearchResults extends AppCompatActivity {
             public void rightListener() {
                 Intent sortIntent = new Intent(SearchResults.this, SortAlloys.class);
                 sortIntent.putExtra("resultsArray", resultsArray);
+                sortIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(sortIntent);
             }
         });
@@ -186,6 +187,7 @@ public class SearchResults extends AppCompatActivity {
         Bundle item = new Bundle();
         item.putParcelable("clickedItem",alloyItem);
         jumpToDetail.putExtras(item);
+        jumpToDetail.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(jumpToDetail);
     }
 
