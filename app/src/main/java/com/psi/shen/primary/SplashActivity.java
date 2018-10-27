@@ -25,7 +25,7 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         mSplashImage = findViewById(R.id.iv_entry);
-        mSplashImage.setImageResource(R.drawable.sjtu);
+        mSplashImage.setImageResource(R.drawable.sjtulogored);
 
         CountDownTimer countDown = new CountDownTimer(countDownTime, countDownInterval) {
             @Override
