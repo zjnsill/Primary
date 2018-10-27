@@ -192,6 +192,7 @@ public class Search extends AppCompatActivity {
             }
             @Override
             public void leftListener(){
+                Search.this.finish();
                 //Intent jumpToCustomize = new Intent(Search.this,CreateAlloy.class);
                 //startActivity(jumpToCustomize);
             }

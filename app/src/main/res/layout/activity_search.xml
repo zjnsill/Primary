@@ -1129,6 +1129,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        app:LeftImg="@drawable/ic_arrow_back"
         app:RightImg="@drawable/ic_clear_all"
         app:Text="Search"
         app:TextColor="#000"
