@@ -30,7 +30,11 @@
         <activity android:name=".edit_account_info" />
         <activity android:name=".tabbed_login_register" />
         <activity android:name=".SortAlloys" />
-        <activity android:name=".LoginRegisterEnterinfo"></activity>
+        <activity android:name=".LoginRegisterEnterinfo" />
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".Developers" />
+        <activity android:name=".AppIntro" />
+        <activity android:name=".Feedback"></activity>
     </application>
 
 </manifest>

@@ -23,6 +23,16 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(!isTaskRoot()) {
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            if(intent.hasCategory(Intent.CATEGORY_LAUNCHER) && action != null && action.equals(Intent.ACTION_MAIN)) {
+                finish();
+                return;
+            }
+        }
+
         setContentView(R.layout.activity_splash);
         mSplashImage = findViewById(R.id.iv_entry);
         mSplashImage.setImageResource(R.drawable.sjtulogored);
