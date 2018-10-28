@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -41,6 +43,8 @@ import okhttp3.Response;
 
 public class AboutActivity extends AppCompatActivity {
     private TopBar topBar;
+    private TextView AboutTV;
+    private TextView versionTV;
     private RelativeLayout developersRL;
     private RelativeLayout introRL;
     private RelativeLayout feedbackRL;
@@ -48,16 +52,31 @@ public class AboutActivity extends AppCompatActivity {
 
     private DownloadBuilder builder;
 
+    private String versionName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
+        AboutTV = findViewById(R.id.AboutTV);
+        versionTV = findViewById(R.id.versionTV);
         developersRL = findViewById(R.id.developersRL);
         introRL = findViewById(R.id.introRL);
         feedbackRL = findViewById(R.id.feedbackRL);
         updateRL = findViewById(R.id.updateRL);
         topBar = findViewById(R.id.aboutTopbar);
+
+        PackageManager packageManager = AboutActivity.this.getPackageManager();
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = packageManager.getPackageInfo(AboutActivity.this.getPackageName(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        versionName = packageInfo.versionName;
+        AboutTV.setText(getString(R.string.app_name) + " " + versionName);
+        versionTV.setText(versionName);
         topBar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {
             @Override
             public void leftListener() {
@@ -111,7 +130,7 @@ public class AboutActivity extends AppCompatActivity {
                                     String[] temp = strings[i].split("=", 2);
                                     map.put(temp[0], temp[1]);
                                 }
-                                if(map.get("update").equals("1")) {
+                                if(!map.get("version").equals(versionName)) {
                                     String path = map.get("path");
                                     UIData uiData = UIData.create();
                                     uiData.setTitle(getString(R.string.updateTitle));
