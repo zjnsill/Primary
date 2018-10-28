@@ -1,8 +1,5 @@
 package com.psi.shen.primary;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.IntDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -12,14 +9,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mob.MobSDK;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
-
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
 
 public class LoginRegisterEnterinfo extends AppCompatActivity implements viewPagerLogin.login,viewPagerVerifyPhone.VerifyPhoneUtil,
 viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedBioEmail{
@@ -31,38 +23,7 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
     signedUser currentUser;
     //TODO 完善这个变量的传输；
     //这个用户数据在之后改其他东西的时候可能会用到；
-    private EventHandler eventHandler = new EventHandler() {
-        public void afterEvent(int event, int result, Object data) {
-            Message msg = new Message();
-            msg.arg1 = event;
-            msg.arg2 = result;
-            msg.obj = data;
-            new Handler(Looper.getMainLooper(), new Handler.Callback() {
-                @Override
-                public boolean handleMessage(Message msg) {
-                    int event = msg.arg1;
-                    int result = msg.arg2;
-                    Object data = msg.obj;
-                    if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                        if (result == SMSSDK.RESULT_COMPLETE) {
-                        } else {
-                            ((Throwable) data).printStackTrace();
-                            Toast.makeText(LoginRegisterEnterinfo.this, "send failed", Toast.LENGTH_SHORT).show();
-                        }
-                    } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                        if (result == SMSSDK.RESULT_COMPLETE) {
-                            // TODO 处理验证成功的结果
-                            Toast.makeText(LoginRegisterEnterinfo.this, "verification OK", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(LoginRegisterEnterinfo.this, "Wrong code", Toast.LENGTH_SHORT).show();
-                            ((Throwable) data).printStackTrace();
-                        }
-                    }
-                    return false;
-                }
-            }).sendMessage(msg);
-        }
-    };
+
     public static final int LOGIN = 101;
     public static final int REGISTER = 102;
     public static final int FORGET_PASS = 103;
@@ -93,13 +54,10 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
     @Override
     public void SendVerifyCode(String Phone){
         //TODO send verification codel;
-        SMSSDK.registerEventHandler(eventHandler);
-        SMSSDK.getVerificationCode("86", Phone);
     }
     @Override
     public void verifyCode(String phone,String Code){
         //TODO verify verification code;
-        SMSSDK.submitVerificationCode("86", phone, Code);
     }
     @Override
     public void changePass(String oldPass,String newPass){
@@ -120,11 +78,6 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
         //TODO update Email;
     }
 
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        SMSSDK.unregisterEventHandler(eventHandler);
-    }
 
 
 
@@ -146,7 +99,6 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
                 titleStringSet.add("Log In");
                 break;
             case REGISTER:
-                MobSDK.init(this);
                 contentSet.add(NEXT_PHONEVERIFY);
                 contentSet.add(NEXT_SETPASS);
                 //contentSet.add(NEXT_SETBIO);
@@ -156,7 +108,6 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
                 //titleStringSet.add("Complete your info");
                 break;
             case CHANGE_PASS:
-                MobSDK.init(this);
                 contentSet.add(NEXT_RESETPASS);
                 titleStringSet.add("Change your password");
         }
