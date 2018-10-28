@@ -14,8 +14,11 @@
         to get attributes of alloys easily. Moreover, users can add attributes of alloys if
         they find something the app doesn\'t include. Users can also star alloys if they want
         to tag them. The sort function is also included in this app.  </string>
-    <string name="appIntro2">Our team consists of fourstudents, who are Xiao Changsheng, Shen Feiyu,
+    <string name="appIntro2">Our team consists of four students, who are Xiao Changsheng, Shen Feiyu,
         Tang Wenhao, and Zhu Jianan. Xiao Changsheng is the leader of our team, and his job is to
         collect attributes of alloys. The other three students are the developers of this app.
         For their information, you can see in \"Develops\".</string>
+    <string name="update">There is a update version.</string>
+    <string name="updateTitle">Update</string>
+    <string name="updateContent">Needs to update.</string>
 </resources>
