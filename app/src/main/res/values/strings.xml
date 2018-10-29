@@ -16,6 +16,18 @@
         Tang Wenhao, and Zhu Jianan. Xiao Changsheng is the leader of our team, and his job is to
         collect attributes of alloys. The other three students are the developers of this app.
         For their information, you can see in \"Develops\".</string>
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Lonely boy</string>
+    <string name="slide_2_title">Meet</string>
+    <string name="slide_3_title">Fall in love at first sight</string>
+    <string name="slide_4_title">Both fall in love</string>
+    <string name="slide_5_title">He is waiting for you</string>
+
+    <string name="play_again">play again</string>
     <string name="update">There is a update version.</string>
     <string name="updateTitle">Update</string>
     <string name="updateContent">Needs to update.</string>
