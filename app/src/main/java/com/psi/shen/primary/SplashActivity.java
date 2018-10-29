@@ -6,10 +6,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.KeyEvent;
 import android.widget.ImageView;
+
 
 public class SplashActivity extends Activity {
     private int countDownTime = 1000;
@@ -19,11 +21,14 @@ public class SplashActivity extends Activity {
     private static final float SCALE_END = 1.2F;
 
     private ImageView mSplashImage;
+    private PrefManager prefManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        prefManager = new PrefManager(this);
         if(!isTaskRoot()) {
             Intent intent = getIntent();
             String action = intent.getAction();
@@ -32,6 +37,7 @@ public class SplashActivity extends Activity {
                 return;
             }
         }
+
 
         setContentView(R.layout.activity_splash);
         mSplashImage = findViewById(R.id.iv_entry);
@@ -62,7 +68,12 @@ public class SplashActivity extends Activity {
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                startActivity(new Intent(SplashActivity.this, bottomSheet.class));
+                if(prefManager.isFirstTimeLaunch()){
+                    prefManager.setFirstTimeLaunch(false);
+                    startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+                }else {
+                    startActivity(new Intent(SplashActivity.this, bottomSheet.class));
+                }
                 SplashActivity.this.finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
