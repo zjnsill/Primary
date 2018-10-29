@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Alloy Project</string>
-    <string name="version">1.0.1</string>
-    <string name="app_full_name">Alloy Project v1.0.1</string>
     <string name="title_activity_tabbed_login_register">tabbed_login_register</string>
     <string name="sfy">An undergraduate student in University of Michigan - Shanghai Jiao Tong University Joint Institute, majored in Computer Science.</string>
     <string name="sfyEmail">francis_sfy@sjtu.edu.cn</string>
@@ -14,7 +12,7 @@
         to get attributes of alloys easily. Moreover, users can add attributes of alloys if
         they find something the app doesn\'t include. Users can also star alloys if they want
         to tag them. The sort function is also included in this app.  </string>
-    <string name="appIntro2">Our team consists of fourstudents, who are Xiao Changsheng, Shen Feiyu,
+    <string name="appIntro2">Our team consists of four students, who are Xiao Changsheng, Shen Feiyu,
         Tang Wenhao, and Zhu Jianan. Xiao Changsheng is the leader of our team, and his job is to
         collect attributes of alloys. The other three students are the developers of this app.
         For their information, you can see in \"Develops\".</string>
@@ -30,4 +28,7 @@
     <string name="slide_5_title">He is waiting for you</string>
 
     <string name="play_again">play again</string>
+    <string name="update">There is a update version.</string>
+    <string name="updateTitle">Update</string>
+    <string name="updateContent">Needs to update.</string>
 </resources>
