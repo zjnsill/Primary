@@ -34,7 +34,8 @@
         <activity android:name=".AboutActivity" />
         <activity android:name=".Developers" />
         <activity android:name=".AppIntro" />
-        <activity android:name=".Feedback"></activity>
+        <activity android:name=".Feedback" />
+        <activity android:name=".GuideActivity"></activity>
     </application>
 
 </manifest>
