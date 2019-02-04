@@ -17,7 +17,7 @@ public class SplashActivity extends Activity {
     private int countDownTime = 1000;
     private int countDownInterval = 1;
 
-    private static final int ANIMATION_TIME = 2000;
+    private static final int ANIMATION_TIME = 1000;
     private static final float SCALE_END = 1.2F;
 
     private ImageView mSplashImage;
@@ -41,7 +41,7 @@ public class SplashActivity extends Activity {
 
         setContentView(R.layout.activity_splash);
         mSplashImage = findViewById(R.id.iv_entry);
-        mSplashImage.setImageResource(R.drawable.sjtulogored);
+        mSplashImage.setImageResource(R.drawable.aio_icon);
 
         CountDownTimer countDown = new CountDownTimer(countDownTime, countDownInterval) {
             @Override
@@ -59,30 +59,25 @@ public class SplashActivity extends Activity {
 
     private void startAnim() {
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(mSplashImage, "scaleX", 1f, SCALE_END);
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(mSplashImage, "scaleY", 1f, SCALE_END);
+    ObjectAnimator animatorY = ObjectAnimator.ofFloat(mSplashImage, "scaleY", 1f, SCALE_END);
 
-        AnimatorSet set = new AnimatorSet();
+    AnimatorSet set = new AnimatorSet();
         set.setDuration(ANIMATION_TIME).play(animatorX).with(animatorY);
-        set.start();
+                set.start();
 
-        set.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if(prefManager.isFirstTimeLaunch()){
-                    prefManager.setFirstTimeLaunch(false);
-                    startActivity(new Intent(SplashActivity.this, GuideActivity.class));
-                }else {
-                    startActivity(new Intent(SplashActivity.this, bottomSheet.class));
-                }
-                SplashActivity.this.finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }
+                set.addListener(new AnimatorListenerAdapter() {
+@Override
+public void onAnimationEnd(Animator animation) {
+        startActivity(new Intent(SplashActivity.this, bottomSheet.class));
+        SplashActivity.this.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
         });
-    }
+        }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+@Override
+public boolean onKeyDown(int keyCode, KeyEvent event) {
         // do nothing
         return true;
-    }
-}
+        }
+        }
