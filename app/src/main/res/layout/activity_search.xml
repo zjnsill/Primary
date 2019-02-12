@@ -1022,7 +1022,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
                         android:gravity="center_vertical"
-                        android:text="RPoissons Ratio: "
+                        android:text="Poisson's Ratio: "
                         android:textSize="18sp" />
 
                     <LinearLayout
