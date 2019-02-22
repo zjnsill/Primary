@@ -48,8 +48,8 @@ public class bottomSheet extends AppCompatActivity {
     private signedUser currentUser;
     private int MAX_Bio_Line=3,EXPANDED_Bio_Line=6;
     private UserDatabaseManager userDatabaseManager;
+    private String phone;
 
-    private Button testUse;
 
     private long exitTime;
 
@@ -68,10 +68,9 @@ public class bottomSheet extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_sheet);
 
         Intent ifSigned = getIntent();
-        if(ifSigned.getParcelableExtra("user")!=null){
-            currentUser = ifSigned.getParcelableExtra("user");
-            //receive intent from other views;
-        }
+        Bundle bundle = ifSigned.getExtras();
+        phone = bundle.getString("id123");
+
         bottomSheetView = findViewById(R.id.user_bottom_sheet);
         mBehavior = BottomSheetBehavior.from(bottomSheetView);
         backView = findViewById(R.id.backView);
@@ -98,7 +97,7 @@ public class bottomSheet extends AppCompatActivity {
                 " target of what we should learn in the future. Give a example, in our product, " +
                 "we used knowledge from liner algebra, virtual machine, computer network, data structure. " +
                 "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
-        currentUser = new signedUser.Builder("shen","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
+        currentUser = new signedUser.Builder("shen","123456").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
         userDatabaseManager = UserDatabaseManager.getInstance(this,currentUser.getName());
         //
         //
@@ -248,19 +247,6 @@ public class bottomSheet extends AppCompatActivity {
             }
         });
 
-
-        testUse = findViewById(R.id.testUse);
-        testUse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toTest = new Intent(bottomSheet.this,LoginRegisterEnterinfo.class);
-                Bundle arg = new Bundle();
-                arg.putInt("ambition",101);
-                toTest.putExtra("ambition",arg);
-                toTest.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(toTest);
-            }
-        });
 
         //end of onCreate Methods;
     }

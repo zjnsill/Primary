@@ -17,6 +17,7 @@ public class SplashActivity extends Activity {
     private int countDownTime = 1000;
     private int countDownInterval = 1;
 
+    private  String phone;
     private static final int ANIMATION_TIME = 1000;
     private static final float SCALE_END = 1.2F;
 
@@ -29,6 +30,8 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         prefManager = new PrefManager(this);
+        SharedPreferences sharedPreferences=getSharedPreferences("config",0);
+        phone=sharedPreferences.getString("phone","");
         if(!isTaskRoot()) {
             Intent intent = getIntent();
             String action = intent.getAction();
@@ -68,7 +71,20 @@ public class SplashActivity extends Activity {
                 set.addListener(new AnimatorListenerAdapter() {
 @Override
 public void onAnimationEnd(Animator animation) {
-        startActivity(new Intent(SplashActivity.this, bottomSheet.class));
+        if(phone==""){
+            Intent toLogin = new Intent(SplashActivity.this,LoginRegisterEnterinfo.class);
+            Bundle arg = new Bundle();
+            arg.putInt("ambition",102);
+            toLogin.putExtra("ambition",arg);
+            toLogin.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(toLogin);}
+        else {
+            Intent tobottom = new Intent(SplashActivity.this,bottomSheet.class);
+            Bundle mBundle = new Bundle();
+            mBundle.putString("id", phone);
+            tobottom.putExtras(mBundle);
+            startActivity(tobottom);
+        }
         SplashActivity.this.finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }

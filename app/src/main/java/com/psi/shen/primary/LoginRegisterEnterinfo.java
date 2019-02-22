@@ -1,14 +1,14 @@
 package com.psi.shen.primary;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.IntDef;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +29,7 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
     ArrayList<Integer> contentSet = new ArrayList<>();
     Bundle ambition;
     signedUser currentUser;
+    private String phonenumber;
     //TODO 完善这个变量的传输；
     //这个用户数据在之后改其他东西的时候可能会用到；
     private EventHandler eventHandler = new EventHandler() {
@@ -52,7 +53,18 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
                     } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                         if (result == SMSSDK.RESULT_COMPLETE) {
                             // TODO 处理验证成功的结果
-                            Toast.makeText(LoginRegisterEnterinfo.this, "verification OK", Toast.LENGTH_SHORT).show();
+                            SharedPreferences sp=getSharedPreferences("config",0);
+                            SharedPreferences.Editor editor=sp.edit();
+                            //把数据进行保存
+                            editor.putString("phone",phonenumber);
+                            //提交数据
+                            editor.commit();
+                            Intent tobottom = new Intent(LoginRegisterEnterinfo.this,bottomSheet.class);
+                            Bundle mBundle = new Bundle();
+                            mBundle.putString("id123", phonenumber);
+                            tobottom.putExtras(mBundle);
+                            startActivity(tobottom);
+                            LoginRegisterEnterinfo.this.finish();
                         } else {
                             Toast.makeText(LoginRegisterEnterinfo.this, "Wrong code", Toast.LENGTH_SHORT).show();
                             ((Throwable) data).printStackTrace();
@@ -94,6 +106,7 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
     public void SendVerifyCode(String Phone){
         //TODO send verification codel;
         SMSSDK.registerEventHandler(eventHandler);
+        phonenumber = Phone;
         SMSSDK.getVerificationCode("86", Phone);
     }
     @Override
@@ -140,7 +153,7 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
         viewPager = findViewById(R.id.viewPager);
         statusTitle = findViewById(R.id.titleTV);
         //initialize the working flow;
-        switch(ambition.getInt("ambition")){
+        switch (ambition.getInt("ambition")) {
             case LOGIN:
                 contentSet.add(NEXT_LOGIN);
                 titleStringSet.add("Log In");
@@ -150,7 +163,6 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
                 contentSet.add(NEXT_PHONEVERIFY);
                 contentSet.add(NEXT_SETPASS);
                 //contentSet.add(NEXT_SETBIO);
-
                 titleStringSet.add("Verify your phone");
                 titleStringSet.add("Set your password");
                 //titleStringSet.add("Complete your info");
@@ -160,12 +172,9 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
                 contentSet.add(NEXT_RESETPASS);
                 titleStringSet.add("Change your password");
         }
-        LogUtilViewPagerAdapter adapter = new LogUtilViewPagerAdapter(getSupportFragmentManager(),contentSet);
+        LogUtilViewPagerAdapter adapter = new LogUtilViewPagerAdapter(getSupportFragmentManager(), contentSet);
         viewPager.setAdapter(adapter);
     }
-
-
-    
 
 
 
