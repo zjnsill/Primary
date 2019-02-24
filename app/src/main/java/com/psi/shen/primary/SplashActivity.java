@@ -80,9 +80,6 @@ public void onAnimationEnd(Animator animation) {
             startActivity(toLogin);}
         else {
             Intent tobottom = new Intent(SplashActivity.this,bottomSheet.class);
-            Bundle mBundle = new Bundle();
-            mBundle.putString("id", phone);
-            tobottom.putExtras(mBundle);
             startActivity(tobottom);
         }
         SplashActivity.this.finish();

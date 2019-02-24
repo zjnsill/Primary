@@ -60,9 +60,6 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
                             //提交数据
                             editor.commit();
                             Intent tobottom = new Intent(LoginRegisterEnterinfo.this,bottomSheet.class);
-                            Bundle mBundle = new Bundle();
-                            mBundle.putString("id123", phonenumber);
-                            tobottom.putExtras(mBundle);
                             startActivity(tobottom);
                             LoginRegisterEnterinfo.this.finish();
                         } else {
@@ -161,10 +158,10 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
             case REGISTER:
                 MobSDK.init(this);
                 contentSet.add(NEXT_PHONEVERIFY);
-                contentSet.add(NEXT_SETPASS);
+                //contentSet.add(NEXT_SETPASS);
                 //contentSet.add(NEXT_SETBIO);
                 titleStringSet.add("Verify your phone");
-                titleStringSet.add("Set your password");
+                //titleStringSet.add("Set your password");
                 //titleStringSet.add("Complete your info");
                 break;
             case CHANGE_PASS:

@@ -45,11 +45,14 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
         BioEdit.setHint(currentUser.getBio());
         BioEdit.setVerticalScrollBarEnabled(true);
         BioEdit.setMovementMethod(ScrollingMovementMethod.getInstance());
+        if(EmailEdit.getText().toString()=="Null"){
+            EmailEdit.setText("set an email");
+        }
         if(flag!=4){
-            PhoneEdit.setEnabled(true);
+            PhoneEdit.setEnabled(false);
             PhoneEdit.setHint(currentUser.getPhone());
         }else{
-            PhoneEdit.setEnabled(false);
+            PhoneEdit.setEnabled(true);
             PhoneEdit.setText(currentUser.getPhone());
         }
         if(flag==1||flag==3){
