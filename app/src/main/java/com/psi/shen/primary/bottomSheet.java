@@ -43,7 +43,7 @@ import cn.smssdk.SMSSDK;
 public class bottomSheet extends AppCompatActivity {
     private View bottomSheetView,backView,bottomsheetLower;
     private BottomSheetBehavior mBehavior;
-    private TextView nameTV,starredItemCountTV,welcome,editTV,Email,phoneNum,leftTV,rightTV,Bio,expandIndicator;
+    private TextView nameTV,starredItemCountTV,welcome,Email,phoneNum,leftTV,rightTV,Bio,expandIndicator;
     private CardView searchCV,createCV,starredCV,aboutCV;
     private signedUser defaultUser = signedUser.DefaultUser;
     private signedUser currentUser;
@@ -84,7 +84,6 @@ public class bottomSheet extends AppCompatActivity {
         phoneNum = findViewById(R.id.phoneNum);
         Bio = findViewById(R.id.Bio);
         expandIndicator = findViewById(R.id.expandIndicator);
-        editTV = bottomSheetView.findViewById(R.id.editTV);
         Email = bottomSheetView.findViewById(R.id.Email);
 
 
@@ -92,11 +91,15 @@ public class bottomSheet extends AppCompatActivity {
         //currently return francis as the previously signed user;
         //if the user is not signed in, use default user;
 
+        Intent Editing = getIntent();
         String s = "one important lesson learnt from this lesson is that we can have a clear" +
                 " target of what we should learn in the future. Give a example, in our product, " +
                 "we used knowledge from liner algebra, virtual machine, computer network, data structure. " +
                 "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
-        currentUser = new signedUser.Builder("User",phone).Bio(s).Email("Null").build();
+        if(Editing.getParcelableExtra("edituser")==null)
+            currentUser = new signedUser.Builder("User",phone).Bio(s).Email("Null").build();
+        else
+            currentUser = Editing.getParcelableExtra("edituser");
         userDatabaseManager = UserDatabaseManager.getInstance(this,currentUser.getName());
         //
         //
@@ -134,17 +137,6 @@ public class bottomSheet extends AppCompatActivity {
 
         //
         //after calling the following methods, create a new intent and redirect to this activity other than using finish();
-        editTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent editAccountInfo = new Intent(bottomSheet.this,edit_account_info.class);
-                Bundle userInfo = new Bundle();
-                userInfo.putParcelable("user",currentUser);
-                editAccountInfo.putExtras(userInfo);
-                editAccountInfo.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(editAccountInfo);
-            }
-        });
 
         if(currentUser.equals(defaultUser)){
             leftTV.setText("Sign In");
@@ -162,8 +154,6 @@ public class bottomSheet extends AppCompatActivity {
                     showVerifyWindow("",1);
                 }
             });
-            editTV.setVisibility(View.INVISIBLE);
-            editTV.setClickable(false);
         }else{
             leftTV.setText("Sign Out");
             leftTV.setOnClickListener(new View.OnClickListener() {
@@ -179,16 +169,20 @@ public class bottomSheet extends AppCompatActivity {
 
                 }
             });
-            rightTV.setText("");
+            rightTV.setText("Edit account info");
             rightTV.setTextColor(Color.rgb(255,69,58));
             rightTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //implement delete user Info action;
+                    Intent editAccountInfo = new Intent(bottomSheet.this,edit_account_info.class);
+                    Bundle userInfo = new Bundle();
+                    userInfo.putParcelable("user",currentUser);
+                    editAccountInfo.putExtras(userInfo);
+                    editAccountInfo.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(editAccountInfo);
                 }
             });
-            editTV.setVisibility(View.VISIBLE);
-            editTV.setClickable(true);
         }
 
         backView.setDrawingCacheEnabled(true);

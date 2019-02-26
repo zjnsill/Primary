@@ -18,7 +18,7 @@ import java.util.jar.Attributes;
 
 public class edit_account_info extends AppCompatActivity {//in this page, editing and then uploading the user's profile
     TopBar editingTopar;
-    EditText NameEdit,EmailEdit,BioEdit,PhoneEdit,newPass,comfirmPass;
+    EditText NameEdit,EmailEdit,BioEdit,PhoneEdit;
     //this view only accept parcel,that is, the complete signedUser
 
     @Override
@@ -37,12 +37,10 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
         EmailEdit = findViewById(R.id.emailEdit);
         BioEdit = findViewById(R.id.BioEdit);
         PhoneEdit = findViewById(R.id.phoneNumEdit);
-        newPass = findViewById(R.id.newPass);
-        comfirmPass = findViewById(R.id.comfirmPass);
 
-        NameEdit.setHint(currentUser.getName());
-        EmailEdit.setHint(currentUser.getEmail());
-        BioEdit.setHint(currentUser.getBio());
+        NameEdit.setText(currentUser.getName());
+        EmailEdit.setText(currentUser.getEmail());
+        BioEdit.setText(currentUser.getBio());
         BioEdit.setVerticalScrollBarEnabled(true);
         BioEdit.setMovementMethod(ScrollingMovementMethod.getInstance());
         if(EmailEdit.getText().toString()=="Null"){
@@ -50,17 +48,11 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
         }
         if(flag!=4){
             PhoneEdit.setEnabled(false);
-            PhoneEdit.setHint(currentUser.getPhone());
+            PhoneEdit.setText(currentUser.getPhone());
+            BioEdit.setEnabled(false);
         }else{
             PhoneEdit.setEnabled(true);
             PhoneEdit.setText(currentUser.getPhone());
-        }
-        if(flag==1||flag==3){
-            newPass.setVisibility(View.INVISIBLE);
-            newPass.setEnabled(false);
-        }else{
-            newPass.setEnabled(true);
-            newPass.setVisibility(View.VISIBLE);
         }
         editingTopar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {
             @Override
@@ -74,8 +66,6 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
                 String PhoneNum = PhoneEdit.getText().toString();
                 String Bio = BioEdit.getText().toString();
                 String Email = EmailEdit.getText().toString();
-                String newPasscode = newPass.getText().toString();
-                String comfirmPasscode = comfirmPass.getText().toString();
                 switch (flag){
                     case 1:
                     case 2:
@@ -86,7 +76,7 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
                             //adding user to cloud
                             Intent backToBottomSheet = new Intent(edit_account_info.this,bottomSheet.class);
                             Bundle bundle = new Bundle();
-                            bundle.putParcelable("user",back);
+                            bundle.putParcelable("edituser",back);
                             backToBottomSheet.putExtras(bundle);
                             backToBottomSheet.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(backToBottomSheet);
@@ -95,18 +85,17 @@ public class edit_account_info extends AppCompatActivity {//in this page, editin
                     case 3:{
                         if(Name.isEmpty()){
                             Toast.makeText(edit_account_info.this,"Please enter user name",Toast.LENGTH_SHORT).show();
-                        }else if(!newPasscode.equals(comfirmPasscode)){
-                            Toast.makeText(edit_account_info.this,"Passcodes different!",Toast.LENGTH_SHORT).show();
-                        } else {
-                            signedUser back = new signedUser.Builder(Name,PhoneNum).Bio(Bio).Email(Email).build();
-                            Intent backToBottomSheet = new Intent(edit_account_info.this,bottomSheet.class);
+                        }
+                        else {
+                            signedUser back = new signedUser.Builder(Name, PhoneNum).Bio(Bio).Email(Email).build();
+                            Intent backToBottomSheet = new Intent(edit_account_info.this, bottomSheet.class);
                             Bundle bundle = new Bundle();
-                            bundle.putParcelable("user",back);
+                            bundle.putParcelable("user", back);
                             backToBottomSheet.putExtras(bundle);
                             backToBottomSheet.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(backToBottomSheet);
                         }
-                    }
+                        }
                     break;
                     case 4:{
                             showVerifyWindow(currentUser);
