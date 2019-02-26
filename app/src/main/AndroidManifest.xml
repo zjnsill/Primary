@@ -31,7 +31,7 @@
         <activity android:name=".bottomSheet" />
         <activity android:name=".Search" />
         <activity android:name=".SearchResults" />
-        <activity android:name=".detaied_alloy" />
+        <activity android:name=".detailed_alloy" />
         <activity android:name=".CreateAlloy" />
         <activity android:name=".StarredList" />
         <activity android:name=".edit_account_info" />
@@ -42,6 +42,7 @@
         <activity android:name=".Developers" />
         <activity android:name=".AppIntro" />
         <activity android:name=".Feedback" />
+        <activity android:name=".CustomizedAlloys"></activity>
     </application>
 
 </manifest>

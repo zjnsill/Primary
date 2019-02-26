@@ -22,19 +22,22 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class StarredList extends AppCompatActivity {
+public class CustomizedAlloys extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private TopBar StarredListTopbar;
     private signedUser currentUser;
-    private ArrayList<Bundle> starredAlloys = new ArrayList<>();
+
+    private TopBar topBar;
+    private RoundRectBtn addBtn;
+
+    private ArrayList<Bundle> customizedAlloys = new ArrayList<>();
 
     private long countDownTime = 10000;
     private long countDownInterval = 1;
 
     private RecyclerView recyclerView;
-    private StarredListAdapter starredListAdapter;
+    private CustomizedAdapter adapter;
 
     private Handler handler = new Handler() {
         @Override
@@ -42,12 +45,12 @@ public class StarredList extends AppCompatActivity {
             super.handleMessage(message);
             if(message.what == 0) {
                 Bundle bundle = message.getData();
-                starredAlloys.add(bundle);
+                customizedAlloys.add(bundle);
             } else if(message.what == 1) {
                 String alloy = (String) message.obj;
-                for(int i = 0; i < starredAlloys.size(); i++) {
-                    if(alloy.equals(starredAlloys.get(i).getString("Name"))) {
-                        starredAlloys.remove(i);
+                for(int i = 0; i < customizedAlloys.size(); i++) {
+                    if(alloy.equals(customizedAlloys.get(i).getString("Name"))) {
+                        customizedAlloys.remove(i);
                         break;
                     }
                 }
@@ -62,9 +65,9 @@ public class StarredList extends AppCompatActivity {
             super.handleMessage(msg);
             if(msg.what == 0)
                 dialog.close();
-            starredListAdapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
             if(msg.what == 1)
-                Toast.makeText(StarredList.this,"Alloy unstarred!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(CustomizedAlloys.this,"Alloy deleted!",Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -77,25 +80,36 @@ public class StarredList extends AppCompatActivity {
         @Override
         public void onFinish() {
             dialog.close();
-            Toast.makeText(StarredList.this,"Request time out, please try again!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(CustomizedAlloys.this,"Request time out, please try again!",Toast.LENGTH_SHORT).show();
             refreshHandler.removeCallbacksAndMessages(null);
-            StarredList.this.finish();
+            CustomizedAlloys.this.finish();
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_starred_list);
+        setContentView(R.layout.activity_customized_alloys);
 
-        Intent nameIntent = getIntent();
-        this.currentUser = nameIntent.getParcelableExtra("user");
+        Intent intent = getIntent();
+        currentUser = intent.getParcelableExtra("user");
 
-        StarredListTopbar = findViewById(R.id.StarredListTopbar);
-        StarredListTopbar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {
+        addBtn = findViewById(R.id.addBtn);
+        addBtn.setBtnOnClickListener(new RoundRectBtn.BtnOnClickListenr() {
+            @Override
+            public void BtnOnClick() {
+                Intent addIntent = new Intent(CustomizedAlloys.this, CreateAlloy.class);
+                addIntent.putExtra("user", currentUser);
+                addIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivityForResult(addIntent, 1);
+            }
+        });
+
+        topBar = findViewById(R.id.CustomizedTopbar);
+        topBar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {
             @Override
             public void leftListener() {
-                StarredList.this.finish();
+                CustomizedAlloys.this.finish();
             }
 
             @Override
@@ -104,17 +118,17 @@ public class StarredList extends AppCompatActivity {
             }
         });
 
-        recyclerView = findViewById(R.id.starredRecyclerView);
+        recyclerView = findViewById(R.id.customized);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        starredListAdapter = new StarredListAdapter(this, starredAlloys);
-        starredListAdapter.setOnItemClickListener(new StarredListAdapter.onItemClickListener() {
+        adapter = new CustomizedAdapter(this, customizedAlloys);
+        adapter.setOnItemClickListener(new CustomizedAdapter.onItemClickListener() {
             @Override
             public void onClick(int position) {
-                Bundle alloy = starredAlloys.get(position);
-                Intent jumpToDetail = new Intent(StarredList.this, detailed_alloy.class);
-                jumpToDetail.putExtra("alloy", alloy);
-                jumpToDetail.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(jumpToDetail);
+                Bundle alloy = customizedAlloys.get(position);
+                Intent detail = new Intent(CustomizedAlloys.this, detailed_alloy.class);
+                detail.putExtra("alloy", alloy);
+                detail.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(detail);
             }
 
             @Override
@@ -122,13 +136,13 @@ public class StarredList extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        removeStarredItem(starredAlloys.get(position).getString("Name"));
+                        removeCustomizedAlloy(customizedAlloys.get(position).getString("Name"));
                         refreshHandler.sendEmptyMessage(1);
                     }
                 }).start();
             }
         });
-        recyclerView.setAdapter(starredListAdapter);
+        recyclerView.setAdapter(adapter);
 
         dialog = new LoadingDialog(this,"Loading data");
         dialog.show();
@@ -137,36 +151,33 @@ public class StarredList extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                getStarredAlloys();
+                getCustomizedAlloys();
                 refreshHandler.sendEmptyMessage(0);
                 countDown.cancel();
             }
         }).start();
     }
 
-    private void getStarredAlloys() {
-        String path = "http://118.25.122.232/android_connect/getStarredItems.php";
+    private void getCustomizedAlloys() {
+        String path = "http://118.25.122.232/android_connect/getCustomized.php";
         try {
             OkHttpClient client = new OkHttpClient();
             FormBody.Builder formBody = new FormBody.Builder();
             formBody.add("Phone", currentUser.getPhone());
             Request request = new Request.Builder().url(path).post(formBody.build()).build();
             Response response = client.newCall(request).execute();
-            if(response.isSuccessful()) {
-                Log.i(TAG, "response.code() = " + response.code());
-                Log.i(TAG, "response.message() = " + response.message());
+            if (response.isSuccessful()) {
                 JSONObject jsonObject = new JSONObject(response.body().string());
                 int errorCode = jsonObject.getInt("errorCode");
                 if(errorCode == 0) {
-                    JSONArray jsonArray = jsonObject.getJSONArray("starredItems");
+                    JSONArray jsonArray = jsonObject.getJSONArray("alloys");
                     for(int i = 0; i < jsonArray.length(); i++) {
                         JSONObject alloy = jsonArray.getJSONObject(i);
                         Bundle bundle = new Bundle();
                         for(Iterator<String> keys = alloy.keys(); keys.hasNext(); ) {
                             String key = keys.next();
                             String value = alloy.getString(key);
-                            //Log.i(TAG, key1 + "---" + alloy.getString(key1));
-                            if(!value.equals("null")) {
+                            if(!value.equals("null") && !key.equals("Phone")) {
                                 bundle.putString(key, value);
                             }
                         }
@@ -178,22 +189,20 @@ public class StarredList extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.toString());
         }
     }
 
-    private void removeStarredItem(String name) {
-        String path = "http://118.25.122.232/android_connect/removeStarredItem.php";
+    private void removeCustomizedAlloy(String name) {
+        String path = "http://118.25.122.232/android_connect/removeCustomized.php";
         try {
             OkHttpClient client = new OkHttpClient();
             FormBody.Builder formBody = new FormBody.Builder();
             formBody.add("Phone", currentUser.getPhone());
-            formBody.add("RemoveStarredItem", name);
+            formBody.add("Name", name);
             Request request = new Request.Builder().url(path).post(formBody.build()).build();
             Response response = client.newCall(request).execute();
-            if(response.isSuccessful()) {
-                Log.i(TAG, "" + response.code());
-                Log.i(TAG, "" + response.message());
+            if (response.isSuccessful()) {
                 JSONObject jsonObject = new JSONObject(response.body().string());
                 if(jsonObject.getInt("errorCode") == 0) {
                     Message message = Message.obtain();
@@ -201,26 +210,31 @@ public class StarredList extends AppCompatActivity {
                     message.what = 1;
                     handler.sendMessage(message);
                 }
-            } else {
-                Log.e(TAG, "error");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.toString());
         }
     }
 
     private void refreshList() {
-        starredAlloys.clear();
+        customizedAlloys.clear();
         dialog = new LoadingDialog(this,"Loading data");
         dialog.show();
         countDown.start();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                getStarredAlloys();
+                getCustomizedAlloys();
                 refreshHandler.sendEmptyMessage(0);
                 countDown.cancel();
             }
         }).start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 1) {
+            refreshList();
+        }
     }
 }

@@ -170,7 +170,7 @@ public class SortAlloys extends AppCompatActivity {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 SingleAlloyItem selectedAlloyItem = singleAlloyItems.get((int)e.getX());
-                Intent jumpToDetail = new Intent(SortAlloys.this, detaied_alloy.class);
+                Intent jumpToDetail = new Intent(SortAlloys.this, detailed_alloy.class);
                 Bundle item = new Bundle();
                 item.putParcelable("clickedItem", selectedAlloyItem);
                 jumpToDetail.putExtras(item);

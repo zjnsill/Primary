@@ -13,22 +13,37 @@ import android.widget.TextView;
 
 public class TopBar extends RelativeLayout {
     private ImageView leftImg,rightImg;
-    private TextView Title;
+    private TextView TitleTV;
     private CardView TopbarEntity;
     private LeftAndRightListener leftAndRightListener;
+
     public interface LeftAndRightListener{
         void leftListener();
         void rightListener();
     }
+
     public void setLeftAndRightListener(LeftAndRightListener leftAndRightListener){
         this.leftAndRightListener = leftAndRightListener;
     }
+
+    public void setTitle(String title) {
+        TitleTV.setText(title);
+    }
+
+    public void setTitleSize(float size) {
+        TitleTV.setTextSize(size);
+    }
+
+    public void setTitleBold(boolean bold) {
+        TitleTV.getPaint().setFakeBoldText(bold);
+    }
+
     public TopBar(Context ctx, AttributeSet TopbarAttr){
         super(ctx,TopbarAttr);
         LayoutInflater.from(ctx).inflate(R.layout.topbar,this);
         leftImg = findViewById(R.id.TopbarLeftImg);
         rightImg = findViewById(R.id.TopbarRightImg);
-        Title = findViewById(R.id.TopbarTitle);
+        TitleTV = findViewById(R.id.TopbarTitle);
         TopbarEntity = findViewById(R.id.Topbar);
         TypedArray typedArray = ctx.obtainStyledAttributes(TopbarAttr,R.styleable.TopBarAttr);
         int textColor = typedArray.getColor(R.styleable.TopBarAttr_TextColor,0);
@@ -40,9 +55,9 @@ public class TopBar extends RelativeLayout {
         typedArray.recycle();
         leftImg.setImageResource(leftImgRsc);
         rightImg.setImageResource(rightImgRsc);
-        Title.setText(textString);
-        Title.setTextSize(textSize);
-        Title.setTextColor(textColor);
+        TitleTV.setText(textString);
+        TitleTV.setTextSize(textSize);
+        TitleTV.setTextColor(textColor);
         TopbarEntity.setCardBackgroundColor(topbarColor);
         leftImg.setOnClickListener(new OnClickListener() {
             @Override

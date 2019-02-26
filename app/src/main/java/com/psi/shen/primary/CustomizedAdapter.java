@@ -11,10 +11,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class StarredListAdapter extends RecyclerView.Adapter<StarredListAdapter.ViewHolder> {
+public class CustomizedAdapter extends RecyclerView.Adapter<CustomizedAdapter.ViewHolder> {
     private Context context;
     private LayoutInflater layoutInflater;
-    private ArrayList<Bundle> starredAlloys;
+    private ArrayList<Bundle> customizedAlloys;
     private onItemClickListener mOnItemClickListener;
 
     public interface onItemClickListener{
@@ -26,13 +26,13 @@ public class StarredListAdapter extends RecyclerView.Adapter<StarredListAdapter.
         this.mOnItemClickListener = monItemClickListener;
     }
 
-    public StarredListAdapter(Context context, ArrayList<Bundle> starredAlloys){
+    public CustomizedAdapter(Context context, ArrayList<Bundle> customizedAlloys) {
         this.context = context;
-        this.starredAlloys = starredAlloys;
+        this.customizedAlloys = customizedAlloys;
         layoutInflater = LayoutInflater.from(context);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView NameTV, IntroTV;
         private ImageView isStarredIV;
         View view;
@@ -48,22 +48,21 @@ public class StarredListAdapter extends RecyclerView.Adapter<StarredListAdapter.
 
     @Override
     public int getItemCount() {
-        return starredAlloys.size();
+        return customizedAlloys.size();
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup,int viewType) {
+    public CustomizedAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = layoutInflater.inflate(R.layout.item_in_results, viewGroup, false);
         return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder,final int position) {
-        Bundle alloy = starredAlloys.get(position);
+    public void onBindViewHolder(CustomizedAdapter.ViewHolder viewHolder, final int position) {
+        Bundle alloy = customizedAlloys.get(position);
         viewHolder.NameTV.setText(alloy.getString("Name"));
-        viewHolder.IntroTV.setText(alloy.getString("Introduction"));
-
-        viewHolder.isStarredIV.setImageResource(R.drawable.ic_star);
+        if(alloy.containsKey("Introduction"))
+            viewHolder.IntroTV.setText(alloy.getString("Introduction"));
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

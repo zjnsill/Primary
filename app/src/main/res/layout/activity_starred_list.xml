@@ -6,33 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".StarredList">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/starredRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="562dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/StarredListTopbar" />
-
     <com.psi.shen.primary.TopBar
         android:id="@+id/StarredListTopbar"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         app:LeftImg="@drawable/ic_arrow_back"
         app:RightImg="@drawable/ic_refresh"
-        app:Text="My Starred List"
+        app:Text="My Starred Alloys"
         app:TextColor="#000"
         app:TextSize="6dp"
         app:TopbarColor="#FFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/starredRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/StarredListTopbar" />
+
 </android.support.constraint.ConstraintLayout>

@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateAlloy">
+    tools:context=".CustomizedAlloys">
 
     <com.psi.shen.primary.TopBar
-        android:id="@+id/createTopBar"
+        android:id="@+id/CustomizedTopbar"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
-        app:LeftImg="@drawable/ic_arrow_back_green"
-        app:RightImg="@drawable/ic_clear_all"
-        app:Text="Customize"
+        android:layout_marginEnd="8dp"
+        app:LeftImg="@drawable/ic_arrow_back"
+        app:RightImg="@drawable/ic_refresh"
+        app:Text="My Customized Alloys"
         app:TextColor="#000"
         app:TextSize="6dp"
         app:TopbarColor="#FFF"
@@ -23,39 +23,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <ScrollView
-        android:layout_width="0dp"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/customized"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:padding="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/finishBtn"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/addBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createTopBar">
-
-        <LinearLayout
-            android:id="@+id/createList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
-
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/CustomizedTopbar"/>
 
     <com.psi.shen.primary.RoundRectBtn
-        android:id="@+id/finishBtn"
+        android:id="@+id/addBtn"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="40dp"
         app:BtnBackgroundColor="#FFF"
-        app:BtnImg="@drawable/ic_done"
-        app:BtnText="Finish"
+        app:BtnImg="@drawable/ic_add"
+        app:BtnText="Add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
 
 </android.support.constraint.ConstraintLayout>
