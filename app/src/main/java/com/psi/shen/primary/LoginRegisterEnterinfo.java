@@ -14,15 +14,22 @@ import android.widget.Toast;
 
 import com.mob.MobSDK;
 
+import org.json.JSONObject;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class LoginRegisterEnterinfo extends AppCompatActivity implements viewPagerLogin.login,viewPagerVerifyPhone.VerifyPhoneUtil,
-viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedBioEmail{
+viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedBioEmail {
+
     ViewPager viewPager;
     TextView statusTitle;
     ArrayList<String> titleStringSet=new ArrayList<>();
@@ -30,7 +37,20 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
     Bundle ambition;
     signedUser currentUser;
     private String phonenumber;
-    //TODO 完善这个变量的传输；
+
+    private LoadingDialog dialog;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {
+            super.handleMessage(message);
+            dialog.close();
+            Intent tobottom = new Intent(LoginRegisterEnterinfo.this, bottomSheet.class);
+            startActivity(tobottom);
+            LoginRegisterEnterinfo.this.finish();
+        }
+    };
+
     //这个用户数据在之后改其他东西的时候可能会用到；
     private EventHandler eventHandler = new EventHandler() {
         public void afterEvent(int event, int result, Object data) {
@@ -52,16 +72,22 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
                         }
                     } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                         if (result == SMSSDK.RESULT_COMPLETE) {
-                            // TODO 处理验证成功的结果
-                            SharedPreferences sp=getSharedPreferences("config",0);
-                            SharedPreferences.Editor editor=sp.edit();
+                            SharedPreferences sharedPreferences = getSharedPreferences("config",0);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
                             //把数据进行保存
                             editor.putString("phone",phonenumber);
                             //提交数据
                             editor.commit();
-                            Intent tobottom = new Intent(LoginRegisterEnterinfo.this,bottomSheet.class);
-                            startActivity(tobottom);
-                            LoginRegisterEnterinfo.this.finish();
+
+                            // send phone number to the server
+                            dialog = new LoadingDialog(LoginRegisterEnterinfo.this,"Loading");
+                            dialog.show();
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    sendPhone();
+                                }
+                            }).start();
                         } else {
                             Toast.makeText(LoginRegisterEnterinfo.this, "Wrong code", Toast.LENGTH_SHORT).show();
                             ((Throwable) data).printStackTrace();
@@ -72,6 +98,7 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
             }).sendMessage(msg);
         }
     };
+
     public static final int LOGIN = 101;
     public static final int REGISTER = 102;
     public static final int FORGET_PASS = 103;
@@ -99,32 +126,36 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
         //for test use
         Toast.makeText(this,"viewpager work fine!"+phoneNum+" "+passcode,Toast.LENGTH_SHORT).show();
     }
+
     @Override
     public void SendVerifyCode(String Phone){
-        //TODO send verification codel;
         SMSSDK.registerEventHandler(eventHandler);
         phonenumber = Phone;
         SMSSDK.getVerificationCode("86", Phone);
     }
+
     @Override
     public void verifyCode(String phone,String Code){
-        //TODO verify verification code;
         SMSSDK.submitVerificationCode("86", phone, Code);
     }
+
     @Override
     public void changePass(String oldPass,String newPass){
         //TODO change the passcode, the following user phone number can be used;
         String user_phone = currentUser.getPhone();
     }
+
     @Override
     public void setedPasscode(String passcode){
         //TODO set passcode for the user;
         String user_phone = currentUser.getPhone();
     }
+
     @Override
     public void set_Bio(String Bio){
         //TODO update Bio;
     }
+
     @Override
     public void set_Email(String Email){
         //TODO update Email;
@@ -136,19 +167,15 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
         SMSSDK.unregisterEventHandler(eventHandler);
     }
 
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register_enterinfo);
+
         ambition = getIntent().getBundleExtra("ambition");
         viewPager = findViewById(R.id.viewPager);
         statusTitle = findViewById(R.id.titleTV);
+
         //initialize the working flow;
         switch (ambition.getInt("ambition")) {
             case LOGIN:
@@ -173,9 +200,22 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
         viewPager.setAdapter(adapter);
     }
 
-
-
-
-
-
+    private void sendPhone() {
+        String path = "http://118.25.122.232/android_connect/register.php";
+        try {
+            OkHttpClient client = new OkHttpClient();
+            FormBody.Builder formBody = new FormBody.Builder();
+            formBody.add("Phone", phonenumber);
+            Request request = new Request.Builder().url(path).post(formBody.build()).build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                if(jsonObject.getInt("errorCode") == 0) {
+                    handler.sendEmptyMessage(0);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
