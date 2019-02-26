@@ -1,6 +1,8 @@
 package com.psi.shen.primary;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
@@ -29,13 +31,13 @@ import java.lang.annotation.RetentionPolicy;
 public class bottomSheet extends AppCompatActivity {
     private View bottomSheetView,backView,bottomsheetLower;
     private BottomSheetBehavior mBehavior;
-    private TextView nameTV,starredItemCountTV,welcome,editTV,Email,phoneNum,leftTV,rightTV,Bio,expandIndicator;
+    private TextView nameTV,starredItemCountTV,welcome,Email,phoneNum,leftTV,rightTV,Bio,expandIndicator;
     private CardView searchCV, customizedCV,starredCV,aboutCV;
     private signedUser defaultUser = signedUser.DefaultUser;
     private signedUser currentUser;
     private int MAX_Bio_Line=3,EXPANDED_Bio_Line=6;
+    private String phone;
 
-    private Button testUse;
 
     private long exitTime;
 
@@ -53,11 +55,8 @@ public class bottomSheet extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_sheet);
 
-        Intent ifSigned = getIntent();
-        if(ifSigned.getParcelableExtra("user") != null) {
-            currentUser = ifSigned.getParcelableExtra("user");
-            //receive intent from other views;
-        }
+        SharedPreferences sharedPreferences=getSharedPreferences("config",0);
+        phone=sharedPreferences.getString("phone","");
         bottomSheetView = findViewById(R.id.user_bottom_sheet);
         mBehavior = BottomSheetBehavior.from(bottomSheetView);
         backView = findViewById(R.id.backView);
@@ -72,7 +71,6 @@ public class bottomSheet extends AppCompatActivity {
         phoneNum = findViewById(R.id.phoneNum);
         Bio = findViewById(R.id.Bio);
         expandIndicator = findViewById(R.id.expandIndicator);
-        editTV = bottomSheetView.findViewById(R.id.editTV);
         Email = bottomSheetView.findViewById(R.id.Email);
 
 
@@ -80,11 +78,15 @@ public class bottomSheet extends AppCompatActivity {
         //currently return francis as the previously signed user;
         //if the user is not signed in, use default user;
 
+        Intent Editing = getIntent();
         String s = "one important lesson learnt from this lesson is that we can have a clear" +
                 " target of what we should learn in the future. Give a example, in our product, " +
                 "we used knowledge from liner algebra, virtual machine, computer network, data structure. " +
                 "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
-        currentUser = new signedUser.Builder("shen","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
+        if(Editing.getParcelableExtra("edituser")==null)
+            currentUser = new signedUser.Builder("User",phone).Bio(s).Email("Null").build();
+        else
+            currentUser = Editing.getParcelableExtra("edituser");
         //
         //
         welcome.setText("Welcome "+currentUser.getName());
@@ -121,17 +123,6 @@ public class bottomSheet extends AppCompatActivity {
 
         //
         //after calling the following methods, create a new intent and redirect to this activity other than using finish();
-        editTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent editAccountInfo = new Intent(bottomSheet.this,edit_account_info.class);
-                Bundle userInfo = new Bundle();
-                userInfo.putParcelable("user",currentUser);
-                editAccountInfo.putExtras(userInfo);
-                editAccountInfo.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(editAccountInfo);
-            }
-        });
 
         if(currentUser.equals(defaultUser)){
             leftTV.setText("Sign In");
@@ -149,26 +140,35 @@ public class bottomSheet extends AppCompatActivity {
                     showVerifyWindow("",1);
                 }
             });
-            editTV.setVisibility(View.INVISIBLE);
-            editTV.setClickable(false);
         }else{
             leftTV.setText("Sign Out");
             leftTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //implement sign out actiton;
+                    Intent toLogin = new Intent(bottomSheet.this,LoginRegisterEnterinfo.class);
+                    Bundle arg = new Bundle();
+                    arg.putInt("ambition",102);
+                    toLogin.putExtra("ambition",arg);
+                    toLogin.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(toLogin);
+                    bottomSheet.this.finish();
+
                 }
             });
-            rightTV.setText("Delete user info");
+            rightTV.setText("Edit account info");
             rightTV.setTextColor(Color.rgb(255,69,58));
             rightTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //implement delete user Info action;
+                    Intent editAccountInfo = new Intent(bottomSheet.this,edit_account_info.class);
+                    Bundle userInfo = new Bundle();
+                    userInfo.putParcelable("user",currentUser);
+                    editAccountInfo.putExtras(userInfo);
+                    editAccountInfo.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(editAccountInfo);
                 }
             });
-            editTV.setVisibility(View.VISIBLE);
-            editTV.setClickable(true);
         }
 
         backView.setDrawingCacheEnabled(true);
@@ -233,19 +233,6 @@ public class bottomSheet extends AppCompatActivity {
             }
         });
 
-
-        testUse = findViewById(R.id.testUse);
-        testUse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toTest = new Intent(bottomSheet.this,LoginRegisterEnterinfo.class);
-                Bundle arg = new Bundle();
-                arg.putInt("ambition",101);
-                toTest.putExtra("ambition",arg);
-                toTest.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(toTest);
-            }
-        });
 
         //end of onCreate Methods;
     }

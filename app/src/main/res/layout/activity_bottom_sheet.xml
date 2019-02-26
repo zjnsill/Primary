@@ -12,16 +12,27 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/userName"
+        <android.support.v7.widget.CardView
+            android:id="@+id/WelcomeCV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="10dp"
-            android:text="Welcome "
-            android:textSize="24sp"
+            app:cardCornerRadius="4dp"
             app:layout_constraintBottom_toTopOf="@+id/textView16"
-            app:layout_constraintStart_toStartOf="@+id/textView16" />
+            app:layout_constraintStart_toStartOf="@+id/textView16">
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:text="Welcome "
+                android:textColor="#444"
+                android:textSize="24sp" />
+        </android.support.v7.widget.CardView>
 
         <TextView
             android:id="@+id/textView16"
@@ -132,15 +143,6 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/testUse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="TestUse"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
@@ -184,16 +186,6 @@
                         android:text="Signed in as "
                         android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/editTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="Edit Accout Info" />
                 </RelativeLayout>
 
                 <LinearLayout
