@@ -62,35 +62,35 @@ public class SplashActivity extends Activity {
 
     private void startAnim() {
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(mSplashImage, "scaleX", 1f, SCALE_END);
-    ObjectAnimator animatorY = ObjectAnimator.ofFloat(mSplashImage, "scaleY", 1f, SCALE_END);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(mSplashImage, "scaleY", 1f, SCALE_END);
 
-    AnimatorSet set = new AnimatorSet();
+        AnimatorSet set = new AnimatorSet();
         set.setDuration(ANIMATION_TIME).play(animatorX).with(animatorY);
-                set.start();
+        set.start();
 
-                set.addListener(new AnimatorListenerAdapter() {
-@Override
-public void onAnimationEnd(Animator animation) {
-        if(phone==""){
-            Intent toLogin = new Intent(SplashActivity.this,LoginRegisterEnterinfo.class);
-            Bundle arg = new Bundle();
-            arg.putInt("ambition",102);
-            toLogin.putExtra("ambition",arg);
-            toLogin.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(toLogin);}
-        else {
-            Intent tobottom = new Intent(SplashActivity.this,bottomSheet.class);
-            startActivity(tobottom);
-        }
-        SplashActivity.this.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        }
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if(phone.equals("")) {
+                    Intent toLogin = new Intent(SplashActivity.this,LoginRegisterEnterinfo.class);
+                    Bundle arg = new Bundle();
+                    arg.putInt("ambition",102);
+                    toLogin.putExtra("ambition",arg);
+                    toLogin.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(toLogin);}
+                else {
+                    Intent tobottom = new Intent(SplashActivity.this,bottomSheet.class);
+                    startActivity(tobottom);
+                }
+                SplashActivity.this.finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
         });
-        }
+    }
 
-@Override
-public boolean onKeyDown(int keyCode, KeyEvent event) {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         // do nothing
         return true;
-        }
-        }
+    }
+}

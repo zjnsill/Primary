@@ -11,18 +11,22 @@ import static com.psi.shen.primary.LoginRegisterEnterinfo.NEXT_PHONEVERIFY;
 
 public class LogUtilViewPagerAdapter extends FragmentPagerAdapter {
     ArrayList<Integer> stepList;
+
     public LogUtilViewPagerAdapter(FragmentManager fm, ArrayList<Integer> stepList){
         super(fm);
         this.stepList=stepList;
     }
+
     @Override
     public Fragment getItem(int position){
         return switchFragment(stepList.get(position));
     }
+
     @Override
     public int getCount(){
         return stepList.size();
     }
+
     private Fragment switchFragment(@LoginRegisterEnterinfo.NEXT_STEP int step){
         Fragment out = new Fragment();
         switch (step) {
