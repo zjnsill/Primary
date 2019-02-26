@@ -3,12 +3,23 @@ package com.psi.shen.primary;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
+import android.util.Log;
+
+import org.json.JSONObject;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 //passcode is not stored in local, which means when editing passcodes,infomations needs to be uoloaded immidiately
 public class signedUser implements Parcelable {
+
+    private static final String TAG = "MainActivity";
     public static final int SUCCESS = 0;
     public static final int NO_SUCH_USER = 1;
     public static final int INCORRECT_PASSWORD = 2;
@@ -23,16 +34,15 @@ public class signedUser implements Parcelable {
     private String Email;
     private String Phone;
     private String Bio;
-    private ArrayList<String> starredItemArray = new ArrayList<>();
+    private ArrayList<String> starredAlloyArray = new ArrayList<>();
     private @ERROR_CODES int errorCode;
-
 
     public signedUser(Builder builder){
         this.Name = builder.Name;
         this.Bio = builder.Bio;
         this.Email = builder.Email;
         this.Phone = builder.Phone;
-        this.starredItemArray = builder.starredItemArray;
+        this.starredAlloyArray = builder.starredAlloyArray;
         this.errorCode = builder.errorCode;
     }
 
@@ -41,15 +51,14 @@ public class signedUser implements Parcelable {
         this.Phone = user.Phone;
         this.Email = user.Email;
         this.Bio = user.Bio;
-        this.starredItemArray = user.starredItemArray;
+        this.starredAlloyArray = user.starredAlloyArray;
         this.errorCode = errorCode;
     }
-
 
     public static class Builder{
         private String Name,Email="",Bio="";
         private String Phone;
-        private ArrayList<String> starredItemArray = new ArrayList<>();
+        private ArrayList<String> starredAlloyArray = new ArrayList<>();
         private @ERROR_CODES int errorCode=SUCCESS;
 
         public Builder(String name, String phone) {
@@ -66,10 +75,10 @@ public class signedUser implements Parcelable {
         }
 
         public Builder starredItems(String starredItemstr) {
-            this.starredItemArray = new ArrayList<>();
+            this.starredAlloyArray = new ArrayList<>();
             String[] temp = starredItemstr.split(",");
             for(int i = 0; i < temp.length; i++) {
-                this.starredItemArray.add(temp[i]);
+                this.starredAlloyArray.add(temp[i]);
             }
             return this;
         }
@@ -83,14 +92,14 @@ public class signedUser implements Parcelable {
             return new signedUser(this);
         }
     }
-
+    /*
     public void addStarredItem(String itemName){
-        starredItemArray.add(itemName);
+        starredAlloyArray.add(itemName);
     }
     public void initialStarredItem(ArrayList<String> starredList){
-        this.starredItemArray = starredList;
+        this.starredAlloyArray = starredList;
     }
-
+    */
     public String getName(){
         return Name;
     }
@@ -108,7 +117,11 @@ public class signedUser implements Parcelable {
     }
 
     public int getStarredItemCount(){
-        return starredItemArray.size();
+        return starredAlloyArray.size();
+    }
+
+    public ArrayList<String> getStarredAlloyArray() {
+        return starredAlloyArray;
     }
 
     public @ERROR_CODES int getErrorCode() { return this.errorCode; }
@@ -125,6 +138,7 @@ public class signedUser implements Parcelable {
         out.writeString(Phone);
         out.writeString(Email);
         out.writeString(Bio);
+        out.writeList(starredAlloyArray);
     }
     public static final Parcelable.Creator<signedUser> CREATOR = new Creator<signedUser>() {
         @Override
@@ -142,11 +156,12 @@ public class signedUser implements Parcelable {
         this.Phone = in.readString();
         this.Email = in.readString();
         this.Bio = in.readString();
+        this.starredAlloyArray = new ArrayList<>();
+        in.readList(this.starredAlloyArray, getClass().getClassLoader());
     }
 
     //default user
     static signedUser DefaultUser = new Builder("DefaultUser","00000000000").Bio("Hey, bad boy, you haven't " +
             "signed in").Email("AlloyProject@sjtu.edu.cn").errorCode(SUCCESS).build();
-
 }
 

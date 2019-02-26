@@ -1,115 +1,86 @@
 package com.psi.shen.primary;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
-    private UserDatabaseManager proxy;
-    private String currentUser;
+    private signedUser currentUser;
     private Context context;
     private LayoutInflater layoutInflater;
-    private ArrayList<SingleAlloyItem> searchResults;
+    private ArrayList<Bundle> searchResults;
+    private ArrayList<String> starredAlloys;
     private OnItemClickListener mOnItemClickListener;
 
-    private int expandedHeight=100;
-
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onClick(int position);
         void onLongClick(int position,boolean isStarred);
     }
 
-    public void setmOnItemClickListener(OnItemClickListener onItemClickListener){
-        this.mOnItemClickListener=onItemClickListener;
+    public void setmOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
     }
 
-    public SearchResultsAdapter(Context context,ArrayList<SingleAlloyItem> searchResults,String userName){
-        this.context=context;
-        this.currentUser = userName;
-        this.proxy = UserDatabaseManager.getInstance(context,currentUser);
-        layoutInflater=LayoutInflater.from(this.context);
-        this.searchResults=searchResults;
+    public SearchResultsAdapter(Context context, ArrayList<Bundle> searchResults, ArrayList<String> starredAlloys, signedUser user) {
+        this.context = context;
+        this.currentUser = user;
+        layoutInflater = LayoutInflater.from(this.context);
+        this.searchResults = searchResults;
+        this.starredAlloys = starredAlloys;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView NameTV,DensityTV,ComponentTV,MeltingRangeTV,HardnessTV,ResistivityTV;
-        private TextView ThermalExpanTV,ThermalConTV,SpecificHeat,moreDetailTV;
-        private ImageView foldArrow;
-        private LinearLayout foldedDetail;
-        View itemView;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView NameTV, IntroTV;
         private ImageView isStarredIV;
-        public ViewHolder(View itemView){
+        View itemView;
+
+        public ViewHolder(View itemView) {
             super(itemView);
-            this.itemView=itemView;
+            this.itemView = itemView;
             NameTV = itemView.findViewById(R.id.NameTV);
-            DensityTV = itemView.findViewById(R.id.DensityTV);
-            ComponentTV = itemView.findViewById(R.id.ComponentTV);
-            MeltingRangeTV = itemView.findViewById(R.id.MeltingRangeTV);
-            HardnessTV = itemView.findViewById(R.id.HardnessTV);
-            ResistivityTV = itemView.findViewById(R.id.ResistivityTV);
+            IntroTV = itemView.findViewById(R.id.IntroTV);
             isStarredIV = itemView.findViewById(R.id.isStarredIV);
-            //hidden view
-            foldedDetail = itemView.findViewById(R.id.FoldedDetail);
-            ThermalExpanTV = itemView.findViewById(R.id.ThermalExpanTV);
-            ThermalConTV = itemView.findViewById(R.id.ThermalConTV);
-            SpecificHeat = itemView.findViewById(R.id.SpecificHeatTV);
-            foldArrow = itemView.findViewById(R.id.ExpandIV);
-            moreDetailTV = itemView.findViewById(R.id.moreDetailTV);
         }
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return searchResults.size();
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup,int viewtype){
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup,int viewType) {
         View itemView = layoutInflater.inflate(R.layout.item_in_results,viewGroup,false);
         return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, final int position){
-        final SingleAlloyItem Item = searchResults.get(position);
-        setNullableText(viewHolder.NameTV, "Name: ", Item.getAlloyName());
-        setNullableText(viewHolder.ResistivityTV, "Resistivity: ", Item.getResistivity());
-        setNullableText(viewHolder.DensityTV, "Density: ", Item.getDensity());
-        setNullableText(viewHolder.ComponentTV, "Component: ", Item.getComponent());
-        setNullableText(viewHolder.MeltingRangeTV, "Melting Range: ", Item.getMeltingRangeString());
-        setNullableText(viewHolder.HardnessTV, "Hardness: ", Item.getHardnessString());
-        setNullableText(viewHolder.ThermalConTV, "Thermal Conductivity: ", Item.getThermalCon());
-        setNullableText(viewHolder.ThermalExpanTV, "Thermal Expansion: ", Item.getThermalExpan());
-        setNullableText(viewHolder.SpecificHeat, "Specific Heat: ", Item.getSpecificHeat());
-        final boolean isStarred = proxy.hasItem(Item.getAlloyName());
-        if(isStarred){viewHolder.isStarredIV.setImageResource(R.drawable.ic_star);}
-        //star interactive methods
-        else {viewHolder.isStarredIV.setImageResource(R.drawable.ic_star_empty);}
-        /*
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        Bundle alloy = searchResults.get(position);
+        viewHolder.NameTV.setText(alloy.getString("Name"));
+        viewHolder.IntroTV.setText(alloy.getString("Introduction"));
+
+        final boolean isStarred = starredAlloys.contains(alloy.get("Name"));
+        if(isStarred) {
+            viewHolder.isStarredIV.setImageResource(R.drawable.ic_star);
+        } else {
+            viewHolder.isStarredIV.setImageResource(R.drawable.ic_star_empty);
+        }
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOnItemClickListener.onClick(position);
             }
         });
-        */
-        //temporarily abandon this interactive method
+
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -117,84 +88,5 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 return false;
             }
         });
-        //item expand interactive
-        viewHolder.foldedDetail.setVisibility(View.GONE);
-        viewHolder.foldArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isFold = viewHolder.foldedDetail.getVisibility()==View.GONE;
-                foldViewAnimation(isFold,viewHolder.foldArrow);
-                if(isFold){
-                    startAnim(viewHolder.foldedDetail);
-                }else{
-                    closeAnim(viewHolder.foldedDetail);
-                }
-            }
-        });
-        viewHolder.moreDetailTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnItemClickListener.onClick(position);
-            }
-        });
     }
-
-    private void setNullableText(TextView textView, String str, Double nullableDouble) {
-        textView.setText(nullableDouble == null ? str + "No data" : str + nullableDouble.toString());
-    }
-
-    private void setNullableText(TextView textView, String str, String in) {
-        textView.setText(in == null ? str + "No data" : str + in);
-    }
-
-    //methods to expand the detail view
-    private ValueAnimator createDropAnimator(final View v,int start,int end){
-        ValueAnimator animator = ValueAnimator.ofInt(start,end);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator arg) {
-                int value = (int)arg.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
-                layoutParams.height = value;
-                v.setLayoutParams(layoutParams);
-            }
-        });
-        return animator;
-    }
-    private void closeAnim(final View view){
-        int origheight = view.getHeight();
-        ValueAnimator animator = createDropAnimator(view,origheight,0);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                view.setVisibility(View.GONE);
-            }
-        });
-        animator.start();
-    }
-    private void startAnim(View v){
-        v.setVisibility(View.VISIBLE);
-        int actualHeight = (int)ScreenSizeUtils.getInstance(context).getDisplayDensity()*expandedHeight;
-
-        ValueAnimator animator = createDropAnimator(v,0,actualHeight);
-        animator.start();
-    }
-    private void foldViewAnimation(boolean isFold,View toRotate){
-        Animation animation;
-        if(isFold){
-            animation = new RotateAnimation(0,180,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-        }else{
-            animation = new RotateAnimation(180,0,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-        }
-        animation.setDuration(100);
-        animation.setFillAfter(true);
-        animation.setRepeatMode(Animation.REVERSE);
-        toRotate.startAnimation(animation);
-    }
-
-
-
-
-
 }

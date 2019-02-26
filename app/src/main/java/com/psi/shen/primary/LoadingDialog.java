@@ -22,15 +22,16 @@ public class LoadingDialog {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
     }
-    public void show(){
+    public void show() {
         mLoadingDialog.show();
         mLoadingView.startAnim();
     }
 
-    public void close(){
-        if(mLoadingDialog!=null){
+    public void close() {
+        if(mLoadingDialog!=null) {
             mLoadingView.stopAnim();
             mLoadingDialog.dismiss();
-            mLoadingDialog=null;}
+            mLoadingDialog = null;
+        }
     }
 }

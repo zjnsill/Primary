@@ -1,13 +1,9 @@
 package com.psi.shen.primary;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -16,38 +12,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mob.MobSDK;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
-
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
 
 public class bottomSheet extends AppCompatActivity {
     private View bottomSheetView,backView,bottomsheetLower;
     private BottomSheetBehavior mBehavior;
     private TextView nameTV,starredItemCountTV,welcome,editTV,Email,phoneNum,leftTV,rightTV,Bio,expandIndicator;
-    private CardView searchCV,createCV,starredCV,aboutCV;
+    private CardView searchCV, customizedCV,starredCV,aboutCV;
     private signedUser defaultUser = signedUser.DefaultUser;
     private signedUser currentUser;
     private int MAX_Bio_Line=3,EXPANDED_Bio_Line=6;
-    private UserDatabaseManager userDatabaseManager;
 
     private Button testUse;
 
@@ -68,7 +54,7 @@ public class bottomSheet extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_sheet);
 
         Intent ifSigned = getIntent();
-        if(ifSigned.getParcelableExtra("user")!=null){
+        if(ifSigned.getParcelableExtra("user") != null) {
             currentUser = ifSigned.getParcelableExtra("user");
             //receive intent from other views;
         }
@@ -99,7 +85,6 @@ public class bottomSheet extends AppCompatActivity {
                 "we used knowledge from liner algebra, virtual machine, computer network, data structure. " +
                 "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
         currentUser = new signedUser.Builder("shen","123456789").Bio(s).Email("AlloyProject@sjtu.edu.cn").build();
-        userDatabaseManager = UserDatabaseManager.getInstance(this,currentUser.getName());
         //
         //
         welcome.setText("Welcome "+currentUser.getName());
@@ -201,7 +186,7 @@ public class bottomSheet extends AppCompatActivity {
         });
 
         searchCV = findViewById(R.id.SearchCV);
-        createCV = findViewById(R.id.CreateCV);
+        customizedCV = findViewById(R.id.CustomizedCV);
         starredCV = findViewById(R.id.StarredCV);
         aboutCV = findViewById(R.id.AboutCV);
 
@@ -209,25 +194,25 @@ public class bottomSheet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent searchIntent = new Intent(bottomSheet.this, Search.class);
-                searchIntent.putExtra("userName", currentUser.getName());
+                searchIntent.putExtra("user", currentUser);
                 searchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(searchIntent);
             }
         });
-        createCV.setOnClickListener(new View.OnClickListener() {
+        customizedCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent createintent = new Intent(bottomSheet.this, CreateAlloy.class);
-                createintent.putExtra("userName", currentUser.getName());
-                createintent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(createintent);
+                Intent customizedIntent = new Intent(bottomSheet.this, CustomizedAlloys.class);
+                customizedIntent.putExtra("user", currentUser);
+                customizedIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(customizedIntent);
             }
         });
         starredCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent starredIntent = new Intent(bottomSheet.this,StarredList.class);
-                starredIntent.putExtra("userName",currentUser.getName());
+                starredIntent.putExtra("user", currentUser);
                 starredIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(starredIntent);
             }

@@ -183,13 +183,13 @@ public class user_server {
         return null;
     }
 
-    public signedUser addStarredItem(String Phone, ArrayList<String> newStarredItem) { //return editted profile;
+    public signedUser addStarredItem(String Phone, String newStarredItem) { //return editted profile;
         String path = "http://118.25.122.232/android_connect/addStarredItem.php";
         try {
             OkHttpClient client = new OkHttpClient();
             FormBody.Builder formBody = new FormBody.Builder();
             formBody.add("Phone", Phone);
-            formBody.add("NewStarredItems", newStarredItem.toString());
+            formBody.add("NewStarredItem", newStarredItem);
             Request request = new Request.Builder().url(path).post(formBody.build()).build();
             Response response = client.newCall(request).execute();
             if(response.isSuccessful()) {
