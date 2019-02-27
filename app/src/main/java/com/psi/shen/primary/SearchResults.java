@@ -1,5 +1,6 @@
 package com.psi.shen.primary;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -9,6 +10,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -38,6 +47,15 @@ public class SearchResults extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_ALLOYS = "alloys";
+
+    private String[] sortItems = {"Name",
+            "Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Impact Strength: V-Notched Charpy", "Fracture Toughness",
+            "Latent Heat of Fusion", "Maximum Temperature: Mechanical", "Melting Completion (Liquidus)", "Melting Onset (Solidus)", "Solidification (Pattern Maker\'s) Shrinkage", "Specific Heat Capacity", "Thermal Conductivity", "Thermal Expansion", "Brazing Temperature",
+            "Electrical Conductivity: Equal Volume", "Electrical Conductivity: Equal Weight (Specific)",
+            "Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water",
+            "Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance"};
+            //"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "Rare Elements", "Residuals"};
+    private int[] sortIds;
 
     private RecyclerView alloyResultsList;
     private SearchResultsAdapter searchResultsAdapter;
@@ -101,6 +119,8 @@ public class SearchResults extends AppCompatActivity {
         inquiry = intent.getBundleExtra("inquiry");
         currentUser = intent.getParcelableExtra("user");
 
+        sortIds = new int[sortItems.length];
+
         alloyResultsList = findViewById(R.id.alloyResultsList);
         alloyResultsList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -143,10 +163,7 @@ public class SearchResults extends AppCompatActivity {
 
             @Override
             public void rightListener() {
-                Intent sortIntent = new Intent(SearchResults.this, SortAlloys.class);
-                sortIntent.putExtra("resultsArray", resultsArray);
-                sortIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(sortIntent);
+                showSortDialog();
             }
         });
 
@@ -314,6 +331,82 @@ public class SearchResults extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showSortDialog() {
+        final Dialog dialog = new Dialog(this, R.style.Theme_AppCompat_Dialog);
+        View view = View.inflate(this, R.layout.sort_select_dialog, null);
+        final RadioGroup sortRG;
+        sortRG = view.findViewById(R.id.SortRG);
+
+        int tag = 1000;
+        for(int i = 0; i < sortItems.length; i++) {
+            RadioButton radioButton = new RadioButton(this);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            radioButton.setLayoutParams(layoutParams);
+            radioButton.setTextSize(15);
+            radioButton.setText(sortItems[i]);
+            radioButton.setId(tag);
+            sortIds[i] = tag++;
+            sortRG.addView(radioButton);
+        }
+
+        dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(true);
+        Window dialogWindow = dialog.getWindow();
+        dialogWindow.setBackgroundDrawableResource(android.R.color.transparent);
+        final WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.width = (int)(ScreenSizeUtils.getInstance(this).getScreenWidth());
+        //lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = (int)(ScreenSizeUtils.getInstance(this).getScreenHeight() * 2 / 3);
+        lp.gravity = Gravity.CENTER;
+        dialogWindow.setAttributes(lp);
+        dialog.show();
+
+        sortRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int id = group.getCheckedRadioButtonId();
+                Log.i(TAG, String.valueOf(id));
+                dialog.dismiss();
+                dialog.cancel();
+
+                sortAlloys(sortItems[id - 1000]);
+            }
+        });
+    }
+
+    private void sortAlloys(String sortBy) {
+        for(int i = 0; i < resultsArray.size(); i++) {
+            for(int j = i + 1; j < resultsArray.size(); j++) {
+                if(sortBy.equals("Name")) {
+                    if (resultsArray.get(i).getString(sortBy).compareTo(resultsArray.get(j).getString(sortBy)) > 0) {
+                        Bundle bundle = resultsArray.get(i);
+                        resultsArray.set(i, resultsArray.get(j));
+                        resultsArray.set(j, bundle);
+                    }
+                } else {
+                    if(!resultsArray.get(i).containsKey(sortBy) && !resultsArray.get(j).containsKey(sortBy)) {
+                        if (resultsArray.get(i).getString("Name").compareTo(resultsArray.get(j).getString("Name")) < 0) {
+                            Bundle bundle = resultsArray.get(i);
+                            resultsArray.set(i, resultsArray.get(j));
+                            resultsArray.set(j, bundle);
+                        }
+                    } else if(!resultsArray.get(i).containsKey(sortBy)) {
+                        Bundle bundle = resultsArray.get(i);
+                        resultsArray.set(i, resultsArray.get(j));
+                        resultsArray.set(j, bundle);
+                    } else if(resultsArray.get(i).containsKey(sortBy) && resultsArray.get(j).containsKey(sortBy)) {
+                        if(Double.parseDouble(resultsArray.get(i).getString(sortBy)) < Double.parseDouble(resultsArray.get(j).getString(sortBy))) {
+                            Bundle bundle = resultsArray.get(i);
+                            resultsArray.set(i, resultsArray.get(j));
+                            resultsArray.set(j, bundle);
+                        }
+                    }
+                }
+            }
+        }
+        searchResultsAdapter.notifyDataSetChanged();
     }
 
     @Override

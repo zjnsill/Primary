@@ -61,8 +61,8 @@ public class CustomizedAdapter extends RecyclerView.Adapter<CustomizedAdapter.Vi
     public void onBindViewHolder(CustomizedAdapter.ViewHolder viewHolder, final int position) {
         Bundle alloy = customizedAlloys.get(position);
         viewHolder.NameTV.setText(alloy.getString("Name"));
-        if(alloy.containsKey("Introduction"))
-            viewHolder.IntroTV.setText(alloy.getString("Introduction"));
+        if(alloy.containsKey("Date"))
+            viewHolder.IntroTV.setText("Created at " + alloy.getString("Date"));
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

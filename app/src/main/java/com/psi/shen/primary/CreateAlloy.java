@@ -19,6 +19,10 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.SimpleFormatter;
+
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -38,6 +42,9 @@ public class CreateAlloy extends AppCompatActivity {
     private int[] spaceIds;
 
     private Bundle alloy;
+    private Bundle receivedAlloy;
+
+    private boolean modify = false;
 
     private String[] createTitles = {"Name", "Mechanical Properties", "Thermal Properties", "Electrical Properties", "Otherwise Unclassified Properties", "Common Calculations", "Alloy Composition"};
     private String[][] createItems = {{"Name"},
@@ -56,6 +63,8 @@ public class CreateAlloy extends AppCompatActivity {
                 Toast.makeText(CreateAlloy.this, "success", Toast.LENGTH_SHORT).show();
                 CreateAlloy.this.setResult(1);
                 CreateAlloy.this.finish();
+            } else if(message.what == 1) { // alloy exist
+                Toast.makeText(CreateAlloy.this, "Alloy already exists!", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -65,9 +74,12 @@ public class CreateAlloy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_alloy);
 
-
         Intent intent = getIntent();
         currentUser = intent.getParcelableExtra("user");
+        if(intent.hasExtra("alloy")) {
+            modify = true;
+            receivedAlloy = intent.getBundleExtra("alloy");
+        }
 
         setupIds();
         setupUI();
@@ -126,7 +138,10 @@ public class CreateAlloy extends AppCompatActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            createAlloy();
+                            if(modify)
+                                modifyAlloy();
+                            else
+                                createAlloy();
                         }
                     }).start();
                 }
@@ -184,6 +199,10 @@ public class CreateAlloy extends AppCompatActivity {
                     editText.setTextSize(15);
                     if(i != 0)
                         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                    if(modify) {
+                        if(receivedAlloy.containsKey(createItems[i][j]))
+                            editText.setText(receivedAlloy.getString(createItems[i][j]));
+                    }
                     linearLayout.addView(editText);
                 } else {
                     RelativeLayout inputRL = new RelativeLayout(this);
@@ -208,6 +227,10 @@ public class CreateAlloy extends AppCompatActivity {
                     minET.setHint("Min");
                     minET.setTextSize(15);
                     minET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                    if(modify) {
+                        if(receivedAlloy.containsKey(createItems[i][j]))
+                            minET.setText(receivedAlloy.getString(createItems[i][j]).split(" ", 3)[0]);
+                    }
                     inputRL.addView(minET);
 
                     EditText maxET = new EditText(this);
@@ -219,6 +242,10 @@ public class CreateAlloy extends AppCompatActivity {
                     maxET.setHint("Max");
                     maxET.setTextSize(15);
                     maxET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                    if(modify) {
+                        if(receivedAlloy.containsKey(createItems[i][j]))
+                            maxET.setText(receivedAlloy.getString(createItems[i][j]).split(" ", 3)[2]);
+                    }
                     inputRL.addView(maxET);
 
                     linearLayout.addView(inputRL);
@@ -293,6 +320,7 @@ public class CreateAlloy extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
             FormBody.Builder formBody = new FormBody.Builder();
             formBody.add("Phone", currentUser.getPhone());
+            formBody.add("Date", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(System.currentTimeMillis())));
             for(String key : alloy.keySet()) {
                 formBody.add(key, alloy.getString(key));
             }
@@ -302,6 +330,35 @@ public class CreateAlloy extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(response.body().string());
                 if(jsonObject.getInt("errorCode") == 0) {
                     handler.sendEmptyMessage(0);
+                } else if(jsonObject.getInt("errorCode") == 1) {
+                    handler.sendEmptyMessage(1);
+                }
+            } else {
+                Log.e("MainActivity", "error");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void modifyAlloy() {
+        String path = "http://118.25.122.232/android_connect/modifyCustomized.php";
+        try {
+            OkHttpClient client = new OkHttpClient();
+            FormBody.Builder formBody = new FormBody.Builder();
+            formBody.add("Phone", currentUser.getPhone());
+            formBody.add("PreviousName", receivedAlloy.getString("Name"));
+            for(String key : alloy.keySet()) {
+                formBody.add(key, alloy.getString(key));
+            }
+            Request request = new Request.Builder().url(path).post(formBody.build()).build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()) {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                if(jsonObject.getInt("errorCode") == 0) {
+                    handler.sendEmptyMessage(0);
+                } else if(jsonObject.getInt("errorCode") == 1) {
+                    handler.sendEmptyMessage(1);
                 }
             } else {
                 Log.e("MainActivity", "error");

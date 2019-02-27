@@ -127,8 +127,10 @@ public class CustomizedAlloys extends AppCompatActivity {
                 Bundle alloy = customizedAlloys.get(position);
                 Intent detail = new Intent(CustomizedAlloys.this, detailed_alloy.class);
                 detail.putExtra("alloy", alloy);
+                detail.putExtra("modify", true);
+                detail.putExtra("user", currentUser);
                 detail.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(detail);
+                startActivityForResult(detail, 2);
             }
 
             @Override
