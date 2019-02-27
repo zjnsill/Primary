@@ -17,7 +17,7 @@ public class SplashActivity extends Activity {
     private int countDownTime = 1000;
     private int countDownInterval = 1;
 
-    private  String phone;
+    private String phone;
     private static final int ANIMATION_TIME = 1000;
     private static final float SCALE_END = 1.2F;
 
@@ -77,8 +77,8 @@ public class SplashActivity extends Activity {
                     arg.putInt("ambition",102);
                     toLogin.putExtra("ambition",arg);
                     toLogin.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(toLogin);}
-                else {
+                    startActivity(toLogin);
+                } else {
                     Intent tobottom = new Intent(SplashActivity.this,bottomSheet.class);
                     startActivity(tobottom);
                 }

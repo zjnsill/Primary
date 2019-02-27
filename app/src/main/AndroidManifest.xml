@@ -36,7 +36,6 @@
         <activity android:name=".StarredList" />
         <activity android:name=".edit_account_info" />
         <activity android:name=".tabbed_login_register" />
-        <activity android:name=".SortAlloys" />
         <activity android:name=".LoginRegisterEnterinfo" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".Developers" />

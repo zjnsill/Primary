@@ -38,6 +38,14 @@ public class TopBar extends RelativeLayout {
         TitleTV.getPaint().setFakeBoldText(bold);
     }
 
+    public void setLeftImg(int resId) {
+        leftImg.setImageResource(resId);
+    }
+
+    public void setRightImg(int resId) {
+        rightImg.setImageResource(resId);
+    }
+
     public TopBar(Context ctx, AttributeSet TopbarAttr){
         super(ctx,TopbarAttr);
         LayoutInflater.from(ctx).inflate(R.layout.topbar,this);

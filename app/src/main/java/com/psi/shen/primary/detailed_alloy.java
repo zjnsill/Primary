@@ -10,10 +10,13 @@ import android.widget.TextView;
 
 public class detailed_alloy extends AppCompatActivity {
 
+    private signedUser currentUser;
+
     private TopBar detailedAlloyTopbar;
     private LinearLayout detailList;
 
     private Bundle alloy = new Bundle();
+    private boolean modify = false;
 
     private String[] detailTitles = {"Name", "Introduction", "Mechanical Properties", "Thermal Properties", "Electrical Properties", "Otherwise Unclassified Properties", "Common Calculations", "Alloy Composition"};
     private String[][] detailItems = {{"Name"},
@@ -33,6 +36,10 @@ public class detailed_alloy extends AppCompatActivity {
 
         Intent intent = getIntent();
         alloy = intent.getBundleExtra("alloy");
+        if(intent.hasExtra("modify")) {
+            currentUser = intent.getParcelableExtra("user");
+            modify = true;
+        }
 
         setupUI();
     }
@@ -42,14 +49,27 @@ public class detailed_alloy extends AppCompatActivity {
         detailedAlloyTopbar.setTitle(alloy.getString("Name"));
         detailedAlloyTopbar.setTitleSize(20);
         detailedAlloyTopbar.setTitleBold(true);
+        if(modify) {
+            detailedAlloyTopbar.setRightImg(R.drawable.ic_edit);
+        }
         detailedAlloyTopbar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {
             @Override
             public void leftListener() {
+                if(modify)
+                    detailed_alloy.this.setResult(0);
                 detailed_alloy.this.finish();
             }
 
             @Override
-            public void rightListener() {}
+            public void rightListener() {
+                if(modify) {
+                    Intent intent = new Intent(detailed_alloy.this, CreateAlloy.class);
+                    intent.putExtra("alloy", alloy);
+                    intent.putExtra("user", currentUser);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivityForResult(intent, 3);
+                }
+            }
         });
 
         detailList = findViewById(R.id.detailList);
@@ -78,8 +98,11 @@ public class detailed_alloy extends AppCompatActivity {
             title.getPaint().setFakeBoldText(true);
             layout.addView(title);
 
+            boolean flag = false;
             for(int j = 0; j < detailItems[i].length; j++) {
                 if(alloy.containsKey(detailItems[i][j])) {
+                    flag = true;
+
                     LinearLayout linearLayout = new LinearLayout(this);
                     LinearLayout.LayoutParams linearLayoutLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     linearLayoutLayoutParams.setMargins(15, 3, 15, 3);
@@ -111,9 +134,21 @@ public class detailed_alloy extends AppCompatActivity {
                 }
             }
 
+            if(!flag) {
+                continue;
+            }
+
             cardView.addView(layout);
 
             detailList.addView(cardView);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 1) {
+            detailed_alloy.this.setResult(1);
+            detailed_alloy.this.finish();
         }
     }
 }
