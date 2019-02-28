@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -23,6 +24,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class CustomizedAlloys extends AppCompatActivity {
+
+    private int startX, startY;
 
     private static final String TAG = "MainActivity";
 
@@ -238,5 +241,23 @@ public class CustomizedAlloys extends AppCompatActivity {
         if(resultCode == 1) {
             refreshList();
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startX = (int)event.getRawX();
+                startY = (int)event.getRawY();
+            case MotionEvent.ACTION_MOVE:
+                int endX = (int)event.getRawX();
+                int endY = (int)event.getRawY();
+                if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
+                    if(endX > startX) {
+                        this.finish();
+                    }
+                }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }

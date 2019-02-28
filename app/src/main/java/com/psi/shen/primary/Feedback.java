@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +24,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class Feedback extends AppCompatActivity {
+
+    private int startX, startY;
+
     private static final String TAG = "MainActivity";
     private static final int MAX_COUNT = 200;
     private TopBar topBar;
@@ -131,5 +135,23 @@ public class Feedback extends AppCompatActivity {
 
     private boolean hasInput(EditText editText) {
         return !editText.getText().toString().isEmpty();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startX = (int)event.getRawX();
+                startY = (int)event.getRawY();
+            case MotionEvent.ACTION_MOVE:
+                int endX = (int)event.getRawX();
+                int endY = (int)event.getRawY();
+                if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
+                    if(endX > startX) {
+                        this.finish();
+                    }
+                }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }
