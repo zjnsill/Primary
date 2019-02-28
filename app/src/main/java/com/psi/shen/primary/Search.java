@@ -38,7 +38,16 @@ public class Search extends AppCompatActivity {
             {"Electrical Conductivity: Equal Volume", "Electrical Conductivity: Equal Weight (Specific)"},
             {"Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water"},
             {"Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance"},
-            {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "Rare Elements", "Residuals"}};
+            {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "Rare Elements", "Residuals"}
+    };
+    private String[][] units = {{},
+            {"GPa", "%", "MPa", "", "GPa", "MPa", "MPa", "MPa", "", "MPa", "", "J", "MPa-m1/2"},
+            {"J/g", "°C", "°C", "°C", "%", "J/kg-K", "W/m-K", "µm/m-K", "°C"},
+            {"% IACS", "% IACS"},
+            {"% relative", "g/cm3", "kg CO2/kg material", "MJ/kg", "L/kg"},
+            {"MJ/m3", "kJ/m3", "points", "points", "points", "points", "m2/s", "points"},
+            {"%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%"}
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,13 +149,18 @@ public class Search extends AppCompatActivity {
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
                 linearLayout.setLayoutParams(linearLayoutLayoutParams);
 
-                TextView searchItemTV = new TextView(this);
-                LinearLayout.LayoutParams searchItemTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                searchItemTVLayoutParams.setMarginStart(5);
-                searchItemTV.setText(searchItems[i][j]);
-                searchItemTV.setTextSize(15);
-                searchItemTV.setLayoutParams(searchItemTVLayoutParams);
-                linearLayout.addView(searchItemTV);
+                if(i != 0) {
+                    TextView searchItemTV = new TextView(this);
+                    LinearLayout.LayoutParams searchItemTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    searchItemTVLayoutParams.setMarginStart(5);
+                    if(!units[i][j].equals(""))
+                        searchItemTV.setText(searchItems[i][j] + " (" + units[i][j] + ")");
+                    else
+                        searchItemTV.setText(searchItems[i][j]);
+                    searchItemTV.setTextSize(15);
+                    searchItemTV.setLayoutParams(searchItemTVLayoutParams);
+                    linearLayout.addView(searchItemTV);
+                }
 
                 RelativeLayout inputRL = new RelativeLayout(this);
                 RelativeLayout.LayoutParams inputRLLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
