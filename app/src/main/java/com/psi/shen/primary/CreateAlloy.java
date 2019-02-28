@@ -57,6 +57,14 @@ public class CreateAlloy extends AppCompatActivity {
             {"Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water"},
             {"Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance"},
             {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "Rare Elements", "Residuals"}};
+    private String[][] units = {{},
+            {"GPa", "%", "MPa", "", "GPa", "MPa", "MPa", "MPa", "", "MPa", "", "J", "MPa-m1/2"},
+            {"J/g", "°C", "°C", "°C", "%", "J/kg-K", "W/m-K", "µm/m-K", "°C"},
+            {"% IACS", "% IACS"},
+            {"% relative", "g/cm3", "kg CO2/kg material", "MJ/kg", "L/kg"},
+            {"MJ/m3", "kJ/m3", "points", "points", "points", "points", "m2/s", "points"},
+            {"%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%"}
+    };
 
     private Handler handler = new Handler() {
         @Override
@@ -184,19 +192,22 @@ public class CreateAlloy extends AppCompatActivity {
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
                 linearLayout.setLayoutParams(linearLayoutLayoutParams);
 
-                TextView searchItemTV = new TextView(this);
-                LinearLayout.LayoutParams searchItemTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                searchItemTVLayoutParams.setMarginStart(5);
-                searchItemTV.setText(createItems[i][j]);
-                searchItemTV.setTextSize(15);
-                searchItemTV.setLayoutParams(searchItemTVLayoutParams);
-                linearLayout.addView(searchItemTV);
+                if(i != 0) {
+                    TextView searchItemTV = new TextView(this);
+                    LinearLayout.LayoutParams searchItemTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    searchItemTVLayoutParams.setMarginStart(5);
+                    if(!units[i][j].equals(""))
+                        searchItemTV.setText(createItems[i][j] + " (" + units[i][j] + ")");
+                    else
+                        searchItemTV.setText(createItems[i][j]);
+                    searchItemTV.setTextSize(15);
+                    searchItemTV.setLayoutParams(searchItemTVLayoutParams);
+                    linearLayout.addView(searchItemTV);
+                }
 
                 if(i != createTitles.length - 1) {
                     EditText editText = new EditText(this);
                     LinearLayout.LayoutParams editTextLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    //RelativeLayout.LayoutParams editTextLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    //editTextLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
                     editText.setLayoutParams(editTextLayoutParams);
                     editText.setId(editTextIds[i][j]);
                     editText.setTextSize(15);

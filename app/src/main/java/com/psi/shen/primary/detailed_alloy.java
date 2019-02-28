@@ -31,6 +31,15 @@ public class detailed_alloy extends AppCompatActivity {
             {"Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance"},
             {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "Rare Elements", "Residuals"}
     };
+    private String[][] units = {{},
+            {},
+            {"GPa", "%", "MPa", "", "GPa", "MPa", "MPa", "MPa", "", "MPa", "", "J", "MPa-m1/2"},
+            {"J/g", "°C", "°C", "°C", "%", "J/kg-K", "W/m-K", "µm/m-K", "°C"},
+            {"% IACS", "% IACS"},
+            {"% relative", "g/cm3", "kg CO2/kg material", "MJ/kg", "L/kg"},
+            {"MJ/m3", "kJ/m3", "points", "points", "points", "points", "m2/s", "points"},
+            {"%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%"}
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +113,6 @@ public class detailed_alloy extends AppCompatActivity {
             boolean flag = false;
             for(int j = 0; j < detailItems[i].length; j++) {
                 if(alloy.containsKey(detailItems[i][j])) {
-                    flag = true;
 
                     LinearLayout linearLayout = new LinearLayout(this);
                     LinearLayout.LayoutParams linearLayoutLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -127,13 +135,19 @@ public class detailed_alloy extends AppCompatActivity {
                     valueTVLayoutParams.setMarginStart(5);
                     valueTVLayoutParams.setMarginEnd(5);
                     valueTV.setLayoutParams(valueTVLayoutParams);
+
                     if(!detailTitles[i].equals("Introduction"))
                         valueTV.setGravity(Gravity.END);
                     valueTV.setTextSize(15);
-                    valueTV.setText(alloy.getString(detailItems[i][j]));
+                    if(!detailTitles[i].equals("Introduction") && !units[i][j].equals(""))
+                        valueTV.setText(alloy.getString(detailItems[i][j]) + " " + units[i][j]);
+                    else
+                        valueTV.setText(alloy.getString(detailItems[i][j]));
                     linearLayout.addView(valueTV);
 
                     layout.addView(linearLayout);
+
+                    flag = true;
                 }
             }
 
