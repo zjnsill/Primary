@@ -14,9 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -84,7 +86,7 @@ public class bottomSheet extends AppCompatActivity {
                 "we used knowledge from liner algebra, virtual machine, computer network, data structure. " +
                 "But, as we are yet, freshmen student, we don’t have a very deep understanding of these, we learnt by ourself  ";
         if(Editing.getParcelableExtra("edituser")==null)
-            currentUser = new signedUser.Builder("User",phone).Bio(s).Email("Null").build();
+            currentUser = new signedUser.Builder("User", phone).Bio(s).Email("Null").build();
         else
             currentUser = Editing.getParcelableExtra("edituser");
         //
@@ -416,7 +418,17 @@ public class bottomSheet extends AppCompatActivity {
             finish();
         }
     }
-
+/*
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        Log.i("MainActivity", String.valueOf(event.getAction()));
+        if(mBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            return true;
+        } else
+            return super.dispatchTouchEvent(event);
+    }
+*/
     @Override
     protected void onDestroy(){
         super.onDestroy();

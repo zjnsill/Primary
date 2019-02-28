@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -42,6 +43,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class AboutActivity extends AppCompatActivity {
+
+    private int startX, startY;
+
     private TopBar topBar;
     private TextView AboutTV;
     private TextView versionTV;
@@ -220,5 +224,23 @@ public class AboutActivity extends AppCompatActivity {
                 builder.executeMission(AboutActivity.this);
             }
         });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startX = (int)event.getRawX();
+                startY = (int)event.getRawY();
+            case MotionEvent.ACTION_MOVE:
+                int endX = (int)event.getRawX();
+                int endY = (int)event.getRawY();
+                if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
+                    if(endX > startX) {
+                        this.finish();
+                    }
+                }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }

@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -33,6 +34,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class SearchResults extends AppCompatActivity {
+
+    private int startX, startY;
+
     private TopBar topbar;
     private signedUser currentUser;
 
@@ -413,5 +417,23 @@ public class SearchResults extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startX = (int)event.getRawX();
+                startY = (int)event.getRawY();
+            case MotionEvent.ACTION_MOVE:
+                int endX = (int)event.getRawX();
+                int endY = (int)event.getRawY();
+                if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
+                    if(endX > startX) {
+                        this.finish();
+                    }
+                }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }

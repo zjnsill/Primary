@@ -9,6 +9,7 @@ import android.support.v7.widget.CardView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -29,6 +30,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class CreateAlloy extends AppCompatActivity {
+
+    private int startX, startY;
 
     private signedUser currentUser;
 
@@ -366,5 +369,23 @@ public class CreateAlloy extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startX = (int)event.getRawX();
+                startY = (int)event.getRawY();
+            case MotionEvent.ACTION_MOVE:
+                int endX = (int)event.getRawX();
+                int endY = (int)event.getRawY();
+                if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
+                    if(endX > startX) {
+                        this.finish();
+                    }
+                }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }

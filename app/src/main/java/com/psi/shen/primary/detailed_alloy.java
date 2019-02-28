@@ -5,10 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class detailed_alloy extends AppCompatActivity {
+
+    private int startX, startY;
 
     private signedUser currentUser;
 
@@ -150,5 +153,22 @@ public class detailed_alloy extends AppCompatActivity {
             detailed_alloy.this.setResult(1);
             detailed_alloy.this.finish();
         }
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startX = (int)event.getRawX();
+                startY = (int)event.getRawY();
+            case MotionEvent.ACTION_MOVE:
+                int endX = (int)event.getRawX();
+                int endY = (int)event.getRawY();
+                if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
+                    if(endX > startX) {
+                        this.finish();
+                    }
+                }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }
