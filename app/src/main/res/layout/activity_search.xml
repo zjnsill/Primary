@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Search">
+    android:layout_height="match_parent">
 
     <com.psi.shen.primary.TopBar
         android:id="@+id/searchTopBar"
@@ -13,7 +12,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
-        app:LeftImg="@drawable/ic_arrow_back"
         app:RightImg="@drawable/ic_clear_all"
         app:Text="Search"
         app:TextColor="#000"

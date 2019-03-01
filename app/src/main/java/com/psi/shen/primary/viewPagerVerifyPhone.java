@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.Timer;
+
 
 public class viewPagerVerifyPhone extends Fragment {
     //回调接口
@@ -24,8 +26,9 @@ public class viewPagerVerifyPhone extends Fragment {
     VerifyPhoneUtil verifyUtil;
     //变量定义
     private EditText verifyphoenET,verificationCodeET;
-    private Button getCodeBtn,verifyBtn;
+    private Button verifyBtn;
     private TimeCount time;
+    private boolean Timeflag = false;
     @Override
     public void onCreate(@Nullable Bundle savedinstanceState){
         super.onCreate(savedinstanceState);
@@ -35,14 +38,10 @@ public class viewPagerVerifyPhone extends Fragment {
         View view = inflater.inflate(R.layout.viewpager_verify_phone,null);
         verifyphoenET = view.findViewById(R.id.phoneNum_verify);
         verificationCodeET = view.findViewById(R.id.verifyCode);
-        getCodeBtn = view.findViewById(R.id.getCode_btn);
         verifyBtn = view.findViewById(R.id.verify_btn);
 
-        getCodeBtn.setEnabled(false);
-        getCodeBtn.setBackgroundResource(R.color.btn_unclickable_grey);
         verifyBtn.setEnabled(false);
-        verifyBtn.setBackgroundResource(R.color.btn_unclickable_grey);
-        time = new TimeCount(60000, 1000);
+
 
         verifyphoenET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -52,8 +51,23 @@ public class viewPagerVerifyPhone extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!s.toString().isEmpty()){
-                    getCodeBtn.setEnabled(true);
-                    getCodeBtn.setBackgroundResource(R.color.btn_clickable_orange);
+                    verifyBtn.setEnabled(true);
+                    verifyBtn.setText("Get Code");
+                    verifyBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            time = new TimeCount(60000, 500);
+                            time.start();
+                            Timeflag = true;
+                            verifyUtil.SendVerifyCode(verifyphoenET.getText().toString());
+                        }
+                    });
+                    if(Timeflag)
+                        time.cancel();
+
+                }
+                else{
+                    verifyBtn.setEnabled(false);
                 }
             }
 
@@ -67,12 +81,26 @@ public class viewPagerVerifyPhone extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!verifyphoenET.getText().toString().isEmpty()&!s.toString().isEmpty()){
                     verifyBtn.setEnabled(true);
-                    verifyBtn.setBackgroundResource(R.color.btn_clickable_orange);
+                    verifyBtn.setText("Verify Code");
+                    verifyBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            verifyUtil.verifyCode(verifyphoenET.getText().toString(),verificationCodeET.getText().toString());
+                        }
+                    });
+                }
+                else{
+                    verifyBtn.setEnabled(false);
+                    if(!Timeflag)
+                        verifyBtn.setText("Get Code");
+                    else
+                        verifyBtn.setClickable(false);
+                        verifyBtn.setText("");
+
                 }
             }
 
@@ -86,19 +114,7 @@ public class viewPagerVerifyPhone extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstancState){
         super.onActivityCreated(savedInstancState);
-        getCodeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                time.start();
-                verifyUtil.SendVerifyCode(verifyphoenET.getText().toString());
-            }
-        });
-        verifyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verifyUtil.verifyCode(verifyphoenET.getText().toString(),verificationCodeET.getText().toString());
-            }
-        });
+
 
     }
     @Override
@@ -119,16 +135,20 @@ public class viewPagerVerifyPhone extends Fragment {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            getCodeBtn.setClickable(false);
-            getCodeBtn.setText("(" + millisUntilFinished / 1000 + ") ");
-            getCodeBtn.setBackgroundResource(R.color.btn_unclickable_grey);
+            if (verifyBtn.getText().toString() != "Verify Code") {
+                verifyBtn.setClickable(false);
+                verifyBtn.setText("(" + millisUntilFinished / 1000 + ") ");
+            }
+
         }
 
         @Override
         public void onFinish() {
-            getCodeBtn.setText("GET AGAIN");
-            getCodeBtn.setClickable(true);
-            getCodeBtn.setBackgroundResource(R.color.btn_clickable_orange);
+            if (verifyBtn.getText().toString() != "Verify Code") {
+                verifyBtn.setClickable(true);
+                verifyBtn.setText("Get Again");
+                Timeflag = false;
+            }
         }
     }
 }

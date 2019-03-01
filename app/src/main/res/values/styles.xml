@@ -34,4 +34,14 @@
 
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="bottomTab">
+        <item name="tabTextColor">@color/smssdk_gray</item>
+        <item name="tabTextSize">12sp</item>
+        <item name="hintTextColor">@android:color/white</item>
+        <item name="hintTextSize">3sp</item>
+        <item name="hintEnable">true</item>
+        <item name="verticalSpace">1dp</item>
+        <item name="android:layout_gravity">center</item>
+
+    </style>
 </resources>
