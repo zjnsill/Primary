@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;
@@ -94,6 +95,9 @@ public class CustomizedAlloys extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customized_alloys);
 
+        Fade fade = new Fade();
+        fade.setDuration(500);
+        getWindow().setEnterTransition(fade);
         Intent intent = getIntent();
         currentUser = intent.getParcelableExtra("user");
 

@@ -1,5 +1,6 @@
 package com.psi.shen.primary;
 
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -11,6 +12,8 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,8 +47,6 @@ import okhttp3.Response;
 
 public class AboutActivity extends AppCompatActivity {
 
-    private int startX, startY;
-
     private TopBar topBar;
     private TextView AboutTV;
     private TextView versionTV;
@@ -53,6 +54,7 @@ public class AboutActivity extends AppCompatActivity {
     private RelativeLayout introRL;
     private RelativeLayout feedbackRL;
     private RelativeLayout updateRL;
+    private RelativeLayout accountRL;
 
     private DownloadBuilder builder;
 
@@ -63,6 +65,10 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
+        Explode explode = new Explode();
+        explode.setDuration(500);
+        getWindow().setEnterTransition(explode);
+
         AboutTV = findViewById(R.id.AboutTV);
         versionTV = findViewById(R.id.versionTV);
         developersRL = findViewById(R.id.developersRL);
@@ -70,6 +76,7 @@ public class AboutActivity extends AppCompatActivity {
         feedbackRL = findViewById(R.id.feedbackRL);
         updateRL = findViewById(R.id.updateRL);
         topBar = findViewById(R.id.aboutTopbar);
+        accountRL = findViewById(R.id.accountRL);
 
         PackageManager packageManager = AboutActivity.this.getPackageManager();
         PackageInfo packageInfo = null;
@@ -224,23 +231,14 @@ public class AboutActivity extends AppCompatActivity {
                 builder.executeMission(AboutActivity.this);
             }
         });
+        accountRL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AboutActivity.this, edit_account_info.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(AboutActivity.this).toBundle());
+            }
+        });
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                startX = (int)event.getRawX();
-                startY = (int)event.getRawY();
-            case MotionEvent.ACTION_MOVE:
-                int endX = (int)event.getRawX();
-                int endY = (int)event.getRawY();
-                if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
-                    if(endX > startX) {
-                        this.finish();
-                    }
-                }
-        }
-        return super.dispatchTouchEvent(event);
-    }
 }

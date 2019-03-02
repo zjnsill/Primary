@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
+import android.transition.Explode;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.EditText;
@@ -53,6 +54,10 @@ public class Search extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        Explode explode = new Explode();
+        explode.setDuration(500);
+        getWindow().setEnterTransition(explode);
 
         Intent fromMainInterface = getIntent();
         currentUser = fromMainInterface.getParcelableExtra("user");
