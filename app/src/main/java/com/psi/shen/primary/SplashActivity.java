@@ -32,6 +32,7 @@ public class SplashActivity extends Activity {
         prefManager = new PrefManager(this);
         SharedPreferences sharedPreferences=getSharedPreferences("config",0);
         phone=sharedPreferences.getString("phone","");
+        phone="123";
         if(!isTaskRoot()) {
             Intent intent = getIntent();
             String action = intent.getAction();

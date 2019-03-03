@@ -2,6 +2,7 @@ package com.psi.shen.primary;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.support.annotation.IntDef;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -172,9 +174,12 @@ viewPagerResetpass.ResetPass,viewPagerSetPass.setPasscode,viewPagerSetBio.setedB
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register_enterinfo);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         ambition = getIntent().getBundleExtra("ambition");
         viewPager = findViewById(R.id.viewPager);
-        statusTitle = findViewById(R.id.titleTV);
 
         //initialize the working flow;
         switch (ambition.getInt("ambition")) {

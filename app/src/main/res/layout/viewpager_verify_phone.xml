@@ -5,86 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/phoneNum_verify"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="170dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="phone"
-        android:textAlignment="center"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.351" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNum_verify">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=" Code      "
-            android:textColor="#000"
-            android:textSize="18sp" />
+        <EditText
+            android:id="@+id/phoneNum_verify"
+            android:layout_width="185dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:inputType="phone"
+            android:textAlignment="center"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.351"
+            tools:layout_editor_absoluteX="161dp" />
 
         <EditText
             android:id="@+id/verifyCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="185dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:textAlignment="center"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="108dp" />
 
         <Button
-            android:id="@+id/getCode_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:background="@android:color/holo_orange_dark"
-            android:text="Get code" />
+            android:id="@+id/verify_btn"
+            android:layout_width="185dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@color/bg_screen3"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Get code"
+            android:textAllCaps="false"
+            android:textColor="@color/cardview_light_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="116dp" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/verify_btn"
-        android:layout_width="132dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="8dp"
-        android:background="@android:color/holo_green_light"
-        android:text="verify"
-        android:textColor="@color/cardview_dark_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="55dp"
-        android:layout_height="wrap_content"
-        android:text="Phone"
-        android:textColor="@color/smssdk_black"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/phoneNum_verify"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="@+id/phoneNum_verify" />
 
 </android.support.constraint.ConstraintLayout>
