@@ -34,6 +34,7 @@ import java.lang.annotation.RetentionPolicy;
 public class bottomSheet extends AppCompatActivity {
     private View backView;
     private CardView searchCV, customizedCV,starredCV,aboutCV;
+    private TopBar topBar;
     private signedUser currentUser;
     private String phone;
     private long exitTime;
@@ -54,6 +55,19 @@ public class bottomSheet extends AppCompatActivity {
             currentUser = Editing.getParcelableExtra("edituser");
         //
         //
+        
+        topBar = findViewById(R.id.topBar);
+        topBar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {
+            @Override
+            public void leftListener() {
+
+            }
+
+            @Override
+            public void rightListener() {
+
+            }
+        });
 
         searchCV = findViewById(R.id.SearchCV);
         customizedCV = findViewById(R.id.CustomizedCV);
