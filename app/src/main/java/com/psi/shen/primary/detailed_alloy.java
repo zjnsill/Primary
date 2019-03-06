@@ -24,21 +24,21 @@ public class detailed_alloy extends AppCompatActivity {
     private String[] detailTitles = {"Name", "Introduction", "Mechanical Properties", "Thermal Properties", "Electrical Properties", "Otherwise Unclassified Properties", "Common Calculations", "Alloy Composition"};
     private String[][] detailItems = {{"Name"},
             {"Introduction"},
-            {"Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Impact Strength: V-Notched Charpy", "Fracture Toughness"},
-            {"Latent Heat of Fusion", "Maximum Temperature: Mechanical", "Melting Completion (Liquidus)", "Melting Onset (Solidus)", "Solidification (Pattern Maker\'s) Shrinkage", "Specific Heat Capacity", "Thermal Conductivity", "Thermal Expansion", "Brazing Temperature"},
+            {"Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Rockwell B Hardness", "Rockwell C Hardness", "Rockwell Superficial 30T Hardness", "Impact Strength: V-Notched Charpy", "Impact Strength: U-Notched Charpy", "Fracture Toughness", "Reduction in Area", "Flexural Strength"},
+            {"Latent Heat of Fusion", "Maximum Temperature: Mechanical", "Melting Completion (Liquidus)", "Melting Onset (Solidus)", "Solidification (Pattern Maker\'s) Shrinkage", "Specific Heat Capacity", "Thermal Conductivity", "Thermal Expansion", "Brazing Temperature", "Maximum Temperature: Corrosion", "Curie Temperature"},
             {"Electrical Conductivity: Equal Volume", "Electrical Conductivity: Equal Weight (Specific)"},
-            {"Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water"},
-            {"Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance"},
-            {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "Rare Elements", "Residuals"}
+            {"Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water", "Calomel Potential"},
+            {"Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance", "PREN (Pitting Resistance)"},
+            {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "V", "Ti", "Ga", "B", "Cr", "Pb", "Sn", "Bi", "Co", "Sb", "S", "P", "As", "Cd", "C", "Nb", "Se", "Te", "O", "Mo", "N", "W", "Ta", "Ce", "La", "Rare Elements", "Residuals"}
     };
     private String[][] units = {{},
             {},
-            {"GPa", "%", "MPa", "", "GPa", "MPa", "MPa", "MPa", "", "MPa", "", "J", "MPa-m1/2"},
-            {"J/g", "°C", "°C", "°C", "%", "J/kg-K", "W/m-K", "µm/m-K", "°C"},
+            {"GPa", "%", "MPa", "", "GPa", "MPa", "MPa", "MPa", "", "MPa", "", "", "", "", "J", "J", "MPa-m1/2", "%", "MPa"},
+            {"J/g", "°C", "°C", "°C", "%", "J/kg-K", "W/m-K", "µm/m-K", "°C", "°C", "°C"},
             {"% IACS", "% IACS"},
-            {"% relative", "g/cm3", "kg CO2/kg material", "MJ/kg", "L/kg"},
-            {"MJ/m3", "kJ/m3", "points", "points", "points", "points", "m2/s", "points"},
-            {"%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%"}
+            {"% relative", "g/cm3", "kg CO2/kg material", "MJ/kg", "L/kg", "mV"},
+            {"MJ/m3", "kJ/m3", "points", "points", "points", "points", "m2/s", "points", ""},
+            {}
     };
 
     @Override
@@ -58,9 +58,9 @@ public class detailed_alloy extends AppCompatActivity {
 
     private void setupUI() {
         detailedAlloyTopbar = findViewById(R.id.DetailedAlloyTopbar);
-        detailedAlloyTopbar.setTitle(alloy.getString("Name"));
+        detailedAlloyTopbar.setTitle("Details");
         detailedAlloyTopbar.setTitleSize(20);
-        detailedAlloyTopbar.setTitleBold(true);
+        //detailedAlloyTopbar.setTitleBold(true);
         if(modify) {
             detailedAlloyTopbar.setRightImg(R.drawable.ic_edit);
         }
@@ -86,7 +86,37 @@ public class detailed_alloy extends AppCompatActivity {
 
         detailList = findViewById(R.id.detailList);
 
-        for(int i = 1; i < detailTitles.length; i++) {
+        for(int i = 0; i < detailTitles.length; i++) {
+            if(i == 0) {
+                CardView cardView = new CardView(this);
+                CardView.LayoutParams cardViewLayoutParams = new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT);
+                cardViewLayoutParams.setMargins(5, 20, 5, 20);
+                cardView.setLayoutParams(cardViewLayoutParams);
+                cardView.setCardElevation(10);
+                cardView.setRadius(15);
+
+                LinearLayout layout = new LinearLayout(this);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layout.setLayoutParams(layoutParams);
+                layout.setOrientation(LinearLayout.VERTICAL);
+                layout.setPadding(15, 15, 15, 15);
+
+                TextView NameTV = new TextView(this);
+                LinearLayout.LayoutParams NameLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                NameLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+                NameTV.setLayoutParams(NameLayoutParams);
+                NameTV.setText(alloy.getString("Name"));
+                NameTV.setTextSize(25);
+                NameTV.setGravity(Gravity.CENTER);
+                NameTV.getPaint().setFakeBoldText(true);
+                layout.addView(NameTV);
+
+                cardView.addView(layout);
+                detailList.addView(cardView);
+
+                continue;
+            }
+
             CardView cardView = new CardView(this);
             CardView.LayoutParams cardViewLayoutParams = new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT);
             cardViewLayoutParams.setMargins(5, 20, 5, 20);
@@ -139,7 +169,9 @@ public class detailed_alloy extends AppCompatActivity {
                     if(!detailTitles[i].equals("Introduction"))
                         valueTV.setGravity(Gravity.END);
                     valueTV.setTextSize(15);
-                    if(!detailTitles[i].equals("Introduction") && !units[i][j].equals(""))
+                    if(detailTitles[i].equals("Alloy Composition"))
+                        valueTV.setText(alloy.getString(detailItems[i][j]) + " %");
+                    else if(!detailTitles[i].equals("Introduction") && !units[i][j].equals(""))
                         valueTV.setText(alloy.getString(detailItems[i][j]) + " " + units[i][j]);
                     else
                         valueTV.setText(alloy.getString(detailItems[i][j]));

@@ -11,8 +11,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
@@ -38,17 +40,23 @@ public class CreateAlloy extends AppCompatActivity {
     private TopBar createTopbar;
     private RoundRectBtn finishBtn;
     private LinearLayout createList;
+    private LinearLayout createType;
 
     private int[][] editTextIds;
     private int[] minIds;
     private int[] maxIds;
     private int[] spaceIds;
+    private int[] rbSpaceIds;
+    private int[] typeIds;
 
     private Bundle alloy;
     private Bundle receivedAlloy;
 
+    private String selectedType;
+
     private boolean modify = false;
 
+    private String[] createAlloyType = {"Magnesium Alloy", "Aluminum Alloy", "Copper Alloy", "Iron Alloy", "Cobalt Alloy"};
     private String[] createTitles = {"Name", "Mechanical Properties", "Thermal Properties", "Electrical Properties", "Otherwise Unclassified Properties", "Common Calculations", "Alloy Composition"};
     private String[][] createItems = {{"Name"},
             {"Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Impact Strength: V-Notched Charpy", "Fracture Toughness"},
@@ -102,6 +110,8 @@ public class CreateAlloy extends AppCompatActivity {
         minIds = new int[createItems[createTitles.length - 1].length];
         maxIds = new int[createItems[createTitles.length - 1].length];
         spaceIds = new int[createItems[createTitles.length - 1].length];
+        rbSpaceIds = new int[(createAlloyType.length + 1) / 2];
+        typeIds = new int[createAlloyType.length];
         for(int i = 0; i < createTitles.length - 1; i++) {
             editTextIds[i] = new int[createItems[i].length];
             for(int j = 0; j < createItems[i].length; j++) {
@@ -122,6 +132,15 @@ public class CreateAlloy extends AppCompatActivity {
         tag = 4000;
         for(int i = 0; i < createItems[createTitles.length - 1].length; i++) {
             spaceIds[i] = tag++;
+        }
+
+        tag = 5000;
+        for(int i = 0; i < (createAlloyType.length + 1) / 2; i++) {
+            rbSpaceIds[i] = tag++;
+        }
+        tag = 6000;
+        for(int i = 0; i < createAlloyType.length; i++) {
+            typeIds[i] = tag++;
         }
     }
 
@@ -158,6 +177,69 @@ public class CreateAlloy extends AppCompatActivity {
                 }
             }
         });
+
+        createType = findViewById(R.id.customizeType);
+
+        for(int i = 0; i < (createAlloyType.length + 1) / 2; i++) {
+            RelativeLayout relativeLayout = new RelativeLayout(this);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            relativeLayout.setLayoutParams(layoutParams);
+
+            Space space = new Space(this);
+            RelativeLayout.LayoutParams spaceLayoutParams = new RelativeLayout.LayoutParams(1, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            spaceLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            space.setLayoutParams(spaceLayoutParams);
+            space.setId(rbSpaceIds[i]);
+            relativeLayout.addView(space);
+
+            RadioButton radioButton1 = new RadioButton(this);
+            RelativeLayout.LayoutParams rbLayoutParams1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            rbLayoutParams1.addRule(RelativeLayout.START_OF, rbSpaceIds[i]);
+            radioButton1.setLayoutParams(rbLayoutParams1);
+            radioButton1.setText(createAlloyType[2 * i]);
+            radioButton1.setId(typeIds[2 * i]);
+            if(i == 0 && !modify) {
+                radioButton1.setChecked(true);
+                selectedType = radioButton1.getText().toString();
+            }
+            relativeLayout.addView(radioButton1);
+
+            if(2 * i + 1 < createAlloyType.length) {
+                RadioButton radioButton2 = new RadioButton(this);
+                RelativeLayout.LayoutParams rbLayoutParams2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                rbLayoutParams2.addRule(RelativeLayout.END_OF, rbSpaceIds[i]);
+                radioButton2.setLayoutParams(rbLayoutParams2);
+                radioButton2.setText(createAlloyType[2 * i + 1]);
+                radioButton2.setId(typeIds[2 * i + 1]);
+                relativeLayout.addView(radioButton2);
+            }
+
+            createType.addView(relativeLayout);
+        }
+
+        for(int i = 0; i < createAlloyType.length; i++) {
+            final RadioButton radioButton = findViewById(typeIds[i]);
+            if(modify) {
+                if(radioButton.getText().toString().equals(receivedAlloy.getString("Type"))) {
+                    radioButton.setChecked(true);
+                    selectedType = receivedAlloy.getString("Type");
+                }
+            }
+            radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked) {
+                        for(int j = 0; j < createAlloyType.length; j++) {
+                            if(radioButton.getId() != typeIds[j]) {
+                                RadioButton rb = findViewById(typeIds[j]);
+                                rb.setChecked(false);
+                            }
+                        }
+                        selectedType = radioButton.getText().toString();
+                    }
+                }
+            });
+        }
 
         createList = findViewById(R.id.createList);
 
@@ -291,6 +373,7 @@ public class CreateAlloy extends AppCompatActivity {
 
     private boolean gatherInput() {
         alloy = new Bundle();
+        alloy.putString("Type", selectedType);
         EditText editText;
         for(int i = 0; i < createTitles.length - 1; i++) {
             for(int j = 0; j < createItems[i].length; j++) {

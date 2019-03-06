@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,12 +41,14 @@ public class SearchResults extends AppCompatActivity {
     private TopBar topbar;
     private signedUser currentUser;
 
-    private long countDownTime = 10000;
+    private long countDownTime = 20000;
     private long countDownInterval = 1;
 
     private Bundle inquiry = new Bundle();
     public ArrayList<Bundle> resultsArray = new ArrayList<>();
     private ArrayList<String> starredAlloys = new ArrayList<>();
+    private int count;
+    private int scrollToPosition;
 
     // JSON node names
     private static final String TAG = "MainActivity";
@@ -76,7 +79,7 @@ public class SearchResults extends AppCompatActivity {
             } else if(msg.what == 2) {
                 String starredAlloystr = (String)msg.obj;
                 starredAlloys.clear();
-                String[] temp = starredAlloystr.split(",");
+                String[] temp = starredAlloystr.split(";");
                 for(int i = 0; i < temp.length; i++) {
                     starredAlloys.add(temp[i]);
                 }
@@ -89,13 +92,17 @@ public class SearchResults extends AppCompatActivity {
     private final Handler refreshHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what == 0)
+            if(msg.what == 0 || msg.what == 3) {
                 dialog.close();
-            searchResultsAdapter.notifyDataSetChanged();
-            if(msg.what == 1)
+                topbar.setTitle(String.valueOf(count) + " Alloys Found");
+            } else if(msg.what == 1)
                 Toast.makeText(SearchResults.this,"Alloy starred!",Toast.LENGTH_SHORT).show();
             else if(msg.what == 2)
                 Toast.makeText(SearchResults.this,"Alloy unstarred!",Toast.LENGTH_SHORT).show();
+            searchResultsAdapter.notifyDataSetChanged();
+            if(msg.what == 3) {
+                alloyResultsList.smoothScrollToPosition(scrollToPosition);
+            }
         }
     };
 
@@ -158,6 +165,32 @@ public class SearchResults extends AppCompatActivity {
         });
         alloyResultsList.setAdapter(searchResultsAdapter);
 
+        alloyResultsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(!recyclerView.canScrollVertically(1)) {
+                    if(resultsArray.size() < count) {
+                        // load more
+                        dialog = new LoadingDialog(SearchResults.this, "Loading data");
+                        dialog.show();
+                        countDown.start();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollToPosition = resultsArray.size();
+                                getSingleAlloyItems(inquiry, resultsArray.size());
+                                refreshHandler.sendEmptyMessage(3);
+                                countDown.cancel();
+                            }
+                        }).start();
+                    } else {
+                        Toast.makeText(SearchResults.this, "No more content!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
         topbar = findViewById(R.id.searchResultsTopbar);
         topbar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {
             @Override
@@ -179,7 +212,7 @@ public class SearchResults extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                getSingleAlloyItems(inquiry);
+                getSingleAlloyItems(inquiry, 0);
                 refreshHandler.sendEmptyMessage(0);
                 countDown.cancel();
             }
@@ -194,16 +227,17 @@ public class SearchResults extends AppCompatActivity {
         startActivity(jumpToDetail);
     }
 
-    private void getSingleAlloyItems(final Bundle inquiry) {
-        JSONObject alloys = getAlloy(inquiry);
+    private void getSingleAlloyItems(final Bundle inquiry, int start) {
+        JSONObject alloys = getAlloy(inquiry, start);
         transferToAlloyItems(alloys);
     }
 
-    private JSONObject getAlloy(final Bundle inquiry) {
+    private JSONObject getAlloy(final Bundle inquiry, int start) {
         String path = "http://118.25.122.232/android_connect/new_query.php";
         try {
             OkHttpClient client = new OkHttpClient();
-            FormBody.Builder formBody = makeFormBody(inquiry);
+            FormBody.Builder formBody = makeFormBody(inquiry, start);
+            //formBody.add("Element", "Mg");
             Request request = new Request.Builder().url(path).post(formBody.build()).build();
             Response response = client.newCall(request).execute();
             if(response.isSuccessful()) {
@@ -220,14 +254,17 @@ public class SearchResults extends AppCompatActivity {
         return null;
     }
 
-    private FormBody.Builder makeFormBody(final Bundle inquiry) {
+    private FormBody.Builder makeFormBody(final Bundle inquiry, int start) {
         FormBody.Builder formBody = new FormBody.Builder();
+        formBody.add("Start", String.valueOf(start));
         formBody.add("Phone", currentUser.getPhone());
         if(inquiry.size() != 0) {
             for(String key : inquiry.keySet()) {
                 Bundle bundle = inquiry.getBundle(key);
                 if(key.equals("Name")) {
                     formBody.add("Name", bundle.getString("Name"));
+                } else if(key.equals("Type")) {
+                    formBody.add("Type", bundle.getString("Type"));
                 } else if(key.equals("Alloy Composition")) {
                     if(bundle.containsKey("Min")) {
                         formBody.add(key + "_Min", bundle.getString("Min"));
@@ -251,6 +288,7 @@ public class SearchResults extends AppCompatActivity {
     private void transferToAlloyItems(JSONObject alloys) {
         try {
             if(alloys.getInt(TAG_SUCCESS) == 1) {
+                count = Integer.parseInt(alloys.getString("count"));
                 JSONArray jsonArray = alloys.getJSONArray(TAG_ALLOYS);
                 for(int i = 0; i < jsonArray.length(); i++) {
                     JSONObject alloy = jsonArray.getJSONObject(i);

@@ -8,11 +8,15 @@ import android.text.InputType;
 import android.transition.Explode;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Search extends AppCompatActivity {
 
@@ -24,30 +28,36 @@ public class Search extends AppCompatActivity {
     private RoundRectBtn searchBtn;
 
     private LinearLayout searchList;
+    private LinearLayout alloyType;
 
     private int[][] spaceIds;
     private int[][] minIds;
     private int[][] maxIds;
+    private int[] rbSpaceIds;
+    private int[] typeIds;
     private int NameId;
+
+    private String selectedType;
 
     private Bundle inquiry = new Bundle();
 
+    private String[] searchAlloyType = {"Magnesium Alloy", "Aluminum Alloy", "Copper Alloy", "Iron Alloy", "Cobalt Alloy"};
     private String[] searchTitles = {"Name", "Mechanical Properties", "Thermal Properties", "Electrical Properties", "Otherwise Unclassified Properties", "Common Calculations", "Alloy Composition"};
     private String[][] searchItems = {{"Name"},
-            {"Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Impact Strength: V-Notched Charpy", "Fracture Toughness"},
-            {"Latent Heat of Fusion", "Maximum Temperature: Mechanical", "Melting Completion (Liquidus)", "Melting Onset (Solidus)", "Solidification (Pattern Maker\'s) Shrinkage", "Specific Heat Capacity", "Thermal Conductivity", "Thermal Expansion", "Brazing Temperature"},
+            {"Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Rockwell B Hardness", "Rockwell C Hardness", "Rockwell Superficial 30T Hardness", "Impact Strength: V-Notched Charpy", "Impact Strength: U-Notched Charpy", "Fracture Toughness", "Reduction in Area", "Flexural Strength"},
+            {"Latent Heat of Fusion", "Maximum Temperature: Mechanical", "Melting Completion (Liquidus)", "Melting Onset (Solidus)", "Solidification (Pattern Maker\'s) Shrinkage", "Specific Heat Capacity", "Thermal Conductivity", "Thermal Expansion", "Brazing Temperature", "Maximum Temperature: Corrosion", "Curie Temperature"},
             {"Electrical Conductivity: Equal Volume", "Electrical Conductivity: Equal Weight (Specific)"},
-            {"Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water"},
-            {"Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance"},
-            {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "Rare Elements", "Residuals"}
+            {"Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water", "Calomel Potential"},
+            {"Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance", "PREN (Pitting Resistance)"},
+            {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "V", "Ti", "Ga", "B", "Cr", "Pb", "Sn", "Bi", "Co", "Sb", "S", "P", "As", "Cd", "C", "Nb", "Se", "Te", "O", "Mo", "N", "W", "Ta", "Ce", "La", "Rare Elements", "Residuals"}
     };
     private String[][] units = {{},
-            {"GPa", "%", "MPa", "", "GPa", "MPa", "MPa", "MPa", "", "MPa", "", "J", "MPa-m1/2"},
-            {"J/g", "°C", "°C", "°C", "%", "J/kg-K", "W/m-K", "µm/m-K", "°C"},
+            {"GPa", "%", "MPa", "", "GPa", "MPa", "MPa", "MPa", "", "MPa", "", "", "", "", "J", "J", "MPa-m1/2", "%", "MPa"},
+            {"J/g", "°C", "°C", "°C", "%", "J/kg-K", "W/m-K", "µm/m-K", "°C", "°C", "°C"},
             {"% IACS", "% IACS"},
-            {"% relative", "g/cm3", "kg CO2/kg material", "MJ/kg", "L/kg"},
-            {"MJ/m3", "kJ/m3", "points", "points", "points", "points", "m2/s", "points"},
-            {"%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%"}
+            {"% relative", "g/cm3", "kg CO2/kg material", "MJ/kg", "L/kg", "mV"},
+            {"MJ/m3", "kJ/m3", "points", "points", "points", "points", "m2/s", "points", ""},
+            {}
     };
 
     @Override
@@ -74,6 +84,7 @@ public class Search extends AppCompatActivity {
                 intent.putExtra("user", currentUser);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                //Toast.makeText(Search.this, selectedType, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -83,6 +94,8 @@ public class Search extends AppCompatActivity {
         spaceIds = new int[searchTitles.length][];
         minIds = new int[searchTitles.length][];
         maxIds = new int[searchTitles.length][];
+        rbSpaceIds = new int[(searchAlloyType.length + 1) / 2];
+        typeIds = new int[searchAlloyType.length];
         for(int i = 1; i < searchTitles.length; i++) {
             spaceIds[i] = new int[searchItems[i].length];
             for(int j = 0; j < searchItems[i].length; j++) {
@@ -103,7 +116,15 @@ public class Search extends AppCompatActivity {
                 maxIds[i][j] = tag++;
             }
         }
-        NameId = 4000;
+        tag = 4000;
+        for(int i = 0; i < (searchAlloyType.length + 1) / 2; i++) {
+            rbSpaceIds[i] = tag++;
+        }
+        tag = 5000;
+        for(int i = 0; i < searchAlloyType.length; i++) {
+            typeIds[i] = tag++;
+        }
+        NameId = 6000;
     }
 
     private void setupUI() {
@@ -120,6 +141,62 @@ public class Search extends AppCompatActivity {
             }
         });
 
+        alloyType = findViewById(R.id.searchType);
+
+        for(int i = 0; i < (searchAlloyType.length + 1) / 2; i++) {
+            RelativeLayout relativeLayout = new RelativeLayout(this);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            relativeLayout.setLayoutParams(layoutParams);
+
+            Space space = new Space(this);
+            RelativeLayout.LayoutParams spaceLayoutParams = new RelativeLayout.LayoutParams(1, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            spaceLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            space.setLayoutParams(spaceLayoutParams);
+            space.setId(rbSpaceIds[i]);
+            relativeLayout.addView(space);
+
+            RadioButton radioButton1 = new RadioButton(this);
+            RelativeLayout.LayoutParams rbLayoutParams1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            rbLayoutParams1.addRule(RelativeLayout.START_OF, rbSpaceIds[i]);
+            radioButton1.setLayoutParams(rbLayoutParams1);
+            radioButton1.setText(searchAlloyType[2 * i]);
+            radioButton1.setId(typeIds[2 * i]);
+            if(i == 0) {
+                radioButton1.setChecked(true);
+                selectedType = radioButton1.getText().toString();
+            }
+            relativeLayout.addView(radioButton1);
+
+            if(2 * i + 1 < searchAlloyType.length) {
+                RadioButton radioButton2 = new RadioButton(this);
+                RelativeLayout.LayoutParams rbLayoutParams2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                rbLayoutParams2.addRule(RelativeLayout.END_OF, rbSpaceIds[i]);
+                radioButton2.setLayoutParams(rbLayoutParams2);
+                radioButton2.setText(searchAlloyType[2 * i + 1]);
+                radioButton2.setId(typeIds[2 * i + 1]);
+                relativeLayout.addView(radioButton2);
+            }
+
+            alloyType.addView(relativeLayout);
+        }
+
+        for(int i = 0; i < searchAlloyType.length; i++) {
+            final RadioButton radioButton = findViewById(typeIds[i]);
+            radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked) {
+                        for(int j = 0; j < searchAlloyType.length; j++) {
+                            if(radioButton.getId() != typeIds[j]) {
+                                RadioButton rb = findViewById(typeIds[j]);
+                                rb.setChecked(false);
+                            }
+                        }
+                        selectedType = radioButton.getText().toString();
+                    }
+                }
+            });
+        }
 
         searchList = findViewById(R.id.searchList);
 
@@ -158,7 +235,9 @@ public class Search extends AppCompatActivity {
                     TextView searchItemTV = new TextView(this);
                     LinearLayout.LayoutParams searchItemTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     searchItemTVLayoutParams.setMarginStart(5);
-                    if(!units[i][j].equals(""))
+                    if(searchTitles[i].equals("Alloy Composition"))
+                        searchItemTV.setText(searchItems[i][j] + " (%)");
+                    else if(!units[i][j].equals(""))
                         searchItemTV.setText(searchItems[i][j] + " (" + units[i][j] + ")");
                     else
                         searchItemTV.setText(searchItems[i][j]);
@@ -239,6 +318,25 @@ public class Search extends AppCompatActivity {
 
     private void gatherInput() {
         inquiry = new Bundle();
+        Bundle type = new Bundle();
+        switch (selectedType.split(" ", 2)[0]) {
+            case "Magnesium":
+                type.putString("Type", "Mg");
+                break;
+            case "Aluminum":
+                type.putString("Type", "Al");
+                break;
+            case "Copper":
+                type.putString("Type", "Cu");
+                break;
+            case "Iron":
+                type.putString("Type", "Fe");
+                break;
+            case "Cobalt":
+                type.putString("Type", "Co");
+                break;
+        }
+        inquiry.putBundle("Type", type);
         EditText editText = findViewById(NameId);
         if(editText.getText().length() != 0) {
             Bundle bundle = new Bundle();
