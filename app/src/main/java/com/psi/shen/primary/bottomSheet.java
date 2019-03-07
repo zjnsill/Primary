@@ -55,20 +55,6 @@ public class bottomSheet extends AppCompatActivity {
             currentUser = Editing.getParcelableExtra("edituser");
         //
         //
-        
-        topBar = findViewById(R.id.topBar);
-        topBar.setLeftAndRightListener(new TopBar.LeftAndRightListener() {
-            @Override
-            public void leftListener() {
-
-            }
-
-            @Override
-            public void rightListener() {
-
-            }
-        });
-
         searchCV = findViewById(R.id.SearchCV);
         customizedCV = findViewById(R.id.CustomizedCV);
         starredCV = findViewById(R.id.StarredCV);

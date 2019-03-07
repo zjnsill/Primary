@@ -56,22 +56,23 @@ public class CreateAlloy extends AppCompatActivity {
 
     private boolean modify = false;
 
-    private String[] createAlloyType = {"Magnesium Alloy", "Aluminum Alloy", "Copper Alloy", "Iron Alloy", "Cobalt Alloy"};
+    private String[] createAlloyType = {"Mg Alloy", "Al Alloy", "Cu Alloy", "Fe Alloy", "Co Alloy"};
     private String[] createTitles = {"Name", "Mechanical Properties", "Thermal Properties", "Electrical Properties", "Otherwise Unclassified Properties", "Common Calculations", "Alloy Composition"};
     private String[][] createItems = {{"Name"},
-            {"Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Impact Strength: V-Notched Charpy", "Fracture Toughness"},
-            {"Latent Heat of Fusion", "Maximum Temperature: Mechanical", "Melting Completion (Liquidus)", "Melting Onset (Solidus)", "Solidification (Pattern Maker\'s) Shrinkage", "Specific Heat Capacity", "Thermal Conductivity", "Thermal Expansion", "Brazing Temperature"},
+            {"Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Rockwell B Hardness", "Rockwell C Hardness", "Rockwell Superficial 30T Hardness", "Impact Strength: V-Notched Charpy", "Impact Strength: U-Notched Charpy", "Fracture Toughness", "Reduction in Area", "Flexural Strength"},
+            {"Latent Heat of Fusion", "Maximum Temperature: Mechanical", "Melting Completion (Liquidus)", "Melting Onset (Solidus)", "Solidification (Pattern Maker\'s) Shrinkage", "Specific Heat Capacity", "Thermal Conductivity", "Thermal Expansion", "Brazing Temperature", "Maximum Temperature: Corrosion", "Curie Temperature"},
             {"Electrical Conductivity: Equal Volume", "Electrical Conductivity: Equal Weight (Specific)"},
-            {"Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water"},
-            {"Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance"},
-            {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "Rare Elements", "Residuals"}};
+            {"Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water", "Calomel Potential"},
+            {"Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance", "PREN (Pitting Resistance)"},
+            {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "V", "Ti", "Ga", "B", "Cr", "Pb", "Sn", "Bi", "Co", "Sb", "S", "P", "As", "Cd", "C", "Nb", "Se", "Te", "O", "Mo", "N", "W", "Ta", "Ce", "La", "Rare Elements", "Residuals"}
+    };
     private String[][] units = {{},
-            {"GPa", "%", "MPa", "", "GPa", "MPa", "MPa", "MPa", "", "MPa", "", "J", "MPa-m1/2"},
-            {"J/g", "°C", "°C", "°C", "%", "J/kg-K", "W/m-K", "µm/m-K", "°C"},
+            {"GPa", "%", "MPa", "", "GPa", "MPa", "MPa", "MPa", "", "MPa", "", "", "", "", "J", "J", "MPa-m1/2", "%", "MPa"},
+            {"J/g", "°C", "°C", "°C", "%", "J/kg-K", "W/m-K", "µm/m-K", "°C", "°C", "°C"},
             {"% IACS", "% IACS"},
-            {"% relative", "g/cm3", "kg CO2/kg material", "MJ/kg", "L/kg"},
-            {"MJ/m3", "kJ/m3", "points", "points", "points", "points", "m2/s", "points"},
-            {"%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%", "%"}
+            {"% relative", "g/cm3", "kg CO2/kg material", "MJ/kg", "L/kg", "mV"},
+            {"MJ/m3", "kJ/m3", "points", "points", "points", "points", "m2/s", "points", ""},
+            {}
     };
 
     private Handler handler = new Handler() {
@@ -164,7 +165,6 @@ public class CreateAlloy extends AppCompatActivity {
             @Override
             public void BtnOnClick() {
                 if(gatherInput()) {
-                    //Log.i("MainActivity", "success");
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -220,7 +220,7 @@ public class CreateAlloy extends AppCompatActivity {
         for(int i = 0; i < createAlloyType.length; i++) {
             final RadioButton radioButton = findViewById(typeIds[i]);
             if(modify) {
-                if(radioButton.getText().toString().equals(receivedAlloy.getString("Type"))) {
+                if(radioButton.getText().toString().split(" ", 2)[0].equals(receivedAlloy.getString("Type"))) {
                     radioButton.setChecked(true);
                     selectedType = receivedAlloy.getString("Type");
                 }
@@ -278,7 +278,9 @@ public class CreateAlloy extends AppCompatActivity {
                     TextView searchItemTV = new TextView(this);
                     LinearLayout.LayoutParams searchItemTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     searchItemTVLayoutParams.setMarginStart(5);
-                    if(!units[i][j].equals(""))
+                    if(createTitles[i].equals("Alloy Composition"))
+                        searchItemTV.setText(createItems[i][j] + " (%)");
+                    else if(!units[i][j].equals(""))
                         searchItemTV.setText(createItems[i][j] + " (" + units[i][j] + ")");
                     else
                         searchItemTV.setText(createItems[i][j]);
@@ -373,7 +375,7 @@ public class CreateAlloy extends AppCompatActivity {
 
     private boolean gatherInput() {
         alloy = new Bundle();
-        alloy.putString("Type", selectedType);
+        alloy.putString("Type", selectedType.split(" ", 2)[0]);
         EditText editText;
         for(int i = 0; i < createTitles.length - 1; i++) {
             for(int j = 0; j < createItems[i].length; j++) {

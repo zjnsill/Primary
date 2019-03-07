@@ -24,6 +24,14 @@ public class TopBar extends RelativeLayout {
 
     public void setLeftAndRightListener(LeftAndRightListener leftAndRightListener){
         this.leftAndRightListener = leftAndRightListener;
+        leftImg.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) { TopBar.this.leftAndRightListener.leftListener(); }
+        });
+        rightImg.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) { TopBar.this.leftAndRightListener.rightListener(); }
+        });
     }
 
     public void setTitle(String title) {
@@ -67,13 +75,5 @@ public class TopBar extends RelativeLayout {
         TitleTV.setTextSize(textSize);
         TitleTV.setTextColor(textColor);
         TopbarEntity.setCardBackgroundColor(topbarColor);
-        leftImg.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) { leftAndRightListener.leftListener(); }
-        });
-        rightImg.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) { leftAndRightListener.rightListener(); }
-        });
     }
 }

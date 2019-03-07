@@ -48,6 +48,7 @@ public class SearchResults extends AppCompatActivity {
     public ArrayList<Bundle> resultsArray = new ArrayList<>();
     private ArrayList<String> starredAlloys = new ArrayList<>();
     private int count;
+
     private int scrollToPosition;
 
     // JSON node names
@@ -203,6 +204,7 @@ public class SearchResults extends AppCompatActivity {
                 showSortDialog();
             }
         });
+        topbar.setTitle("Searching...");
 
         dialog = new LoadingDialog(this,"Loading data");
         dialog.show();
@@ -237,7 +239,6 @@ public class SearchResults extends AppCompatActivity {
         try {
             OkHttpClient client = new OkHttpClient();
             FormBody.Builder formBody = makeFormBody(inquiry, start);
-            //formBody.add("Element", "Mg");
             Request request = new Request.Builder().url(path).post(formBody.build()).build();
             Response response = client.newCall(request).execute();
             if(response.isSuccessful()) {
