@@ -58,7 +58,7 @@ public class detailed_alloy extends AppCompatActivity {
 
     private void setupUI() {
         detailedAlloyTopbar = findViewById(R.id.DetailedAlloyTopbar);
-        detailedAlloyTopbar.setTitle("Details");
+        detailedAlloyTopbar.setTitle(alloy.getString("Type") + " Alloy");
         detailedAlloyTopbar.setTitleSize(20);
         //detailedAlloyTopbar.setTitleBold(true);
         if(modify) {

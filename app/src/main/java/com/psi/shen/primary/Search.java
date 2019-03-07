@@ -41,7 +41,7 @@ public class Search extends AppCompatActivity {
 
     private Bundle inquiry = new Bundle();
 
-    private String[] searchAlloyType = {"Magnesium Alloy", "Aluminum Alloy", "Copper Alloy", "Iron Alloy", "Cobalt Alloy"};
+    private String[] searchAlloyType = {"Mg Alloy", "Al Alloy", "Cu Alloy", "Fe Alloy", "Co Alloy"};
     private String[] searchTitles = {"Name", "Mechanical Properties", "Thermal Properties", "Electrical Properties", "Otherwise Unclassified Properties", "Common Calculations", "Alloy Composition"};
     private String[][] searchItems = {{"Name"},
             {"Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Rockwell B Hardness", "Rockwell C Hardness", "Rockwell Superficial 30T Hardness", "Impact Strength: V-Notched Charpy", "Impact Strength: U-Notched Charpy", "Fracture Toughness", "Reduction in Area", "Flexural Strength"},
@@ -84,7 +84,6 @@ public class Search extends AppCompatActivity {
                 intent.putExtra("user", currentUser);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                //Toast.makeText(Search.this, selectedType, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -319,23 +318,7 @@ public class Search extends AppCompatActivity {
     private void gatherInput() {
         inquiry = new Bundle();
         Bundle type = new Bundle();
-        switch (selectedType.split(" ", 2)[0]) {
-            case "Magnesium":
-                type.putString("Type", "Mg");
-                break;
-            case "Aluminum":
-                type.putString("Type", "Al");
-                break;
-            case "Copper":
-                type.putString("Type", "Cu");
-                break;
-            case "Iron":
-                type.putString("Type", "Fe");
-                break;
-            case "Cobalt":
-                type.putString("Type", "Co");
-                break;
-        }
+        type.putString("Type", selectedType.split(" ", 2)[0]);
         inquiry.putBundle("Type", type);
         EditText editText = findViewById(NameId);
         if(editText.getText().length() != 0) {
