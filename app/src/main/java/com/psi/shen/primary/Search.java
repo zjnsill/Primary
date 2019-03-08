@@ -41,7 +41,7 @@ public class Search extends AppCompatActivity {
 
     private Bundle inquiry = new Bundle();
 
-    private String[] searchAlloyType = {"Mg Alloy", "Al Alloy", "Cu Alloy", "Fe Alloy", "Co Alloy"};
+    private String[] searchAlloyType = {"Mg Alloy", "Al Alloy", "Cu Alloy", "Fe Alloy", "Co Alloy", "Ni Alloy", "Ti Alloy"};
     private String[] searchTitles = {"Name", "Mechanical Properties", "Thermal Properties", "Electrical Properties", "Otherwise Unclassified Properties", "Common Calculations", "Alloy Composition"};
     private String[][] searchItems = {{"Name"},
             {"Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Rockwell B Hardness", "Rockwell C Hardness", "Rockwell Superficial 30T Hardness", "Impact Strength: V-Notched Charpy", "Impact Strength: U-Notched Charpy", "Fracture Toughness", "Reduction in Area", "Flexural Strength"},
@@ -49,7 +49,7 @@ public class Search extends AppCompatActivity {
             {"Electrical Conductivity: Equal Volume", "Electrical Conductivity: Equal Weight (Specific)"},
             {"Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water", "Calomel Potential"},
             {"Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance", "PREN (Pitting Resistance)"},
-            {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "V", "Ti", "Ga", "B", "Cr", "Pb", "Sn", "Bi", "Co", "Sb", "S", "P", "As", "Cd", "C", "Nb", "Se", "Te", "O", "Mo", "N", "W", "Ta", "Ce", "La", "Rare Elements", "Residuals"}
+            {"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "V", "Ti", "Ga", "B", "Cr", "Pb", "Sn", "Bi", "Co", "Sb", "S", "P", "As", "Cd", "C", "Nb", "Se", "Te", "O", "Mo", "N", "W", "Ta", "Ce", "La", "H", "Pd", "Na", "Cl", "Ru", "Rare Elements", "Residuals"}
     };
     private String[][] units = {{},
             {"GPa", "%", "MPa", "", "GPa", "MPa", "MPa", "MPa", "", "MPa", "", "", "", "", "J", "J", "MPa-m1/2", "%", "MPa"},
