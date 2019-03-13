@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,9 +33,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public class bottomSheet extends AppCompatActivity {
-    private View backView;
-    private CardView searchCV, customizedCV,starredCV,aboutCV;
-    private TopBar topBar;
+    private ImageView searchCV, customizedCV,starredCV,aboutCV;
     private signedUser currentUser;
     private String phone;
     private long exitTime;
@@ -112,6 +111,5 @@ public class bottomSheet extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        backView.setDrawingCacheEnabled(false);
     }
 }

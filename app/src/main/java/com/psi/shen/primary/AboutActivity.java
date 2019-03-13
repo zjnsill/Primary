@@ -66,7 +66,7 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
 
         Explode explode = new Explode();
-        explode.setDuration(500);
+        explode.setDuration(300);
         getWindow().setEnterTransition(explode);
 
         AboutTV = findViewById(R.id.AboutTV);

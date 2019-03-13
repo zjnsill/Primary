@@ -5,17 +5,24 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
     <color name="black_90">#dd000000</color>
-    <color name="btn_clickable_green">#ff99cc00</color>
+    <color name="btn_clickable_green">#99cc00</color>
     <color name="btn_clickable_orange">#ff8800</color>
     <color name="btn_unclickable_grey">#9e9e9e</color>
     <color name="splash_bkg_grey">#edefef</color>
-    <color name="bottom_bkg">#1677ff</color>
     <!-- Screens background color-->
     <color name="bg_screen1">#f64c73</color>
     <color name="bg_screen2">#20d2bb</color>
     <color name="bg_screen3">#4a90e2</color>
     <color name="bg_screen4">#c873f4</color>
     <color name="bg_screen5">#f59825</color>
+    <color name="bot_button1">#ffffff</color>
+    <color name="bot_button2">#ffffff</color>
+    <color name="bot_button3">#ffffff</color>
+    <color name="bot_button4">#ffffff</color>
+    <color name="bottom_bkg">#c9cdd2</color>
+
+
+
 
     <!-- dots inactive colors -->
     <color name="dot_dark_screen1">#d1395c</color>
@@ -25,11 +32,11 @@
     <color name="dot_dark_screen5">#f57f17</color>
 
     <!-- dots active colors -->
-    <color name="dot_light_screen1">#ffb3c4</color>
-    <color name="dot_light_screen2">#99fff3</color>
+    <color name="dot_light_screen1">#fdbdcb</color>
+    <color name="dot_light_screen2">#c9fff9</color>
     <color name="dot_light_screen3">#bdddfe</color>
-    <color name="dot_light_screen4">#c4fcac</color>
-    <color name="dot_light_screen5">#ffe39f</color>
+    <color name="dot_light_screen4">#dffdd1</color>
+    <color name="dot_light_screen5">#feebbb</color>
 
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>
