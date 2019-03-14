@@ -66,7 +66,7 @@ public class Search extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         Explode explode = new Explode();
-        explode.setDuration(500);
+        explode.setDuration(300);
         getWindow().setEnterTransition(explode);
 
         Intent fromMainInterface = getIntent();
