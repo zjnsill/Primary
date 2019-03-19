@@ -28,6 +28,7 @@
             android:ems="10"
             android:inputType="phone"
             android:textAlignment="center"
+            android:textSize="24sp"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,6 +44,7 @@
             android:ems="10"
             android:inputType="number"
             android:textAlignment="center"
+            android:textSize="24sp"
             android:textStyle="italic"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="108dp" />
@@ -58,6 +60,7 @@
             android:text="Get code"
             android:textAllCaps="false"
             android:textColor="@color/cardview_light_background"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="116dp" />
