@@ -32,11 +32,16 @@
     <color name="dot_dark_screen5">#f57f17</color>
 
     <!-- dots active colors -->
-    <color name="dot_light_screen1">#fdbdcb</color>
-    <color name="dot_light_screen2">#c9fff9</color>
-    <color name="dot_light_screen3">#bdddfe</color>
-    <color name="dot_light_screen4">#dffdd1</color>
-    <color name="dot_light_screen5">#feebbb</color>
+    <color name="dot_light_screen1">#ffc09f</color>
+    <color name="dot_light_screen2">#a3a380</color>
+    <color name="dot_light_screen3">#000000</color>
+    <color name="dot_light_screen4">#e2d5a1</color>
+    <color name="dot_light_screen5">#99cccc</color>
+    <color name="dot_light_screen11">#fde3d5</color>
+    <color name="dot_light_screen12">#dadac7</color>
+    <color name="dot_light_screen13">#000000</color>
+    <color name="dot_light_screen14">#f9f3d6</color>
+    <color name="dot_light_screen15">#d8f8f8</color>
 
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>

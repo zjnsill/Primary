@@ -6,11 +6,13 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -21,6 +23,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +37,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public class bottomSheet extends AppCompatActivity {
-    private ImageView searchCV, customizedCV,starredCV,aboutCV;
+    private CardView searchCV, customizedCV,starredCV,aboutCV;
     private signedUser currentUser;
     private String phone;
     private long exitTime;
@@ -43,6 +47,8 @@ public class bottomSheet extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_sheet);
 
+        setStatusBarFullTransparent();
+        setFitSystemWindow(true);
         SharedPreferences sharedPreferences=getSharedPreferences("config",0);
         phone=sharedPreferences.getString("phone","");
 
@@ -95,6 +101,7 @@ public class bottomSheet extends AppCompatActivity {
             }
         });
         //end of onCreate Methods;
+
     }
 
     @Override
@@ -111,5 +118,36 @@ public class bottomSheet extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
+    }
+    /**
+     * 全透状态栏
+     */
+    protected void setStatusBarFullTransparent() {
+        if (Build.VERSION.SDK_INT >= 21) {//21表示5.0
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else if (Build.VERSION.SDK_INT >= 19) {//19表示4.4
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //虚拟键盘也透明
+            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+    }
+
+    /**
+     * 半透明状态栏
+     * 如果需要内容紧贴着StatusBar
+     * 应该在对应的xml布局文件中，设置根布局fitsSystemWindows=true。
+     */
+    private View contentViewGroup;
+
+    protected void setFitSystemWindow(boolean fitSystemWindow) {
+        if (contentViewGroup == null) {
+            contentViewGroup = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+        }
+        contentViewGroup.setFitsSystemWindows(fitSystemWindow);
     }
 }
