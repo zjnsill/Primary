@@ -7,7 +7,9 @@ import android.support.v7.widget.CardView;
 import android.text.InputType;
 import android.transition.Explode;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -78,14 +80,18 @@ public class Search extends AppCompatActivity {
         searchBtn.setBtnOnClickListener(new RoundRectBtn.BtnOnClickListenr(){
             @Override
             public void BtnOnClick(){
-                gatherInput();
-                Intent intent = new Intent(Search.this, SearchResults.class);
-                intent.putExtra("inquiry", inquiry);
-                intent.putExtra("user", currentUser);
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                search();
             }
         });
+    }
+
+    private void search() {
+        gatherInput();
+        Intent intent = new Intent(Search.this, SearchResults.class);
+        intent.putExtra("inquiry", inquiry);
+        intent.putExtra("user", currentUser);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     private void setupIds() {
@@ -235,7 +241,7 @@ public class Search extends AppCompatActivity {
                     LinearLayout.LayoutParams searchItemTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     searchItemTVLayoutParams.setMarginStart(5);
                     if(searchTitles[i].equals("Alloy Composition"))
-                        searchItemTV.setText(searchItems[i][j] + " (%)");
+                        searchItemTV.setText(searchItems[i][j] + " (mass %)");
                     else if(!units[i][j].equals(""))
                         searchItemTV.setText(searchItems[i][j] + " (" + units[i][j] + ")");
                     else
@@ -268,6 +274,17 @@ public class Search extends AppCompatActivity {
                     minET.setHint("Min");
                     minET.setTextSize(15);
                     minET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                    minET.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    minET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                                search();
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
                     inputRL.addView(minET);
 
                     EditText maxET = new EditText(this);
@@ -279,6 +296,17 @@ public class Search extends AppCompatActivity {
                     maxET.setHint("Max");
                     maxET.setTextSize(15);
                     maxET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                    maxET.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    maxET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                                search();
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
                     inputRL.addView(maxET);
                 } else {
                     EditText editText = new EditText(this);
@@ -288,6 +316,18 @@ public class Search extends AppCompatActivity {
                     editText.setId(NameId);
                     editText.setHint("Name");
                     editText.setTextSize(15);
+                    editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                    editText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                                search();
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
                     inputRL.addView(editText);
                 }
 

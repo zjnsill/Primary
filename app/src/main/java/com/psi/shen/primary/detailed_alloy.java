@@ -170,7 +170,7 @@ public class detailed_alloy extends AppCompatActivity {
                         valueTV.setGravity(Gravity.END);
                     valueTV.setTextSize(15);
                     if(detailTitles[i].equals("Alloy Composition"))
-                        valueTV.setText(alloy.getString(detailItems[i][j]) + " %");
+                        valueTV.setText(alloy.getString(detailItems[i][j]) + " mass %");
                     else if(!detailTitles[i].equals("Introduction") && !units[i][j].equals(""))
                         valueTV.setText(alloy.getString(detailItems[i][j]) + " " + units[i][j]);
                     else
@@ -191,6 +191,13 @@ public class detailed_alloy extends AppCompatActivity {
 
             detailList.addView(cardView);
         }
+
+        TextView sourceTV = new TextView(this);
+        LinearLayout.LayoutParams sourceTVLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        sourceTV.setLayoutParams(sourceTVLayout);
+        sourceTV.setGravity(Gravity.CENTER);
+        sourceTV.setText("source: MakeItFrom.com");
+        detailList.addView(sourceTV);
     }
 
     @Override

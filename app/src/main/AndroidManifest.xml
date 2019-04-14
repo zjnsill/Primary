@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".bottomSheet" />
-        <activity android:name=".Search" />
+        <activity android:name=".Search"/>
         <activity android:name=".SearchResults" />
         <activity android:name=".detailed_alloy" />
         <activity android:name=".CreateAlloy" />
