@@ -57,12 +57,15 @@ public class SearchResults extends AppCompatActivity {
     private static final String TAG_ALLOYS = "alloys";
 
     private String[] sortItems = {"Name",
-            "Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Impact Strength: V-Notched Charpy", "Fracture Toughness",
-            "Latent Heat of Fusion", "Maximum Temperature: Mechanical", "Melting Completion (Liquidus)", "Melting Onset (Solidus)", "Solidification (Pattern Maker\'s) Shrinkage", "Specific Heat Capacity", "Thermal Conductivity", "Thermal Expansion", "Brazing Temperature",
+            "Elastic (Young\'s, Tensile) Modulus", "Elongation at Break", "Fatigue Strength", "Poisson\'s Ratio", "Shear Modulus", "Shear Strength", "Tensile Strength: Ultimate (UTS)", "Tensile Strength: Yield (Proof)", "Brinell Hardness", "Compressive (Crushing) Strength", "Rockwell F Hardness", "Rockwell B Hardness", "Rockwell C Hardness", "Rockwell Superficial 30T Hardness", "Impact Strength: V-Notched Charpy", "Impact Strength: U-Notched Charpy", "Fracture Toughness", "Reduction in Area", "Flexural Strength",
+            "Latent Heat of Fusion", "Maximum Temperature: Mechanical", "Melting Completion (Liquidus)", "Melting Onset (Solidus)", "Solidification (Pattern Maker\'s) Shrinkage", "Specific Heat Capacity", "Thermal Conductivity", "Thermal Expansion", "Brazing Temperature", "Maximum Temperature: Corrosion", "Curie Temperature",
             "Electrical Conductivity: Equal Volume", "Electrical Conductivity: Equal Weight (Specific)",
-            "Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water",
-            "Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance"};
-            //"Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "Rare Elements", "Residuals"};
+            "Base Metal Price", "Density", "Embodied Carbon", "Embodied Energy", "Embodied Water", "Calomel Potential",
+            "Resilience: Ultimate (Unit Rupture Work)", "Resilience: Unit (Modulus of Resilience)", "Stiffness to Weight: Axial", "Stiffness to Weight: Bending", "Strength to Weight: Axial", "Strength to Weight: Bending", "Thermal Diffusivity", "Thermal Shock Resistance", "PREN (Pitting Resistance)"
+    };
+    private String[] components = {
+            "Mg", "Al", "Mn", "Si", "Zn", "Cu", "Ni", "Y", "Zr", "Li", "Fe", "Be", "Ca", "Ag", "V", "Ti", "Ga", "B", "Cr", "Pb", "Sn", "Bi", "Co", "Sb", "S", "P", "As", "Cd", "C", "Nb", "Se", "Te", "O", "Mo", "N", "W", "Ta", "Ce", "La", "H", "Pd", "Na", "Cl", "Ru", "Rare Elements", "Residuals"
+    };
     private int[] sortIds;
 
     private RecyclerView alloyResultsList;
@@ -143,7 +146,7 @@ public class SearchResults extends AppCompatActivity {
                 ItemAction(position);
             }
             @Override
-            public void onLongClick(final int position, boolean isStarred) {
+            public void onStarClick(final int position, boolean isStarred) {
                 if(isStarred) {
                     new Thread(new Runnable() {
                         @Override
@@ -299,6 +302,9 @@ public class SearchResults extends AppCompatActivity {
                         String value = alloy.getString(key);
                         //Log.i(TAG, key1 + "---" + alloy.getString(key1));
                         if(!value.equals("null")) {
+                            if(value.contains("to") && !key.equals("Introduction") && !key.equals("Name")) {
+                                value = value.replace("to", "~");
+                            }
                             bundle.putString(key, value);
                         }
                     }

@@ -21,7 +21,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     public interface OnItemClickListener {
         void onClick(int position);
-        void onLongClick(int position,boolean isStarred);
+        void onStarClick(int position,boolean isStarred);
     }
 
     public void setmOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -84,8 +84,15 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mOnItemClickListener.onLongClick(position,isStarred);
+                mOnItemClickListener.onStarClick(position,isStarred);
                 return false;
+            }
+        });
+
+        viewHolder.isStarredIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onStarClick(position,isStarred);
             }
         });
     }
