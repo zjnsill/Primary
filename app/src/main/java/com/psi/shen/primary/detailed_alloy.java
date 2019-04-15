@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class detailed_alloy extends AppCompatActivity {
 
     private int startX, startY;
@@ -40,6 +42,7 @@ public class detailed_alloy extends AppCompatActivity {
             {"MJ/m3", "kJ/m3", "points", "points", "points", "points", "m2/s", "points", ""},
             {}
     };
+    private ArrayList<String> components = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,28 @@ public class detailed_alloy extends AppCompatActivity {
             modify = true;
         }
 
+        setupComponents();
         setupUI();
+    }
+
+    private void setupComponents() {
+        for(int i = 0; i < detailItems[detailItems.length - 1].length; i++) {
+            if(alloy.containsKey(detailItems[detailItems.length - 1][i])) {
+                components.add(detailItems[detailItems.length - 1][i]);
+            }
+        }
+        if(components.size() != 0) {
+            for(int i = 0; i < components.size(); i++) {
+                for(int j = 0; j < i; j++) {
+                    if(Double.parseDouble(alloy.getString(components.get(i)).split(" ~ ", 2)[1]) >
+                            Double.parseDouble(alloy.getString(components.get(j)).split(" ~ ", 2)[1])) {
+                        String str = components.get(j);
+                        components.set(j, components.get(i));
+                        components.set(i, str);
+                    }
+                }
+            }
+        }
     }
 
     private void setupUI() {
@@ -140,51 +164,85 @@ public class detailed_alloy extends AppCompatActivity {
             title.getPaint().setFakeBoldText(true);
             layout.addView(title);
 
-            boolean flag = false;
-            for(int j = 0; j < detailItems[i].length; j++) {
-                if(alloy.containsKey(detailItems[i][j])) {
+            if(!detailTitles[i].equals("Alloy Composition")) {
+                boolean flag = false;
+                for (int j = 0; j < detailItems[i].length; j++) {
+                    if (alloy.containsKey(detailItems[i][j])) {
 
-                    LinearLayout linearLayout = new LinearLayout(this);
-                    LinearLayout.LayoutParams linearLayoutLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    linearLayoutLayoutParams.setMargins(15, 3, 15, 3);
-                    linearLayout.setOrientation(LinearLayout.VERTICAL);
-                    linearLayout.setLayoutParams(linearLayoutLayoutParams);
+                        LinearLayout linearLayout = new LinearLayout(this);
+                        LinearLayout.LayoutParams linearLayoutLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        linearLayoutLayoutParams.setMargins(15, 3, 15, 3);
+                        linearLayout.setOrientation(LinearLayout.VERTICAL);
+                        linearLayout.setLayoutParams(linearLayoutLayoutParams);
 
-                    if(!detailTitles[i].equals("Introduction")) {
+                        if (!detailTitles[i].equals("Introduction")) {
+                            TextView detailItemTV = new TextView(this);
+                            LinearLayout.LayoutParams detailItemTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            detailItemTVLayoutParams.setMarginStart(5);
+                            detailItemTV.setText(detailItems[i][j]);
+                            detailItemTV.setTextSize(15);
+                            detailItemTV.setLayoutParams(detailItemTVLayoutParams);
+                            linearLayout.addView(detailItemTV);
+                        }
+
+                        TextView valueTV = new TextView(this);
+                        LinearLayout.LayoutParams valueTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        valueTVLayoutParams.setMarginStart(5);
+                        valueTVLayoutParams.setMarginEnd(5);
+                        valueTV.setLayoutParams(valueTVLayoutParams);
+
+                        if (!detailTitles[i].equals("Introduction"))
+                            valueTV.setGravity(Gravity.END);
+                        valueTV.setTextSize(15);
+                        if (detailTitles[i].equals("Alloy Composition"))
+                            valueTV.setText(alloy.getString(detailItems[i][j]) + " mass %");
+                        else if (!detailTitles[i].equals("Introduction") && !units[i][j].equals(""))
+                            valueTV.setText(alloy.getString(detailItems[i][j]) + " " + units[i][j]);
+                        else
+                            valueTV.setText(alloy.getString(detailItems[i][j]));
+                        linearLayout.addView(valueTV);
+
+                        layout.addView(linearLayout);
+
+                        flag = true;
+                    }
+                }
+
+                if (!flag) {
+                    continue;
+                }
+            } else {
+                if(components.size() != 0) {
+                    for(int j = 0; j < components.size(); j++) {
+                        LinearLayout linearLayout = new LinearLayout(this);
+                        LinearLayout.LayoutParams linearLayoutLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        linearLayoutLayoutParams.setMargins(15, 3, 15, 3);
+                        linearLayout.setOrientation(LinearLayout.VERTICAL);
+                        linearLayout.setLayoutParams(linearLayoutLayoutParams);
+
                         TextView detailItemTV = new TextView(this);
                         LinearLayout.LayoutParams detailItemTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         detailItemTVLayoutParams.setMarginStart(5);
-                        detailItemTV.setText(detailItems[i][j]);
+                        detailItemTV.setText(components.get(j));
                         detailItemTV.setTextSize(15);
                         detailItemTV.setLayoutParams(detailItemTVLayoutParams);
                         linearLayout.addView(detailItemTV);
-                    }
 
-                    TextView valueTV = new TextView(this);
-                    LinearLayout.LayoutParams valueTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    valueTVLayoutParams.setMarginStart(5);
-                    valueTVLayoutParams.setMarginEnd(5);
-                    valueTV.setLayoutParams(valueTVLayoutParams);
-
-                    if(!detailTitles[i].equals("Introduction"))
+                        TextView valueTV = new TextView(this);
+                        LinearLayout.LayoutParams valueTVLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        valueTVLayoutParams.setMarginStart(5);
+                        valueTVLayoutParams.setMarginEnd(5);
+                        valueTV.setLayoutParams(valueTVLayoutParams);
                         valueTV.setGravity(Gravity.END);
-                    valueTV.setTextSize(15);
-                    if(detailTitles[i].equals("Alloy Composition"))
-                        valueTV.setText(alloy.getString(detailItems[i][j]) + " mass %");
-                    else if(!detailTitles[i].equals("Introduction") && !units[i][j].equals(""))
-                        valueTV.setText(alloy.getString(detailItems[i][j]) + " " + units[i][j]);
-                    else
-                        valueTV.setText(alloy.getString(detailItems[i][j]));
-                    linearLayout.addView(valueTV);
+                        valueTV.setTextSize(15);
+                        valueTV.setText(alloy.getString(components.get(j)) + " mass %");
+                        linearLayout.addView(valueTV);
 
-                    layout.addView(linearLayout);
-
-                    flag = true;
+                        layout.addView(linearLayout);
+                    }
+                } else {
+                    continue;
                 }
-            }
-
-            if(!flag) {
-                continue;
             }
 
             cardView.addView(layout);
