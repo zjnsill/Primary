@@ -192,12 +192,14 @@ public class detailed_alloy extends AppCompatActivity {
             detailList.addView(cardView);
         }
 
-        TextView sourceTV = new TextView(this);
-        LinearLayout.LayoutParams sourceTVLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        sourceTV.setLayoutParams(sourceTVLayout);
-        sourceTV.setGravity(Gravity.CENTER);
-        sourceTV.setText("source: MakeItFrom.com");
-        detailList.addView(sourceTV);
+        if(!modify) {
+            TextView sourceTV = new TextView(this);
+            LinearLayout.LayoutParams sourceTVLayout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            sourceTV.setLayoutParams(sourceTVLayout);
+            sourceTV.setGravity(Gravity.CENTER);
+            sourceTV.setText("source: MakeItFrom.com");
+            detailList.addView(sourceTV);
+        }
     }
 
     @Override
@@ -217,7 +219,7 @@ public class detailed_alloy extends AppCompatActivity {
                 int endX = (int)event.getRawX();
                 int endY = (int)event.getRawY();
                 if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
-                    if(endX > startX) {
+                    if(endX > startX && (endX - startX) > ScreenSizeUtils.getInstance(this).getScreenWidth() / 5) {
                         this.finish();
                     }
                 }

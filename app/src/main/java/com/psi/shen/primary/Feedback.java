@@ -147,7 +147,7 @@ public class Feedback extends AppCompatActivity {
                 int endX = (int)event.getRawX();
                 int endY = (int)event.getRawY();
                 if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
-                    if(endX > startX) {
+                    if(endX > startX && (endX - startX) > ScreenSizeUtils.getInstance(this).getScreenWidth() / 5) {
                         this.finish();
                     }
                 }
