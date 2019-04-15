@@ -187,6 +187,9 @@ public class CustomizedAlloys extends AppCompatActivity {
                             String key = keys.next();
                             String value = alloy.getString(key);
                             if(!value.equals("null") && !key.equals("Phone")) {
+                                if(value.contains("to") && !key.equals("Introduction") && !key.equals("Name")) {
+                                    value = value.replace("to", "~");
+                                }
                                 bundle.putString(key, value);
                             }
                         }
