@@ -174,6 +174,9 @@ public class StarredList extends AppCompatActivity {
                             String value = alloy.getString(key);
                             //Log.i(TAG, key1 + "---" + alloy.getString(key1));
                             if(!value.equals("null")) {
+                                if(value.contains("to") && !key.equals("Introduction") && !key.equals("Name")) {
+                                    value = value.replace("to", "~");
+                                }
                                 bundle.putString(key, value);
                             }
                         }
