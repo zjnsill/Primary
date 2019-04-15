@@ -238,7 +238,7 @@ public class SearchResults extends AppCompatActivity {
     }
 
     private JSONObject getAlloy(final Bundle inquiry, int start) {
-        String path = "http://118.25.122.232/android_connect/new_query.php";
+        String path = "http://118.25.122.232/android_connect/query.php";
         try {
             OkHttpClient client = new OkHttpClient();
             FormBody.Builder formBody = makeFormBody(inquiry, start);
@@ -474,7 +474,7 @@ public class SearchResults extends AppCompatActivity {
                 int endX = (int)event.getRawX();
                 int endY = (int)event.getRawY();
                 if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
-                    if(endX > startX) {
+                    if(endX > startX && (endX - startX) > ScreenSizeUtils.getInstance(this).getScreenWidth() / 5) {
                         this.finish();
                     }
                 }

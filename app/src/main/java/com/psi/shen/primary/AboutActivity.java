@@ -47,6 +47,8 @@ import okhttp3.Response;
 
 public class AboutActivity extends AppCompatActivity {
 
+    private int startX, startY;
+
     private TopBar topBar;
     private TextView AboutTV;
     private TextView versionTV;
@@ -241,4 +243,21 @@ public class AboutActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startX = (int)event.getRawX();
+                startY = (int)event.getRawY();
+            case MotionEvent.ACTION_MOVE:
+                int endX = (int)event.getRawX();
+                int endY = (int)event.getRawY();
+                if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
+                    if(endX > startX && (endX - startX) > ScreenSizeUtils.getInstance(this).getScreenWidth() / 5) {
+                        this.finish();
+                    }
+                }
+        }
+        return super.dispatchTouchEvent(event);
+    }
 }

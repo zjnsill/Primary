@@ -14,11 +14,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Search extends AppCompatActivity {
 
@@ -395,7 +393,7 @@ public class Search extends AppCompatActivity {
                 int endX = (int)event.getRawX();
                 int endY = (int)event.getRawY();
                 if(Math.abs(endX - startX) > Math.abs(endY - startY)) {
-                    if(endX > startX) {
+                    if(endX > startX && (endX - startX) > ScreenSizeUtils.getInstance(this).getScreenWidth() / 5) {
                         this.finish();
                     }
                 }
